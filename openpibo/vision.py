@@ -21,6 +21,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Camera:
   """
+Functions:
 :meth:`~openpibo.vision.Camera.imread`
 :meth:`~openpibo.vision.Camera.read`
 :meth:`~openpibo.vision.Camera.imwrite`
@@ -355,6 +356,7 @@ class Camera:
 
 class Face:
   """
+Functions:
 :meth:`~openpibo.vision.Face.init_db`
 :meth:`~openpibo.vision.Face.detect`
 :meth:`~openpibo.vision.Face.train_face`
@@ -639,6 +641,7 @@ class Face:
 
 class Detect:
   """
+Functions:
 :meth:`~openpibo.vision.Detect.detect_object`
 :meth:`~openpibo.vision.Detect.detect_qr`
 :meth:`~openpibo.vision.Detect.detect_text`

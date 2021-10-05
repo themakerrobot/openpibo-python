@@ -12,6 +12,7 @@ LOW = 0
 
 class Audio:
   """
+Functions:
 :meth:`~openpibo.audio.Audio.play`
 :meth:`~openpibo.audio.Audio.stop`
 :meth:`~openpibo.audio.Audio.mute`

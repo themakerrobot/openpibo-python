@@ -14,6 +14,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Oled:
   """
+Functions:
 :meth:`~openpibo.oled.Oled.show`
 :meth:`~openpibo.oled.Oled.clear`
 :meth:`~openpibo.oled.Oled.set_font`

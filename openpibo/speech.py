@@ -23,6 +23,7 @@ current_path = os.path.dirname(os.path.realpath(__file__))
 
 class Speech:
   """
+Functions:
 :meth:`~openpibo.speech.Speech.translate`
 :meth:`~openpibo.speech.Speech.tts`
 :meth:`~openpibo.speech.Speech.stt`
@@ -165,6 +166,7 @@ class Speech:
 
 class Dialog:
   """
+Functions:
 :meth:`~openpibo.speech.Dialog.mecab_pos`
 :meth:`~openpibo.speech.Dialog.mecab_morphs`
 :meth:`~openpibo.speech.Dialog.mecab_nouns`

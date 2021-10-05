@@ -72,6 +72,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Motion:
   """
+Functions:
 :meth:`~openpibo.motion.Motion.set_profile`
 :meth:`~openpibo.motion.Motion.set_motor`
 :meth:`~openpibo.motion.Motion.set_motors`
@@ -379,6 +380,7 @@ class Motion:
 
 class PyMotion:
   """
+Functions:
 :meth:`~openpibo.motion.PyMotion.set_motor`
 :meth:`~openpibo.motion.PyMotion.set_motors`
 :meth:`~openpibo.motion.PyMotion.set_speed`

@@ -35,6 +35,7 @@ class _Chapter:
 
 class Wikipedia:
     """
+Functions:
 :meth:`~openpibo.collect.Wikipedia.search`
 
     위키백과에서 단어를 검색합니다.
@@ -198,6 +199,7 @@ region_table = {
 }
 class Weather:
     """
+Functions:
 :meth:`~openpibo.collect.Weather.search`
 
     오늘, 내일, 모레의 날씨 정보를 가져옵니다.
@@ -388,6 +390,7 @@ topic_table = {
 }
 class News:
     """
+Functions:
 :meth:`~openpibo.collect.News.search`
 
     JTBC 뉴스 RSS 서비스를 사용해 뉴스 자료를 가져옵니다.

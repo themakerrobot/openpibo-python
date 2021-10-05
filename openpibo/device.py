@@ -233,7 +233,7 @@ from threading import Lock
 
 class Device:
   """
-:meth:`~openpibo.device.Device.__init__`
+Functions:
 :meth:`~openpibo.device.Device.locked`
 :meth:`~openpibo.device.Device.send_cmd`
 :meth:`~openpibo.device.Device.send_raw`
