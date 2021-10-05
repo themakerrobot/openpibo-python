@@ -109,11 +109,28 @@
 <span id="vision"></span><h1>vision<a class="headerlink" href="#module-openpibo.vision" title="이 표제에 대한 퍼머링크"></a></h1>
 <p><cite>OpenCV</cite> 라이브러리를 활용한 PIBO의 영상처리 관련 라이브러리입니다.</p>
 <p>카메라 기능, 얼굴 인식, 객체/바코드/문자 인식을 수행합니다.</p>
+<p>Class:
+<a class="reference internal" href="#openpibo.vision.Camera" title="openpibo.vision.Camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Camera</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face" title="openpibo.vision.Face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Face</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Detect" title="openpibo.vision.Detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Detect</span></code></a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.vision.Camera">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><a class="headerlink" href="#openpibo.vision.Camera" title="이 정의에 대한 퍼머링크"></a></dt>
 <dd><p>기반 클래스: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>파이보의 카메라를 제어합니다.</p>
+<p><a class="reference internal" href="#openpibo.vision.Camera.imread" title="openpibo.vision.Camera.imread"><code class="xref py py-meth docutils literal notranslate"><span class="pre">imread()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.read" title="openpibo.vision.Camera.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.imwrite" title="openpibo.vision.Camera.imwrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">imwrite()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.imshow" title="openpibo.vision.Camera.imshow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">imshow()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.waitKey" title="openpibo.vision.Camera.waitKey"><code class="xref py py-meth docutils literal notranslate"><span class="pre">waitKey()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.streaming" title="openpibo.vision.Camera.streaming"><code class="xref py py-meth docutils literal notranslate"><span class="pre">streaming()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.rectangle" title="openpibo.vision.Camera.rectangle"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rectangle()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.putText" title="openpibo.vision.Camera.putText"><code class="xref py py-meth docutils literal notranslate"><span class="pre">putText()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.cartoonize" title="openpibo.vision.Camera.cartoonize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cartoonize()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.convert_img" title="openpibo.vision.Camera.convert_img"><code class="xref py py-meth docutils literal notranslate"><span class="pre">convert_img()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.rotate10" title="openpibo.vision.Camera.rotate10"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate10()</span></code></a>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">bgrhls()</span></code></p>
+<blockquote>
+<div><p>파이보의 카메라를 제어합니다.</p>
 <ul class="simple">
 <li><p>사진 촬영, 읽기, 쓰기, 보기 등 카메라 기본 기능을 사용할 수 있습니다.</p></li>
 <li><p>Streaming, Cartoonize 기능을 사용할 수 있습니다.</p></li>
@@ -128,6 +145,7 @@
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
+</div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.imread">
 <span class="sig-name descname"><span class="pre">imread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.imread" title="이 정의에 대한 퍼머링크"></a></dt>
@@ -405,7 +423,17 @@
 <dt class="sig sig-object py" id="openpibo.vision.Face">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Face</span></span><a class="headerlink" href="#openpibo.vision.Face" title="이 정의에 대한 퍼머링크"></a></dt>
 <dd><p>기반 클래스: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>얼굴과 관련된 다양한 기능을 수행하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
+<p><a class="reference internal" href="#openpibo.vision.Face.init_db" title="openpibo.vision.Face.init_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_db()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.detect" title="openpibo.vision.Face.detect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.train_face" title="openpibo.vision.Face.train_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_face()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.recognize" title="openpibo.vision.Face.recognize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">recognize()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.get_ageGender" title="openpibo.vision.Face.get_ageGender"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ageGender()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.get_db" title="openpibo.vision.Face.get_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_db()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.save_db" title="openpibo.vision.Face.save_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_db()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.delete_face" title="openpibo.vision.Face.delete_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_face()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.load_db" title="openpibo.vision.Face.load_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_db()</span></code></a></p>
+<blockquote>
+<div><p>얼굴과 관련된 다양한 기능을 수행하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
 <ul class="simple">
 <li><p>얼굴을 탐색합니다.</p></li>
 <li><p>얼굴을 학습/저장/삭제합니다.</p></li>
@@ -426,6 +454,7 @@
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
+</div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.init_db">
 <span class="sig-name descname"><span class="pre">init_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.init_db" title="이 정의에 대한 퍼머링크"></a></dt>
@@ -626,7 +655,11 @@
 <dt class="sig sig-object py" id="openpibo.vision.Detect">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Detect</span></span><a class="headerlink" href="#openpibo.vision.Detect" title="이 정의에 대한 퍼머링크"></a></dt>
 <dd><p>기반 클래스: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.</p>
+<p><a class="reference internal" href="#openpibo.vision.Detect.detect_object" title="openpibo.vision.Detect.detect_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_object()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Detect.detect_qr" title="openpibo.vision.Detect.detect_qr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_qr()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Detect.detect_text" title="openpibo.vision.Detect.detect_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_text()</span></code></a></p>
+<blockquote>
+<div><p>인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.</p>
 <ul class="simple">
 <li><p>20개 class 안에서의 객체 인식 (MobileNetSSD)</p></li>
 <li><p>QR/바코드 인식 (pyzbar)</p></li>
@@ -639,6 +672,7 @@
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
+</div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.detect_object">
 <span class="sig-name descname"><span class="pre">detect_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.detect_object" title="이 정의에 대한 퍼머링크"></a></dt>

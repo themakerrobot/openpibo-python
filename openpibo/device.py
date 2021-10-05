@@ -4,12 +4,6 @@
 Class:
 :obj:`~openpibo.device.Device`
 
-Functions:
-:meth:`~openpibo.device.Device.__init__`
-:meth:`~openpibo.device.Device.locked`
-:meth:`~openpibo.device.Device.send_cmd`
-:meth:`~openpibo.device.Device.send_raw`
-
 메인 컨트롤러로 메시지 (``#code:data!`` 포맷) 가 전달됩니다.  
 이후 메인컨트롤러는 메시지를 파악하여 주어진 기능을 수행합니다.
 
@@ -237,9 +231,13 @@ import serial
 import time
 from threading import Lock
 
-
 class Device:
   """
+:meth:`~openpibo.device.Device.__init__`
+:meth:`~openpibo.device.Device.locked`
+:meth:`~openpibo.device.Device.send_cmd`
+:meth:`~openpibo.device.Device.send_raw`
+
   메인컨트롤러를 제어하여 파이보의 여러가지 상태를 체크하거나, 눈 색깔을 변경합니다.
 
   example::

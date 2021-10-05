@@ -3,30 +3,7 @@ PIBO의 움직임을 제어합니다.
 
 Class:
 :obj:`~openpibo.motion.Motion`
-
-Functions:
-:meth:`~openpibo.motion.Motion.__init__`
-:meth:`~openpibo.motion.Motion.set_profile`
-:meth:`~openpibo.motion.Motion.set_motor`
-:meth:`~openpibo.motion.Motion.set_motors`
-:meth:`~openpibo.motion.Motion.set_speed`
-:meth:`~openpibo.motion.Motion.set_speeds`
-:meth:`~openpibo.motion.Motion.set_acceleration`
-:meth:`~openpibo.motion.Motion.set_accelerations`
-:meth:`~openpibo.motion.Motion.get_motion`
-:meth:`~openpibo.motion.Motion.set_motion_raw`
-:meth:`~openpibo.motion.Motion.stop`
-
-Class:
 :obj:`~openpibo.motion.PyMotion`
-
-Functions:
-:meth:`~openpibo.motion.PyMotion.__init__`
-:meth:`~openpibo.motion.PyMotion.set_motor`
-:meth:`~openpibo.motion.PyMotion.set_motors`
-:meth:`~openpibo.motion.PyMotion.set_speed`
-:meth:`~openpibo.motion.PyMotion.set_acceleration`
-:meth:`~openpibo.motion.PyMotion.set_init`
 
 :모터 번호당 위치:
 
@@ -95,6 +72,17 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Motion:
   """
+:meth:`~openpibo.motion.Motion.set_profile`
+:meth:`~openpibo.motion.Motion.set_motor`
+:meth:`~openpibo.motion.Motion.set_motors`
+:meth:`~openpibo.motion.Motion.set_speed`
+:meth:`~openpibo.motion.Motion.set_speeds`
+:meth:`~openpibo.motion.Motion.set_acceleration`
+:meth:`~openpibo.motion.Motion.set_accelerations`
+:meth:`~openpibo.motion.Motion.get_motion`
+:meth:`~openpibo.motion.Motion.set_motion_raw`
+:meth:`~openpibo.motion.Motion.stop`
+  
   파이보의 움직임을 제어합니다.
 
   example::
@@ -391,6 +379,12 @@ class Motion:
 
 class PyMotion:
   """
+:meth:`~openpibo.motion.PyMotion.set_motor`
+:meth:`~openpibo.motion.PyMotion.set_motors`
+:meth:`~openpibo.motion.PyMotion.set_speed`
+:meth:`~openpibo.motion.PyMotion.set_acceleration`
+:meth:`~openpibo.motion.PyMotion.set_init`
+  
   파이보의 움직임을 제어하는 클래스.
 
   ``Motion`` 클래스와의 차이점은, 모터 컨트롤러와 직접 통신한다는 점입니다.

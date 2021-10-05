@@ -1,5 +1,8 @@
 """
 OLED Display에 문자나 이미지를 출력합니다.
+
+Class:
+:obj:`~openpibo.oled.Oled`
 """
 
 from .modules.oled import ssd1306, board, busio, digitalio
@@ -11,6 +14,18 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Oled:
   """
+:meth:`~openpibo.oled.Oled.show`
+:meth:`~openpibo.oled.Oled.clear`
+:meth:`~openpibo.oled.Oled.set_font`
+:meth:`~openpibo.oled.Oled.draw_text`
+:meth:`~openpibo.oled.Oled.draw_image`
+:meth:`~openpibo.oled.Oled.draw_data`
+:meth:`~openpibo.oled.Oled.draw_rectangle`
+:meth:`~openpibo.oled.Oled.draw_ellipse`
+:meth:`~openpibo.oled.Oled.draw_line`
+:meth:`~openpibo.oled.Oled.invert`
+:meth:`~openpibo.oled.Oled.size_check`
+
   파이보의 OLED를 통해 다양한 그림을 표현합니다.
 
   * 사진 보기

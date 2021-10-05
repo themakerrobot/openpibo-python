@@ -1,32 +1,22 @@
 """
 인터넷에서 유용한 정보를 가져옵니다.
 
+**단어정보, 날씨 정보, 뉴스 정보** 를 가져올 수 있습니다.
+
 Class:
 :obj:`~openpibo.collect.Wikipedia`
-
-Functions:
-:meth:`~openpibo.collect.Wikipedia.search`
-
-Class:
 :obj:`~openpibo.collect.Weather`
-
-Functions:
-:meth:`~openpibo.collect.Weather.search`
-
-Class:
 :obj:`~openpibo.collect.News`
-
-Functions:
-:meth:`~openpibo.collect.News.search`
-
-**단어정보, 날씨 정보, 뉴스 정보** 를 가져올 수 있습니다.
 """
+
 from urllib.parse import quote
 from .modules.collect.get_soup import get_soup
 
 
 class _Chapter:
-    """위키백과에서의 한 쳅터에 대한 클래스입니다."""
+    """
+    위키백과에서의 한 쳅터에 대한 클래스입니다.
+    """
 
     def __init__(self, title):
         self._title = title
@@ -45,8 +35,9 @@ class _Chapter:
 
 class Wikipedia:
     """
-    위키백과에서 단어를 검색합니다.
+:meth:`~openpibo.collect.Wikipedia.search`
 
+    위키백과에서 단어를 검색합니다.
 
     example::
 
@@ -207,8 +198,10 @@ region_table = {
 }
 class Weather:
     """
+:meth:`~openpibo.collect.Weather.search`
+
     오늘, 내일, 모레의 날씨 정보를 가져옵니다.
-    
+
     example::
 
         from openpibo.collect import Weather
@@ -395,8 +388,10 @@ topic_table = {
 }
 class News:
     """
+:meth:`~openpibo.collect.News.search`
+
     JTBC 뉴스 RSS 서비스를 사용해 뉴스 자료를 가져옵니다.
-    
+
     example::
 
         from openpibo.collect import News

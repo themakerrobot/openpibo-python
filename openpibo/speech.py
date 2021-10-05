@@ -1,25 +1,9 @@
 """
 번역, 형태소 분석, 자연어 인식 및 합성, 챗봇 등 다양한 자연어 처리를 합니다.
-Class:
-:obj:`openpibo.speech.Speech`
-
-Functions:
-:meth:`openpibo.speech.Speech.__init__`
-:meth:`openpibo.speech.Speech.translate`
-:meth:`openpibo.speech.Speech.tts`
-:meth:`openpibo.speech.Speech.stt`
 
 Class:
-:obj:`openpibo.speech.Dialog`
-
-Functions:
-:meth:`openpibo.speech.Dialog.__init__`
-:meth:`openpibo.speech.Dialog.mecab_pos`
-:meth:`openpibo.speech.Dialog.mecab_morphs`
-:meth:`openpibo.speech.Dialog.mecab_nouns`
-:meth:`openpibo.speech.Dialog.get_dialog`
-
-:meth:`openpibo.speech.Dialog.getDiff`
+:obj:`~openpibo.speech.Speech`
+:obj:`~openpibo.speech.Dialog`
 """
 
 import csv
@@ -39,6 +23,10 @@ current_path = os.path.dirname(os.path.realpath(__file__))
 
 class Speech:
   """
+:meth:`~openpibo.speech.Speech.translate`
+:meth:`~openpibo.speech.Speech.tts`
+:meth:`~openpibo.speech.Speech.stt`
+  
   Kakao 음성 API를 사용하여 사람의 음성 언어를 인식, 합성하거나 Google 번역 모듈을 사용하여 번역을 합니다.
 
   * 번역 (한국어, 영어)
@@ -177,6 +165,12 @@ class Speech:
 
 class Dialog:
   """
+:meth:`~openpibo.speech.Dialog.mecab_pos`
+:meth:`~openpibo.speech.Dialog.mecab_morphs`
+:meth:`~openpibo.speech.Dialog.mecab_nouns`
+:meth:`~openpibo.speech.Dialog.get_dialog`
+:meth:`~openpibo.speech.Dialog.getDiff`
+
   파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.
 
   * 형태소 및 명사 분석

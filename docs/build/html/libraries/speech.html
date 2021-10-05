@@ -107,28 +107,19 @@
              
   <section id="module-openpibo.speech">
 <span id="speech"></span><h1>speech<a class="headerlink" href="#module-openpibo.speech" title="이 표제에 대한 퍼머링크"></a></h1>
-<p>번역, 형태소 분석, 자연어 인식 및 합성, 챗봇 등 다양한 자연어 처리를 합니다.
-Class:
-<a class="reference internal" href="#openpibo.speech.Speech" title="openpibo.speech.Speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openpibo.speech.Speech</span></code></a></p>
-<p>Functions:
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Speech.__init__()</span></code>
-<a class="reference internal" href="#openpibo.speech.Speech.translate" title="openpibo.speech.Speech.translate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Speech.translate()</span></code></a>
-<a class="reference internal" href="#openpibo.speech.Speech.tts" title="openpibo.speech.Speech.tts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Speech.tts()</span></code></a>
-<a class="reference internal" href="#openpibo.speech.Speech.stt" title="openpibo.speech.Speech.stt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Speech.stt()</span></code></a></p>
+<p>번역, 형태소 분석, 자연어 인식 및 합성, 챗봇 등 다양한 자연어 처리를 합니다.</p>
 <p>Class:
-<a class="reference internal" href="#openpibo.speech.Dialog" title="openpibo.speech.Dialog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">openpibo.speech.Dialog</span></code></a></p>
-<p>Functions:
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Dialog.__init__()</span></code>
-<a class="reference internal" href="#openpibo.speech.Dialog.mecab_pos" title="openpibo.speech.Dialog.mecab_pos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Dialog.mecab_pos()</span></code></a>
-<a class="reference internal" href="#openpibo.speech.Dialog.mecab_morphs" title="openpibo.speech.Dialog.mecab_morphs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Dialog.mecab_morphs()</span></code></a>
-<a class="reference internal" href="#openpibo.speech.Dialog.mecab_nouns" title="openpibo.speech.Dialog.mecab_nouns"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Dialog.mecab_nouns()</span></code></a>
-<a class="reference internal" href="#openpibo.speech.Dialog.get_dialog" title="openpibo.speech.Dialog.get_dialog"><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Dialog.get_dialog()</span></code></a></p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">openpibo.speech.Dialog.getDiff()</span></code></p>
+<a class="reference internal" href="#openpibo.speech.Speech" title="openpibo.speech.Speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Speech</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Dialog" title="openpibo.speech.Dialog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.speech.Speech">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.speech.</span></span><span class="sig-name descname"><span class="pre">Speech</span></span><a class="headerlink" href="#openpibo.speech.Speech" title="이 정의에 대한 퍼머링크"></a></dt>
 <dd><p>기반 클래스: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Kakao 음성 API를 사용하여 사람의 음성 언어를 인식, 합성하거나 Google 번역 모듈을 사용하여 번역을 합니다.</p>
+<p><a class="reference internal" href="#openpibo.speech.Speech.translate" title="openpibo.speech.Speech.translate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translate()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Speech.tts" title="openpibo.speech.Speech.tts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tts()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Speech.stt" title="openpibo.speech.Speech.stt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stt()</span></code></a></p>
+<blockquote>
+<div><p>Kakao 음성 API를 사용하여 사람의 음성 언어를 인식, 합성하거나 Google 번역 모듈을 사용하여 번역을 합니다.</p>
 <ul class="simple">
 <li><p>번역 (한국어, 영어)</p></li>
 <li><p>TTS (Text to Speech)</p></li>
@@ -142,6 +133,7 @@ Class:
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
+</div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.speech.Speech.translate">
 <span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ko'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Speech.translate" title="이 정의에 대한 퍼머링크"></a></dt>
@@ -216,7 +208,13 @@ Class:
 <dt class="sig sig-object py" id="openpibo.speech.Dialog">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.speech.</span></span><span class="sig-name descname"><span class="pre">Dialog</span></span><a class="headerlink" href="#openpibo.speech.Dialog" title="이 정의에 대한 퍼머링크"></a></dt>
 <dd><p>기반 클래스: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
+<p><a class="reference internal" href="#openpibo.speech.Dialog.mecab_pos" title="openpibo.speech.Dialog.mecab_pos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mecab_pos()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Dialog.mecab_morphs" title="openpibo.speech.Dialog.mecab_morphs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mecab_morphs()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Dialog.mecab_nouns" title="openpibo.speech.Dialog.mecab_nouns"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mecab_nouns()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Dialog.get_dialog" title="openpibo.speech.Dialog.get_dialog"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dialog()</span></code></a>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">getDiff()</span></code></p>
+<blockquote>
+<div><p>파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
 <ul class="simple">
 <li><p>형태소 및 명사 분석</p></li>
 <li><p>챗봇 기능</p></li>
@@ -228,6 +226,7 @@ Class:
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
+</div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.speech.Dialog.mecab_pos">
 <span class="sig-name descname"><span class="pre">mecab_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Dialog.mecab_pos" title="이 정의에 대한 퍼머링크"></a></dt>

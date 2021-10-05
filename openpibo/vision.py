@@ -2,6 +2,11 @@
 `OpenCV` 라이브러리를 활용한 PIBO의 영상처리 관련 라이브러리입니다.
 
 카메라 기능, 얼굴 인식, 객체/바코드/문자 인식을 수행합니다.
+
+Class:
+:obj:`~openpibo.vision.Camera`
+:obj:`~openpibo.vision.Face`
+:obj:`~openpibo.vision.Detect`
 """
 
 import cv2
@@ -16,6 +21,20 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Camera:
   """
+:meth:`~openpibo.vision.Camera.imread`
+:meth:`~openpibo.vision.Camera.read`
+:meth:`~openpibo.vision.Camera.imwrite`
+:meth:`~openpibo.vision.Camera.imshow`
+:meth:`~openpibo.vision.Camera.waitKey`
+:meth:`~openpibo.vision.Camera.streaming`
+:meth:`~openpibo.vision.Camera.rectangle`
+:meth:`~openpibo.vision.Camera.putText`
+:meth:`~openpibo.vision.Camera.cartoonize`
+:meth:`~openpibo.vision.Camera.convert_img`
+:meth:`~openpibo.vision.Camera.rotate10`
+:meth:`~openpibo.vision.Camera.bgrhls`
+
+
   파이보의 카메라를 제어합니다.
 
   * 사진 촬영, 읽기, 쓰기, 보기 등 카메라 기본 기능을 사용할 수 있습니다.
@@ -223,22 +242,6 @@ class Camera:
 
     :param int tickness: 글자 두께
     """
-    # :returns: text가 입혀진 ``numpy.ndarray`` 이미지 객체
-
-    # 아래 주석을 해제하면 한글 사용 가능.
-    # 단, cv2가 아닌 PIL을 사용하기 때문에 return 으로 이미지를 받아 사용해야 됨.
-
-    # from PIL import ImageFont, ImageDraw, Image
-
-    # size = int(size*30)
-    # fontpath = current_path+'/data/models/KDL.ttf'
-    # font = ImageFont.truetype(fontpath, size)
-    # img_pil = Image.fromarray(img)
-    # draw = ImageDraw.Draw(img_pil)
-    # draw.text(p, text, font=font, fill=color)
-    # img = np.array(img_pil)
-    # return img
-
     return cv2.putText(img, text, p, cv2.FONT_HERSHEY_SIMPLEX, size, color, tickness)
 
   def cartoonize(self, img):
@@ -352,6 +355,16 @@ class Camera:
 
 class Face:
   """
+:meth:`~openpibo.vision.Face.init_db`
+:meth:`~openpibo.vision.Face.detect`
+:meth:`~openpibo.vision.Face.train_face`
+:meth:`~openpibo.vision.Face.recognize`
+:meth:`~openpibo.vision.Face.get_ageGender`
+:meth:`~openpibo.vision.Face.get_db`
+:meth:`~openpibo.vision.Face.save_db`
+:meth:`~openpibo.vision.Face.delete_face`
+:meth:`~openpibo.vision.Face.load_db`
+
   얼굴과 관련된 다양한 기능을 수행하는 클래스입니다. 다음 기능을 수행할 수 있습니다.
 
   * 얼굴을 탐색합니다.
@@ -626,6 +639,10 @@ class Face:
 
 class Detect:
   """
+:meth:`~openpibo.vision.Detect.detect_object`
+:meth:`~openpibo.vision.Detect.detect_qr`
+:meth:`~openpibo.vision.Detect.detect_text`
+
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
   * 20개 class 안에서의 객체 인식 (MobileNetSSD)
