@@ -256,7 +256,7 @@ Functions:
                 ]
         """
         _articles = []
-        _code = News.topic_list.get(topic)
+        _code = News.topic_list.get(search_topic)
         
         if _code == None:
             return None
