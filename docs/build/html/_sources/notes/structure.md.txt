@@ -5,7 +5,7 @@ openpibo / openpibo_models 패키지 구조에 관해 설명합니다.
 openpibo 패키지는 파이보를 제어하기 위한 내부 modules과 libraries 부분으로 나뉘어 있습니다.
 openpibo_models 패키지는 openpibo 패키지를 사용하기 위한 폰트/모션 파일, 인공지능 모델 등의 파일을 가지고 있습니다.
 
-## openpibo - modules
+## openpibo/modules
 
 라이브러리를 사용하는 데 필요한 각종 모듈입니다.
 
@@ -38,7 +38,7 @@ modules
       └── stream.py
 ```
 
-## openpibo - libraries
+## openpibo/libraries
 
 파이보의 다양한 기능을 사용할 수 있는 Class가 저장된 파일입니다.
 
