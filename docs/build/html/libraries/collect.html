@@ -133,17 +133,8 @@
 <dt class="sig sig-object py" id="openpibo.collect.Wikipedia.search">
 <span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_text</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Wikipedia.search" title="이 정의에 대한 퍼머링크"></a></dt>
 <dd><p>위키백과에서 <code class="docutils literal notranslate"><span class="pre">search_text</span></code> 를 검색합니다.</p>
-<p>print 인스턴스(pibo_wiki)로 개요 정보를 출력할 수 있습니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_wiki</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;강아지&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pibo_wiki</span><span class="p">)</span>
-<span class="c1"># 강아지 (dog)는 개의 새끼를 일컫는다 ...</span>
-</pre></div>
-</div>
-<p>만약 검색 결과가 없으면, 다음과 같이 출력됩니다:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_wiki</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;깡아지&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pibo_wiki</span><span class="p">)</span>
-<span class="c1"># &#39;깡아지&#39;에 대한 검색결과가 없습니다.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">pibo_wiki</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;사과&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -151,61 +142,15 @@
 <dd class="field-odd"><p><strong>search_text</strong> (<em>str</em>) – 위키백과에서의 검색어</p>
 </dd>
 <dt class="field-even">반환값</dt>
-<dd class="field-even"><p><p>내용이 dictionary 배열 형태로 출력됩니다.</p>
+<dd class="field-even"><p><p>내용을 dictionary 배열 형태로 반환합니다.</p>
+<p>대부분의 경우 ‘0’번 항목에 개요를 표시하고, 검색된 내용이 없을 경우 None을 반환합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">:{</span>
     <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;명칭&#39;</span><span class="p">,</span> 
     <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s2">&quot;한국어 ‘강아지’는 ‘개’에 어린 짐승을 뜻하는 ‘아지’가 붙은 말이다...&quot;</span>
-<span class="p">}]</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.Wikipedia.get_list">
-<span class="sig-name descname"><span class="pre">get_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Wikipedia.get_list" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>챕터의 목록을 list 형태로 가져옵니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_wiki</span><span class="o">.</span><span class="n">get_list</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환값</dt>
-<dd class="field-odd"><p><p>list 형태의 챕터 목록입니다.</p>
-<p>list 안에 str 타입의 챕터 번호가 기록됩니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.Wikipedia.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chapter_num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Wikipedia.get" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">chapter_num</span></code> 에 해당하는 내용을 출력합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_wiki</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개변수</dt>
-<dd class="field-odd"><p><strong>chapter_num</strong> (<em>str</em>) – <p>챕터의 번호</p>
-<p><code class="docutils literal notranslate"><span class="pre">1.3.1</span></code> 과 같이 표현되기 때문에 int 또는 float 타입이 아닌 <strong>str 타입</strong> 입니다.</p>
-</p>
-</dd>
-<dt class="field-even">반환값</dt>
-<dd class="field-even"><p><p>해당 챕터 번호에 해당하는 내용이 dictionary 형태로 출력됩니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;명칭&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s2">&quot;한국어 ‘강아지’는 ‘개’에 어린 짐승을 뜻하는 ‘아지’가 붙은 말이다...&quot;</span>
-<span class="p">}</span>
+<span class="p">},</span> <span class="o">...</span> <span class="p">]</span>
+<span class="ow">or</span>
+<span class="kc">None</span>
 </pre></div>
 </div>
 </p>
@@ -222,7 +167,7 @@
 <p>Functions:
 <a class="reference internal" href="#openpibo.collect.Weather.search" title="openpibo.collect.Weather.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a></p>
 <blockquote>
-<div><p>오늘, 내일, 모레의 날씨 정보를 가져옵니다.</p>
+<div><p>종합 예보와 오늘/내일/모레의 날씨 정보를 검색합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.collect</span> <span class="kn">import</span> <span class="n">Weather</span>
 
@@ -231,32 +176,34 @@
 </pre></div>
 </div>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="openpibo.collect.Weather.region_list">
+<span class="sig-name descname"><span class="pre">region_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'강원':</span> <span class="pre">105,</span> <span class="pre">'경기':</span> <span class="pre">109,</span> <span class="pre">'경남':</span> <span class="pre">159,</span> <span class="pre">'경북':</span> <span class="pre">143,</span> <span class="pre">'광주':</span> <span class="pre">156,</span> <span class="pre">'대구':</span> <span class="pre">143,</span> <span class="pre">'대전':</span> <span class="pre">133,</span> <span class="pre">'부산':</span> <span class="pre">159,</span> <span class="pre">'서울':</span> <span class="pre">109,</span> <span class="pre">'세종':</span> <span class="pre">133,</span> <span class="pre">'울산':</span> <span class="pre">159,</span> <span class="pre">'인천':</span> <span class="pre">109,</span> <span class="pre">'전국':</span> <span class="pre">108,</span> <span class="pre">'전남':</span> <span class="pre">156,</span> <span class="pre">'전북':</span> <span class="pre">146,</span> <span class="pre">'제주':</span> <span class="pre">184,</span> <span class="pre">'충남':</span> <span class="pre">133,</span> <span class="pre">'충북':</span> <span class="pre">131}</span></em><a class="headerlink" href="#openpibo.collect.Weather.region_list" title="이 정의에 대한 퍼머링크"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.collect.Weather.search">
-<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'전국'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Weather.search" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>해당 지역의 날씨 정보를 가져와서 인스턴스(pibo_weather)에 저장합니다.</p>
-<p><code class="docutils literal notranslate"><span class="pre">get_today</span></code>, <code class="docutils literal notranslate"><span class="pre">get_tomorrow</span></code>, <code class="docutils literal notranslate"><span class="pre">get_after_tomorrow</span></code> 메소드로 날씨 정보를 출력할 수 있습니다.</p>
-<p>print 인스턴스(pibo_weather)로 전체적인 날씨를 출력할 수 있습니다.</p>
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_region</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'전국'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Weather.search" title="이 정의에 대한 퍼머링크"></a></dt>
+<dd><p>해당 지역(<code class="docutils literal notranslate"><span class="pre">`search_region`</span></code>)의 날씨 정보(종합예보, 오늘/내일/모레 날씨)를 가져옵니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_weather</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;서울&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pibo_weather</span><span class="p">)</span>
-<span class="c1"># 내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">pibo_weather</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;서울&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개변수</dt>
-<dd class="field-odd"><p><strong>region</strong> (<em>str</em>) – <p>검색 하려는 지역 (default: 전국)</p>
+<dd class="field-odd"><p><strong>search_region</strong> (<em>str</em>) – <p>검색 가능한 지역 (default: 전국)</p>
 <p>검색할 수 있는 지역은 다음과 같습니다:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;전국&#39;</span><span class="p">,</span> <span class="s1">&#39;서울&#39;</span><span class="p">,</span> <span class="s1">&#39;인천&#39;</span><span class="p">,</span> <span class="s1">&#39;경기&#39;</span><span class="p">,</span> <span class="s1">&#39;부산&#39;</span><span class="p">,</span> <span class="s1">&#39;울산&#39;</span><span class="p">,</span> <span class="s1">&#39;경남&#39;</span><span class="p">,</span> <span class="s1">&#39;대구&#39;</span><span class="p">,</span> <span class="s1">&#39;경북&#39;</span><span class="p">,</span> 
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;전국&#39;</span><span class="p">,</span> <span class="s1">&#39;서울&#39;</span><span class="p">,</span> <span class="s1">&#39;인천&#39;</span><span class="p">,</span> <span class="s1">&#39;경기&#39;</span><span class="p">,</span> <span class="s1">&#39;부산&#39;</span><span class="p">,</span> <span class="s1">&#39;울산&#39;</span><span class="p">,</span> <span class="s1">&#39;경남&#39;</span><span class="p">,</span> <span class="s1">&#39;대구&#39;</span><span class="p">,</span> <span class="s1">&#39;경북&#39;</span><span class="p">,</span>
 <span class="s1">&#39;광주&#39;</span><span class="p">,</span> <span class="s1">&#39;전남&#39;</span><span class="p">,</span> <span class="s1">&#39;전북&#39;</span><span class="p">,</span> <span class="s1">&#39;대전&#39;</span><span class="p">,</span> <span class="s1">&#39;세종&#39;</span><span class="p">,</span> <span class="s1">&#39;충남&#39;</span><span class="p">,</span> <span class="s1">&#39;충북&#39;</span><span class="p">,</span> <span class="s1">&#39;강원&#39;</span><span class="p">,</span> <span class="s1">&#39;제주&#39;</span>
 </pre></div>
 </div>
 </p>
 </dd>
 <dt class="field-even">반환값</dt>
-<dd class="field-even"><p><p>오늘/내일/모레의 날씨 및 최저/최고기온을 반환합니다.</p>
+<dd class="field-even"><p><p>종합예보와 오늘/내일/모레의 날씨 및 최저/최고기온을 반환합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;forecast&#39;</span><span class="p">:</span> <span class="s1">&#39;내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼&#39;</span>
     <span class="s1">&#39;today&#39;</span><span class="p">:</span>
     <span class="p">{</span>
         <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;전국 대체로 흐림&#39;</span><span class="p">,</span>
@@ -276,78 +223,7 @@
         <span class="s1">&#39;highst_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;23.1 ~ 27.6&#39;</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.Weather.get_today">
-<span class="sig-name descname"><span class="pre">get_today</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Weather.get_today" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>오늘의 날씨를 반환합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_weather</span><span class="o">.</span><span class="n">get_today</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환값</dt>
-<dd class="field-odd"><p><p>오늘의 날씨 및 최저/최고기온을 반환합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;전국 대체로 흐림&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;minimum_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;15.3 ~ 21.6&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;highst_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;23.1 ~ 27.6&#39;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.Weather.get_tomorrow">
-<span class="sig-name descname"><span class="pre">get_tomorrow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Weather.get_tomorrow" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>내일의 날씨를 반환합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_weather</span><span class="o">.</span><span class="n">get_tomorrow</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환값</dt>
-<dd class="field-odd"><p><p>내일의 날씨 및 최저/최고기온을 반환합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;전국 대체로 흐리고 비, 낮에 남부지방과 제주도부터 차차 그침&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;minimum_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;16 ~ 24&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;highst_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;20.8 ~ 26.6&#39;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.Weather.get_after_tomorrow">
-<span class="sig-name descname"><span class="pre">get_after_tomorrow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.Weather.get_after_tomorrow" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>모레의 날씨를 반환합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_weather</span><span class="o">.</span><span class="n">get_after_tomorrow</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환값</dt>
-<dd class="field-odd"><p><p>모레의 날씨 및 최저/최고기온을 반환합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;전국 대체로 흐리다가 오후에 서쪽지방부터 차차 맑아짐&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;minimum_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;17 ~ 22&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;highst_temp&#39;</span><span class="p">:</span> <span class="s1">&#39;22 ~ 30&#39;</span>
-<span class="p">}</span>
+<span class="ow">or</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </p>
@@ -373,37 +249,27 @@
 </pre></div>
 </div>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="openpibo.collect.News.topic_list">
+<span class="sig-name descname"><span class="pre">topic_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'경제':</span> <span class="pre">'economy',</span> <span class="pre">'국제':</span> <span class="pre">'international',</span> <span class="pre">'뉴스랭킹':</span> <span class="pre">'newsrank',</span> <span class="pre">'뉴스룸':</span> <span class="pre">'newsroom',</span> <span class="pre">'문화':</span> <span class="pre">'culture',</span> <span class="pre">'사회':</span> <span class="pre">'society',</span> <span class="pre">'속보':</span> <span class="pre">'newsflash',</span> <span class="pre">'스포츠':</span> <span class="pre">'sports',</span> <span class="pre">'썰전</span> <span class="pre">라이브':</span> <span class="pre">'ssulzunlive',</span> <span class="pre">'아침&amp;':</span> <span class="pre">'morningand',</span> <span class="pre">'연예':</span> <span class="pre">'entertainment',</span> <span class="pre">'정치':</span> <span class="pre">'politics',</span> <span class="pre">'정치부회의':</span> <span class="pre">'politicaldesk',</span> <span class="pre">'풀영상':</span> <span class="pre">'fullvideo'}</span></em><a class="headerlink" href="#openpibo.collect.News.topic_list" title="이 정의에 대한 퍼머링크"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.collect.News.search">
-<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'뉴스랭킹'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.News.search" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>주제에 맞는 뉴스를 검색하여 인스턴스(pibo_news)에 저장합니다.</p>
-<p>print 인스턴스(pibo_news)로 첫 번째 뉴스 헤드라인을 출력할 수 있습니다.</p>
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'뉴스랭킹'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.News.search" title="이 정의에 대한 퍼머링크"></a></dt>
+<dd><p>해당 주제(<code class="docutils literal notranslate"><span class="pre">`search_topic`</span></code>)에 맞는 뉴스를 가져옵니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_news</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;속보&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pibo_news</span><span class="p">)</span>
-<span class="c1"># JTBC, 파일럿 예능-특선 영화로 꽉 채운 추석 라인업 공개</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">pibo_news</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;속보&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개변수</dt>
-<dd class="field-odd"><p><strong>topic</strong> (<em>str</em>) – <p>검색할 뉴스 주제</p>
-<p>다음과 같은 단어가 들어갈 수 있습니다.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">속보</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">정치</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">경제</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">사회</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">국제</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">문화</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">연예</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">스포츠</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">풀영상</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">뉴스랭킹</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">뉴스룸</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">아침&amp;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">썰전</span> <span class="pre">라이브</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">정치부회의</span></code></p></li>
-</ul>
+<dd class="field-odd"><p><strong>topic</strong> (<em>str</em>) – <p>검색 가능한 뉴스 주제 (default: 뉴스랭킹)</p>
+<p>검색할 수 있는 주제는 다음과 같습니다:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;속보&#39;</span><span class="p">,</span> <span class="s1">&#39;정치&#39;</span><span class="p">,</span> <span class="s1">&#39;경제&#39;</span><span class="p">,</span> <span class="s1">&#39;사회&#39;</span><span class="p">,</span> <span class="s1">&#39;국제&#39;</span><span class="p">,</span> <span class="s1">&#39;문화&#39;</span><span class="p">,</span> <span class="s1">&#39;연예&#39;</span><span class="p">,</span> <span class="s1">&#39;스포츠&#39;</span><span class="p">,</span>
+<span class="s1">&#39;풀영상&#39;</span><span class="p">,</span> <span class="s1">&#39;뉴스랭킹&#39;</span><span class="p">,</span> <span class="s1">&#39;뉴스룸&#39;</span><span class="p">,</span> <span class="s1">&#39;아침&amp;&#39;</span><span class="p">,</span> <span class="s1">&#39;썰전 라이브&#39;</span><span class="p">,</span> <span class="s1">&#39;정치부회의&#39;</span>
+</pre></div>
+</div>
 </p>
 </dd>
 <dt class="field-even">반환값</dt>
@@ -417,62 +283,6 @@
         <span class="s1">&#39;pubDate&#39;</span><span class="p">:</span> <span class="s1">&#39;2021.09.03&#39;</span>
     <span class="p">},</span> 
 <span class="p">]</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.News.get_titles">
-<span class="sig-name descname"><span class="pre">get_titles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.News.get_titles" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>기사 제목 목록을 모두 보여줍니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_news</span><span class="o">.</span><span class="n">get_titles</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환값</dt>
-<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">key=기사번호</span></code> , <code class="docutils literal notranslate"><span class="pre">value=title</span></code> 인 dictionary 입니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;또 소방차 막은 불법주차, 이번엔 가차없이 밀어버렸다&#39;</span><span class="p">,</span> 
-    <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;&quot;죽은 줄 알았던 11살 아들, 40살이 돼 돌아왔습니다&quot;&#39;</span><span class="p">,</span> 
-    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;이런 영웅은 처음이지?…마블 &#39;아시아 히어로&#39; 통할까&quot;</span><span class="p">,</span> 
-    <span class="o">...</span>
-    <span class="mi">19</span><span class="p">:</span> <span class="s2">&quot;[크로스체크] 5시간 새 100배 증식…&#39;식중독 주범&#39; 살모넬라균 추적&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.collect.News.get_article">
-<span class="sig-name descname"><span class="pre">get_article</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">article_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.collect.News.get_article" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>기사 번호에 해당하는 기사 정보를 보여줍니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_news</span><span class="o">.</span><span class="n">get_article</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개변수</dt>
-<dd class="field-odd"><p><strong>article_idx</strong> (<em>int</em>) – <p>기사 번호</p>
-<p>기사 번호는 0~19 사이 int 타입 입니다.</p>
-</p>
-</dd>
-<dt class="field-even">반환값</dt>
-<dd class="field-even"><p><p>title, link, description, pubDate 요소가 있는 dictionary 입니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;또 소방차 막은 불법주차, 이번엔 가차없이 밀어버렸다&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="s1">&#39;https://news.jtbc.joins.com/article/article.aspx?...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;2019년 4월 소방당국의 불법주정차 강경대응 훈련 모습...,</span>
-    <span class="s1">&#39;pubDate&#39;</span><span class="p">:</span> <span class="s1">&#39;2021.09.03&#39;</span>
-<span class="p">}</span>
 </pre></div>
 </div>
 </p>
