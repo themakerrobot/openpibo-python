@@ -68,7 +68,9 @@ import serial
 import time
 import os
 import json
-current_path = os.path.dirname(os.path.abspath(__file__))
+
+import openpibo_models
+#current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Motion:
   """
@@ -97,7 +99,8 @@ Functions:
   def __init__(self):
     """Motion 클래스 초기화"""
 
-    self.profile_path=current_path+"/data/models/motion_db.json"
+    self.profile_path=openpibo_models.filepath("motion_db.json")
+    #self.profile_path=current_path+"/data/models/motion_db.json"
     with open(self.profile_path, 'r') as f:
       self.profile = json.load(f)
 

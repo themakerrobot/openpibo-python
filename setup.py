@@ -12,9 +12,9 @@ setup(
     name                        = 'openpibo',
     version                     = VERSION,
     packages                    = find_packages(),
-    package_data                = {'' : ['data/models/*']},
-    include_package_data        = True,
-    zip_safe                    = False,
+    #package_data                = {'' : ['data/models/*']},
+    #include_package_data        = True,
+    #zip_safe                    = False,
     python_requires             = '>=3',
     install_requires            = [
         'opencv-python==4.1.0.25',
@@ -33,5 +33,9 @@ setup(
         'rich==10.6.0',
         'flask==2.0.1',
         'flask-socketio==5.1.1',
-    ]
+        'openpibo_models==0.1.0',
+    ],
+    dependency_links            = [
+        'git+https://github.com/themakerrobot/openpibo_models.git#egg=openpibo_models-0.1.0',
+    ],
 )

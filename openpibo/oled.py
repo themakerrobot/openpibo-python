@@ -10,7 +10,9 @@ from PIL import Image, ImageDraw, ImageFont
 import PIL.ImageOps
 import cv2
 import os
-current_path = os.path.dirname(os.path.abspath(__file__))
+
+import openpibo_models
+#current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Oled:
   """
@@ -52,7 +54,8 @@ Functions:
 
     self.width = 128
     self.height = 64
-    self.font_path = current_path+"/data/models/KDL.ttf" # KoPub Dotum Light
+    self.font_path = openpibo_models.filepath("KDL.ttf") # KoPub Dotum Light
+    #self.font_path = current_path+"/data/models/KDL.ttf" # KoPub Dotum Light
     self.font_size = 10
 
     spi = busio.SPI(11, 10, 9)

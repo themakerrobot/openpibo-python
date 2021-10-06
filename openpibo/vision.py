@@ -17,7 +17,9 @@ from pyzbar import pyzbar
 import pickle,os,time
 from .modules.vision.stream import VideoStream
 import os
-current_path = os.path.dirname(os.path.abspath(__file__))
+
+import openpibo_models
+#current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Camera:
   """
@@ -389,20 +391,21 @@ Functions:
   """
 
   def __init__(self):
-    self.model_path = current_path+"/data/models"
     self.facedb = [[],[]]
     self.threshold = 0.4
     self.age_class = ['(0, 2)','(4, 6)','(8, 12)','(15, 20)','(25, 32)','(38, 43)','(48, 53)','(60, 100)']
     self.gender_class = ['Male', 'Female']
     self.agenet = cv2.dnn.readNetFromCaffe(
-                 self.model_path+"/deploy_age.prototxt",
-                 self.model_path+"/age_net.caffemodel")
+                    openpibo_models.filepath("deploy_age.prototxt"),
+                    openpibo_models.filepath("age_net.caffemodel")
+                )
     self.gendernet = cv2.dnn.readNetFromCaffe(
-                    self.model_path+"/deploy_gender.prototxt",
-                    self.model_path+"/gender_net.caffemodel")
-    self.face_detector = cv2.CascadeClassifier(self.model_path + "/haarcascade_frontalface_default.xml")
-    self.predictor = dlib.shape_predictor(self.model_path + "/shape_predictor_5_face_landmarks.dat")
-    self.face_encoder = dlib.face_recognition_model_v1(self.model_path + "/dlib_face_recognition_resnet_model_v1.dat")
+                    openpibo_models.filepath("deploy_gender.prototxt"),
+                    openpibo_models.filepath("gender_net.caffemodel")
+                )
+    self.face_detector = cv2.CascadeClassifier(openpibo_models.filepath("haarcascade_frontalface_default.xml"))
+    self.predictor = dlib.shape_predictor(openpibo_models.filepath("shape_predictor_5_face_landmarks.dat"))
+    self.face_encoder = dlib.face_recognition_model_v1(openpibo_models.filepath("dlib_face_recognition_resnet_model_v1.dat"))
 
   def init_db(self):
     """
@@ -661,13 +664,13 @@ Functions:
   """
 
   def __init__(self):
-    self.model_path = current_path+"/data/models"
     self.object20_class = ["background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus",
                     "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike",
                     "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
     self.mobilenet = cv2.dnn.readNetFromCaffe(
-                   self.model_path+"/MobileNetSSD_deploy.prototxt.txt",
-                   self.model_path+"/MobileNetSSD_deploy.caffemodel")
+                        openpibo_models.filepath("MobileNetSSD_deploy.prototxt.txt"),
+                        openpibo_models.filepath("MobileNetSSD_deploy.caffemodel")
+                    )
 
   def detect_object(self, img):
     """

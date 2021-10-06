@@ -15,10 +15,9 @@ from konlpy.tag import Mecab
 import requests
 from .modules.speech.google_trans_new import google_translator
 from . import config
-#from google.cloud import speech
-#from google.cloud.speech import enums
-#from google.cloud.speech import types
-current_path = os.path.dirname(os.path.realpath(__file__))
+
+import openpibo_models
+#current_path = os.path.dirname(os.path.realpath(__file__))
 
 
 class Speech:
@@ -187,7 +186,8 @@ Functions:
   """
 
   def __init__(self):
-    self.dialog_path = current_path+"/data/models/dialog.csv"
+    self.dialog_path = openpibo_models.filepath("dialog.csv")
+    #self.dialog_path = current_path+"/data/models/dialog.csv"
     self.mecab = Mecab()
     self.dialog_db = []
     with open(self.dialog_path, 'r', encoding='utf-8') as f:
