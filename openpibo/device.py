@@ -257,6 +257,9 @@ Functions:
     "PIR":"30",
     "SYSTEM":"40",
   }
+  """
+  Device가 사용하는 ``code`` 정보입니다.
+  """
 
   def __init__(self):
     """Device 클래스를 초기화합니다."""

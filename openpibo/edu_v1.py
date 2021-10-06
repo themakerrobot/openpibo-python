@@ -70,6 +70,9 @@ class Pibo:
         "Syntax error": -7,
         "Exception error": -8,
     }
+    """
+    반환되는 ``errmsg`` 에 대한 ``errcode`` 입니다.
+    """
 
     def __init__(self):
         self.onair = False

@@ -121,6 +121,9 @@ Functions:
         '강원': 105,
         '제주': 184,
     }
+    """
+    날씨 정보를 검색할 수 있는 지역입니다.
+    """
 
     def search(self, search_region:str='전국'):
         """
@@ -226,6 +229,9 @@ Functions:
         '썰전 라이브': 'ssulzunlive',
         '정치부회의': 'politicaldesk',
     }
+    """
+    뉴스 정보를 검색할 수 있는 주제입니다.
+    """
 
     def search(self, search_topic='뉴스랭킹'):
         """
@@ -254,6 +260,7 @@ Functions:
                         'pubDate': '2021.09.03'
                     }, 
                 ]
+                or None
         """
         _articles = []
         _code = News.topic_list.get(search_topic)
