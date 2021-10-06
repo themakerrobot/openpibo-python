@@ -97,10 +97,6 @@ openpibo 및 관련 패키지는 OS에 설치되어 있지만, 필요에 따라 
    터미널에 아래와 같이 입력합니다.
 
    ```bash
-   $ sudo pip3 install git+https://github.com/themakerrobot/x-openpibo
-
-   # 또는
-
    $ git clone https://github.com/themakerrobot/x-openpibo.git # 패키지 파일 다운로드
    $ cd x-openpibo # 다운받은 패키지 폴더에 접근
    $ sudo python3 setup.py install # 패키지 설치
