@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>폴더 구조 &mdash; openpibo 0.8.2 문서</title>
+  <title>라이브러리 구조 &mdash; openpibo 0.8.2 문서</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/x-openpibo/notes/structure.html" />
@@ -42,10 +42,10 @@
               <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="setting.html">설정</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">폴더 구조</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#data">data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modules">modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#libraries">libraries</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">라이브러리 구조</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#openpibo-modules">openpibo - modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openpibo-libraries">openpibo - libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openpibo-models">openpibo_models</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">사용법</a></li>
@@ -100,7 +100,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>폴더 구조</li>
+      <li>라이브러리 구조</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/notes/structure.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -111,15 +111,71 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>폴더 구조<a class="headerlink" href="#id1" title="이 표제에 대한 퍼머링크"></a></h1>
-<p>openpibo 패키지의 폴더 구조에 관해 설명합니다.</p>
-<p>openpibo 패키지는 파이보를 제어하기 위한 라이브러리 및 최소한의 파일들을 포함하고 있습니다.
-크게 data, modules, libraries 부분으로 나뉘어 있습니다.</p>
-<p><img alt="" src="../_images/structure.png" /></p>
-<section id="data">
-<h2>data<a class="headerlink" href="#data" title="이 표제에 대한 퍼머링크"></a></h2>
+<h1>라이브러리 구조<a class="headerlink" href="#id1" title="이 표제에 대한 퍼머링크"></a></h1>
+<p>openpibo / openpibo_models 패키지 구조에 관해 설명합니다.</p>
+<p>openpibo 패키지는 파이보를 제어하기 위한 내부 modules과 libraries 부분으로 나뉘어 있습니다.
+openpibo_models 패키지는 openpibo 패키지를 사용하기 위한 폰트/모션 파일, 인공지능 모델 등의 파일을 가지고 있습니다.</p>
+<section id="openpibo-modules">
+<h2>openpibo - modules<a class="headerlink" href="#openpibo-modules" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>라이브러리를 사용하는 데 필요한 각종 모듈입니다.</p>
+<p>사용되는 라이브러리의 종류에 따라 분류되어있습니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>modules
+├── __init__.py
+├── collect
+│   ├── __init__.py
+│   └── get_soup.py
+├── oled
+│   ├── __init__.py
+│   ├── board.py
+│   ├── busio.py
+│   ├── chip.py
+│   ├── digitalio.py
+│   ├── framebuf.py
+│   ├── pure_spi.py
+│   ├── spi.py
+│   ├── spi_device.py
+│   ├── ssd1306.py
+│   └── util.py
+├── speech
+│   ├── __init__.py
+│   ├── constant.py
+│   └── google_trans_new.py
+└── vision
+      ├── __init__.py
+      └── stream.py
+</pre></div>
+</div>
+</section>
+<section id="openpibo-libraries">
+<h2>openpibo - libraries<a class="headerlink" href="#openpibo-libraries" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>파이보의 다양한 기능을 사용할 수 있는 Class가 저장된 파일입니다.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>openpibo
+├── audio.py
+├── collect.py
+├── device.py
+├── motion.py
+├── oled.py
+├── speech.py
+├── vision.py
+└── edu_v1.py
+</pre></div>
+</div>
+<p>세부 가이드는 아래의 링크를 참조해주세요.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/audio.html">audio.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/collect.html">collect.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/device.html">device.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/motion.html">motion.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/oled.html">oled.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/speech.html">speech.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/vision.html">vision.py</a></p></li>
+<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/edu_v1.html">edu_v1.py</a></p></li>
+</ul>
+</section>
+<section id="openpibo-models">
+<h2>openpibo_models<a class="headerlink" href="#openpibo-models" title="이 표제에 대한 퍼머링크"></a></h2>
 <p>폰트 파일, 모션 데이터베이스, 그리고 각종 인공지능 모델 등 라이브러리를 사용하기 위한 최소한의 데이터가 들어있습니다.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>openpibo/data/models/
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>models/
 ├── KDL.ttf
 ├── motion_db.json
 ├── sample_db.json
@@ -211,108 +267,6 @@
 </li>
 </ul>
 </li>
-</ul>
-</section>
-<section id="modules">
-<h2>modules<a class="headerlink" href="#modules" title="이 표제에 대한 퍼머링크"></a></h2>
-<p>라이브러리를 사용하는 데 필요한 각종 모듈입니다.</p>
-<p>사용되는 라이브러리의 종류에 따라 분류되어있습니다.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>modules
-├── __init__.py
-├── collect
-│   ├── __init__.py
-│   └── get_soup.py
-├── oled
-│   ├── __init__.py
-│   ├── board.py
-│   ├── busio.py
-│   ├── chip.py
-│   ├── digitalio.py
-│   ├── framebuf.py
-│   ├── pure_spi.py
-│   ├── spi.py
-│   ├── spi_device.py
-│   ├── ssd1306.py
-│   └── util.py
-├── speech
-│   ├── __init__.py
-│   ├── constant.py
-│   └── google_trans_new.py
-└── vision
-      ├── __init__.py
-      └── stream.py
-</pre></div>
-</div>
-<!-- 
-- **collect**
-
-   - **get_soup.py**
-
-      인터넷으로부터 정보를 가져오는 모듈입니다.
-
-- **oled**
-
-   - **board.py**
-
-      사용 가능한 핀을 정의합니다.
-
-   - **busio.py**
-
-      I2C와 SPI 통신을 위한 bus 프로토콜입니다.
-
-   - **chip.py**
-
-
-   - **digitalio.py**
-
-      디지털 input, output을 제어하는 모듈입니다.
-
-   - **framebuf.py**
-   
-   - **pure_spi.py**
-   
-   
-   - **spi.py**
-   
-   
-   - **spi_device.py**
-   
-   
-   - **ssd1306.py**
-   
-   
-   - **util.py**
-
-- **vision**
-
-   - **stream.py**
-
-      파이보의 카메라를 작동시켜 실시간으로 정보를 읽을 수 있는 모듈입니다. -->
-</section>
-<section id="libraries">
-<h2>libraries<a class="headerlink" href="#libraries" title="이 표제에 대한 퍼머링크"></a></h2>
-<p>파이보의 다양한 기능을 사용할 수 있는 Class가 저장된 파일입니다.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>openpibo
-├── audio.py
-├── collect.py
-├── device.py
-├── motion.py
-├── oled.py
-├── speech.py
-├── vision.py
-└── edu_v1.py
-</pre></div>
-</div>
-<p>세부 가이드는 아래의 링크를 참조해주세요.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/audio.html">audio.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/collect.html">collect.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/device.html">device.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/motion.html">motion.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/oled.html">oled.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/speech.html">speech.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/vision.html">vision.py</a></p></li>
-<li><p><a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/libraries/edu_v1.html">edu_v1.py</a></p></li>
 </ul>
 </section>
 </section>

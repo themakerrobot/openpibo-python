@@ -1,17 +1,76 @@
-# 폴더 구조
+# 라이브러리 구조
 
-openpibo 패키지의 폴더 구조에 관해 설명합니다.
+openpibo / openpibo_models 패키지 구조에 관해 설명합니다.
 
-openpibo 패키지는 파이보를 제어하기 위한 라이브러리 및 최소한의 파일들을 포함하고 있습니다.
-크게 data, modules, libraries 부분으로 나뉘어 있습니다.
+openpibo 패키지는 파이보를 제어하기 위한 내부 modules과 libraries 부분으로 나뉘어 있습니다.
+openpibo_models 패키지는 openpibo 패키지를 사용하기 위한 폰트/모션 파일, 인공지능 모델 등의 파일을 가지고 있습니다.
 
-![](images/structure.png)
+## openpibo - modules
 
-## data
+라이브러리를 사용하는 데 필요한 각종 모듈입니다.
+
+사용되는 라이브러리의 종류에 따라 분류되어있습니다.
+
+```
+modules
+├── __init__.py
+├── collect
+│   ├── __init__.py
+│   └── get_soup.py
+├── oled
+│   ├── __init__.py
+│   ├── board.py
+│   ├── busio.py
+│   ├── chip.py
+│   ├── digitalio.py
+│   ├── framebuf.py
+│   ├── pure_spi.py
+│   ├── spi.py
+│   ├── spi_device.py
+│   ├── ssd1306.py
+│   └── util.py
+├── speech
+│   ├── __init__.py
+│   ├── constant.py
+│   └── google_trans_new.py
+└── vision
+      ├── __init__.py
+      └── stream.py
+```
+
+## openpibo - libraries
+
+파이보의 다양한 기능을 사용할 수 있는 Class가 저장된 파일입니다.
+
+```
+openpibo
+├── audio.py
+├── collect.py
+├── device.py
+├── motion.py
+├── oled.py
+├── speech.py
+├── vision.py
+└── edu_v1.py
+```
+
+세부 가이드는 아래의 링크를 참조해주세요.
+
+- [audio.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/audio.html)
+- [collect.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/collect.html)
+- [device.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/device.html)
+- [motion.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/motion.html)
+- [oled.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/oled.html)
+- [speech.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/speech.html)
+- [vision.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/vision.html)
+- [edu_v1.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/edu_v1.html)
+
+
+## openpibo_models
 폰트 파일, 모션 데이터베이스, 그리고 각종 인공지능 모델 등 라이브러리를 사용하기 위한 최소한의 데이터가 들어있습니다.
 
 ```
-openpibo/data/models/
+models/
 ├── KDL.ttf
 ├── motion_db.json
 ├── sample_db.json
@@ -109,109 +168,3 @@ openpibo/data/models/
    - **shape_predictor_5_face_landmarks.dat** # predictor
 
       얼굴에 5개의 특징점을 추출하여 표정을 예측하는 인공지능 모델입니다.
-
-
-## modules
-
-라이브러리를 사용하는 데 필요한 각종 모듈입니다.
-
-사용되는 라이브러리의 종류에 따라 분류되어있습니다.
-
-```
-modules
-├── __init__.py
-├── collect
-│   ├── __init__.py
-│   └── get_soup.py
-├── oled
-│   ├── __init__.py
-│   ├── board.py
-│   ├── busio.py
-│   ├── chip.py
-│   ├── digitalio.py
-│   ├── framebuf.py
-│   ├── pure_spi.py
-│   ├── spi.py
-│   ├── spi_device.py
-│   ├── ssd1306.py
-│   └── util.py
-├── speech
-│   ├── __init__.py
-│   ├── constant.py
-│   └── google_trans_new.py
-└── vision
-      ├── __init__.py
-      └── stream.py
-```
-<!-- 
-- **collect**
-
-   - **get_soup.py**
-
-      인터넷으로부터 정보를 가져오는 모듈입니다.
-
-- **oled**
-
-   - **board.py**
-
-      사용 가능한 핀을 정의합니다.
-
-   - **busio.py**
-
-      I2C와 SPI 통신을 위한 bus 프로토콜입니다.
-
-   - **chip.py**
-
-
-   - **digitalio.py**
-
-      디지털 input, output을 제어하는 모듈입니다.
-
-   - **framebuf.py**
-   
-   - **pure_spi.py**
-   
-   
-   - **spi.py**
-   
-   
-   - **spi_device.py**
-   
-   
-   - **ssd1306.py**
-   
-   
-   - **util.py**
-
-- **vision**
-
-   - **stream.py**
-
-      파이보의 카메라를 작동시켜 실시간으로 정보를 읽을 수 있는 모듈입니다. -->
-
-## libraries
-
-파이보의 다양한 기능을 사용할 수 있는 Class가 저장된 파일입니다.
-
-```
-openpibo
-├── audio.py
-├── collect.py
-├── device.py
-├── motion.py
-├── oled.py
-├── speech.py
-├── vision.py
-└── edu_v1.py
-```
-
-세부 가이드는 아래의 링크를 참조해주세요.
-
-- [audio.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/audio.html)
-- [collect.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/collect.html)
-- [device.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/device.html)
-- [motion.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/motion.html)
-- [oled.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/oled.html)
-- [speech.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/speech.html)
-- [vision.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/vision.html)
-- [edu_v1.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/edu_v1.html)
