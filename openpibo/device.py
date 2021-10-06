@@ -247,21 +247,19 @@ Functions:
     pibo_device = Device()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
-  def __init__(self):
-    """Device 클래스를 초기화합니다."""
-
-    self.code = {
+  code = {
     "VERSION":"10",
     "HALT":"11",
-    "BUTTON":"13",
     "DC_CONN":"14",
     "BATTERY":"15",
     "NEOPIXEL":"20",
     "NEOPIXEL_EACH":"23",
     "PIR":"30",
-    "TOUCH":"31",
     "SYSTEM":"40",
-    }
+  }
+
+  def __init__(self):
+    """Device 클래스를 초기화합니다."""
     self.dev = serial.Serial(port="/dev/ttyS0", baudrate=9600)
     self.lock = Lock()
 

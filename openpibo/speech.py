@@ -45,7 +45,7 @@ Functions:
 
   def __init__(self):
     self.translator = google_translator()
-    self.kakao_account = config['KAKAO_ACCOUNT']
+    self.kakao_account = config.get('KAKAO_ACCOUNT')
 
   def translate(self, string, to='ko'):
     """
@@ -112,6 +112,9 @@ Functions:
     <voice name="MAN_DIALOG_BRIGHT">잘 지냈어? 나도 잘 지냈어.</voice>
     <voice name="WOMAN_DIALOG_BRIGHT" speechStyle="SS_ALT_FAST_1">금요일이 좋아요.</voice> </speak>' > result.mp3'''
 
+    if self.kakao_account in [None, '']:
+      return False
+
     url = "https://kakaoi-newtone-openapi.kakao.com/v1/synthesize"
     headers = {
       'Content-Type': 'application/xml',
@@ -139,6 +142,9 @@ Functions:
 
     :returns: ``True`` / ``False``
     """
+
+    if self.kakao_account in [None, '']:
+      return False
 
     cmd = "arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {};rm stream.raw".format(timeout, filename)
     os.system(cmd)

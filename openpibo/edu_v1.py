@@ -36,18 +36,6 @@ from queue import Queue
 from pathlib import Path
 
 
-code_list = {
-    "Success": 0,
-    "Argument error": -1,
-    "Extension error": -2,
-    "NotFound error": -3,
-    "Exist error": -4,
-    "Range error": -5,
-    "Running error": -6,
-    "Syntax error": -7,
-    "Exception error": -8,
-}
-
 class Pibo:
     """
     ``openpibo`` 의 다양한 기능들을 한번에 사용할 수 있는 클래스 입니다.
@@ -71,6 +59,17 @@ class Pibo:
         pibo_edu_v1 = Pibo()
         # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
     """
+    code_list = {
+        "Success": 0,
+        "Argument error": -1,
+        "Extension error": -2,
+        "NotFound error": -3,
+        "Exist error": -4,
+        "Range error": -5,
+        "Running error": -6,
+        "Syntax error": -7,
+        "Exception error": -8,
+    }
 
     def __init__(self):
         self.onair = False
@@ -1205,8 +1204,10 @@ class Pibo:
             if voice_name not in voice_list:
                 return self.return_msg(False, "NotFound error", "The voice name does not exist", None)
         try:
-            self.speech.tts(string, filename)
-            return self.return_msg(True, "Success", "Success", None)
+            ret = self.speech.tts(string, filename)
+            if ret == False:
+                return self.return_msg(False, "Exception error", "openpibo.speech.tts function error", None)
+            return self.return_msg(True, "Success", "Success", ret)
         except Exception as e:
             return self.return_msg(False, "Exception error", e, None)
 
@@ -1232,6 +1233,8 @@ class Pibo:
 
         try:
             ret = self.speech.stt(filename, timeout)
+            if ret == False:
+                return self.return_msg(False, "Exception error", "openpibo.speech.stt function error", None)
             return self.return_msg(True, "Success", "Success", ret)
         except Exception as e:
             return self.return_msg(False, "Exception error", e, None)
@@ -1824,8 +1827,7 @@ class Pibo:
         정규 return 메시지 양식을 만듭니다.
         """
 
-        global code_list
-        return {"result": status, "errcode": code_list[errcode], "errmsg": errmsg, "data": data}
+        return {"result": status, "errcode": Pibo.code_list[errcode], "errmsg": errmsg, "data": data}
 
 
     # Getting the meaning of error code
@@ -1845,8 +1847,7 @@ class Pibo:
             * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
         """
 
-        global code_list
-        n_list = {value:key for key, value in code_list.items()}
+        n_list = {value:key for key, value in Pibo.code_list.items()}
 
         if errcode in n_list.keys():
             return self.return_msg(True, "Success", "Success", n_list[errcode])
