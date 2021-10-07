@@ -261,17 +261,6 @@ Functions:
 
     저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.
 
-    해당 데이터를 수정하기 위해서는, openpibo 패키지를 clone 하여 설치하여야 합니다::
-
-      git clone https://github.com/themakerrobot/x-openpibo.git
-      cd x-openpibo
-      sudo python3 setup.py install
-
-    이후 다음 경로로 저장된 데이터를 수정합니다::
-
-      # x-openpibo를 clone 한 경로로부터
-      x-openpibo/openpibo/data/models/dialog.csv
-
     example::
 
       pibo_dialog.get_dialog('나랑 같이 놀자')

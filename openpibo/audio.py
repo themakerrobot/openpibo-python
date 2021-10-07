@@ -39,7 +39,7 @@ Functions:
 
     example::
 
-      pibo_audio.play('/home/pi/openpibo-files/data/audio/test.mp3', 'local', '-2000', True)
+      pibo_audio.play('/home/pi/openpibo-files/audio/test.mp3', 'local', '-2000', True)
         
     :param str filename: 재생할 파일의 경로를 지정합니다.
     

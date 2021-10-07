@@ -147,7 +147,7 @@ Functions:
 
     example::
 
-      pibo_oled.draw_image('/home/pi/openpibo-files/data/image/clear.png')
+      pibo_oled.draw_image('/home/pi/openpibo-files/image/clear.png')
 
     :param str filename: 그림파일 경로
     """
@@ -246,7 +246,7 @@ Functions:
 
     example::
 
-      pibo_oled.size_check('/home/pi/openpibo-files/data/image/bus.jpg')
+      pibo_oled.size_check('/home/pi/openpibo-files/image/bus.jpg')
     
     :param str filename: 확인 할 파일 경로
 
