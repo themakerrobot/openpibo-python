@@ -21,7 +21,7 @@
 
 5. STT, TTS 기능을 사용하기 위해 [카카오 api키를 발급받습니다.](https://github.com/themakerrobot/x-openpibo/tree/master/docs/kakao_api.md)
 
-더 자세한 설명은 [공식 문서](http://127.0.0.1:5500/x-openpibo/docs/build/html/notes/setting.html)를 참고하시기 바랍니다.
+더 자세한 설명은 [공식 문서의 설정 탭](https://github.com/themakerrobot/x-openpibo/docs/build/html/notes/setting.html)를 참고하시기 바랍니다.
 
 ## Usage
 
@@ -58,7 +58,7 @@
   # pibo_audio.play('/home/pi/openpibo-files/data/audio/test.mp3')
 ```
 
-클래스 및 메소드의 종류 등 더 자세한 내용은 [공식 문서](http://127.0.0.1:5500/x-openpibo/docs/build/html/libraries/audio.html)의 LIBRARIES 탭에서 확인하실 수 있습니다.
+더 자세한 설명은 [공식 문서의 LIBRARIES 탭](https://github.com/themakerrobot/x-openpibo/docs/build/html/libraries/audio.html)를 참고하시기 바랍니다.
 
 ## 공식 문서
 
