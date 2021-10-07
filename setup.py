@@ -26,7 +26,7 @@ setup(
         'rich==10.6.0',
         'flask==2.0.1',
         'flask-socketio==5.1.1',
-        'openpibo_models==0.2.1',
+        'openpibo_models==0.2.2',
         'openpibo_face_models==0.2.1',
         'openpibo_detect_models==0.2.1',
         'openpibo_dlib_models==0.2.1',
