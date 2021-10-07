@@ -19,7 +19,7 @@
    # ssh pi@192.168.2.144
    ```
 
-5. STT, TTS 기능을 사용하기 위해 [카카오 api키를 발급받습니다.](https://themakerrobot.github.io/x-openpibo/build/html/notes/kakao_api.md)
+5. STT, TTS 기능을 사용하기 위해 [카카오 api키를 발급받습니다.](https://themakerrobot.github.io/x-openpibo/build/html/notes/kakao_api.html)
 
 더 자세한 설명은 [공식 문서의 설정 탭](https://themakerrobot.github.io/x-openpibo/build/html/notes/setting.html)를 참고하시기 바랍니다.
 
