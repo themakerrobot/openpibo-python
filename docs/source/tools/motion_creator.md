@@ -6,7 +6,7 @@
 
 __사용 방법__
 
-```python
+```bash
 $ cd ~/openpibo-tools/motion-creator
 $ sudo python3 main.py --port 8888
 ```

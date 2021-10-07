@@ -4,7 +4,7 @@
 
 __사용 방법__
 
-```python
+```bash
 $ cd ~/openpibo-tools/process-test
 $ sudo python3 main.py
 ```

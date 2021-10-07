@@ -2,7 +2,7 @@ import os, json
 
 if os.path.isfile('/home/pi/config.json') == False:
   with open('/home/pi/config.json', 'w') as f:
-    json.dump({"DATA_PATH":"/home/pi/openpibo-files/data", "KAKAO_ACCOUNT":"", "robotId":""}, f)
+    json.dump({"DATA_PATH":"/home/pi/openpibo-files", "KAKAO_ACCOUNT":"", "robotId":""}, f)
 
 
 from setuptools import setup, find_packages
