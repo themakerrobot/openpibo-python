@@ -3,7 +3,7 @@
 """
 import os, sys, json
 
-__version__ = '0.8.5'
+__version__ = '0.8.6'
 
 with open('/home/pi/config.json', 'r') as f:
   config = json.load(f)
