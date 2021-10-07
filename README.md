@@ -1,4 +1,4 @@
-# x-openpibo Guide
+# openpibo-python Guide
 
 > PIBO 교육용 라이브러리입니다.
 
