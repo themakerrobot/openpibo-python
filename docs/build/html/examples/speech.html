@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>speech &mdash; openpibo 0.8.2 문서</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/x-openpibo/examples/speech.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../genindex.html" />
+    <link rel="search" title="검색" href="../search.html" />
+    <link rel="next" title="vision" href="vision.html" />
+    <link rel="prev" title="oled" href="oled.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> openpibo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notes/setting.html">설정</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/structure.html">라이브러리 구조</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/usage.html">사용법</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/pibo_device.html">PIBO Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/kakao_api.html">KAKAO API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/vision.html">vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/edu_v1.html">edu_v1</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tools/process_test.html">Process Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/motion_creator.html">Motion Creator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/device_simulator.html">Device Simulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oled.html">oled</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">speech</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#chatbot-test-py">chatbot_test.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mecab-test-py">mecab_test.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stt-test-py">stt_test.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#translate-test-py">translate_test.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tts-test-py">tts_test.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">vision</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../files/audio.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/icon.html">Icon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/image.html">Image</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openpibo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>speech</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/speech.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="speech">
+<h1>speech<a class="headerlink" href="#speech" title="이 표제에 대한 퍼머링크"></a></h1>
+<section id="chatbot-test-py">
+<h2>chatbot_test.py<a class="headerlink" href="#chatbot-test-py" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>입력한 문장에 대해 형태소 분석을 실시하여 파이보와 대화를 시작합니다.</p>
+<p>사용자가 입력한 문장에 db의 key 값(날씨, 음악, 뉴스)이 있으면 해당 함수를 실행하고, 없다면 대화봇을 실행합니다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Dialog</span>
+
+<span class="k">def</span> <span class="nf">weather</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+  <span class="n">lst</span><span class="p">,</span> <span class="n">_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;오늘&quot;</span><span class="p">,</span> <span class="s2">&quot;내일&quot;</span><span class="p">],</span> <span class="kc">None</span>
+
+  <span class="c1"># 분석한 문장 중 &quot;오늘&quot;, &quot;내일&quot;이 있다면 _type=item으로 설정</span>
+  <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmd</span><span class="p">:</span>
+      <span class="n">_type</span> <span class="o">=</span> <span class="n">item</span>
+
+  <span class="k">if</span> <span class="n">_type</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BOT &gt; 오늘, 내일 날씨만 가능해요. &quot;</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BOT &gt; </span><span class="si">{}</span><span class="s2"> 뉴스 알려줄게요.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_type</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">music</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+  <span class="n">lst</span><span class="p">,</span> <span class="n">_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;발라드&quot;</span><span class="p">,</span> <span class="s2">&quot;댄스&quot;</span><span class="p">,</span> <span class="s2">&quot;락&quot;</span><span class="p">],</span> <span class="kc">None</span>
+
+  <span class="c1"># 분석한 문장 중 &quot;발라드&quot;, &quot;댄스&quot;, &quot;락&quot;이 있다면 _type=item으로 설정</span>
+  <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmd</span><span class="p">:</span>
+      <span class="n">_type</span> <span class="o">=</span> <span class="n">item</span>
+
+  <span class="k">if</span> <span class="n">_type</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BOT &gt; 발라드, 락, 댄스 음악만 가능해요.&quot;</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BOT &gt; </span><span class="si">{}</span><span class="s2"> 음악 틀어줄게요.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_type</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">news</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+  <span class="n">lst</span><span class="p">,</span> <span class="n">_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;경제&quot;</span><span class="p">,</span> <span class="s2">&quot;스포츠&quot;</span><span class="p">,</span> <span class="s2">&quot;문화&quot;</span><span class="p">],</span> <span class="kc">None</span>
+
+  <span class="c1"># 분석한 문장 중 &quot;경제&quot;, &quot;스포츠&quot;, &quot;문화&quot;가 있다면 _type=item으로 설정</span>
+  <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmd</span><span class="p">:</span>
+      <span class="n">_type</span> <span class="o">=</span> <span class="n">item</span>
+
+  <span class="k">if</span> <span class="n">_type</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BOT &gt; 경제, 문화, 스포츠 뉴스만 가능해요.&quot;</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BOT &gt; </span><span class="si">{}</span><span class="s2"> 뉴스 알려줄게요.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_type</span><span class="p">))</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">&quot;날씨&quot;</span><span class="p">:</span><span class="n">weather</span><span class="p">,</span>
+  <span class="s2">&quot;음악&quot;</span><span class="p">:</span><span class="n">music</span><span class="p">,</span> 
+  <span class="s2">&quot;뉴스&quot;</span><span class="p">:</span><span class="n">news</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># 사용자가 입력한 문장에 대해 형태소 분석을 실시하여 파이보가 실행하는 함수가 달라짐</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;대화 시작합니다.&quot;</span><span class="p">)</span>
+  <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;입력 &gt; &quot;</span><span class="p">)</span>
+    <span class="n">matched</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;그만&quot;</span><span class="p">:</span>
+      <span class="k">break</span>
+
+    <span class="c1"># 사용자가 입력한 질문에 대한 형태소 분석</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">mecab_morphs</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="c1"># print(&quot;형태소 분석: &quot;, d)</span>
+    <span class="c1"># 분석한 문장 중 &quot;날씨&quot;, &quot;음악&quot;, &quot;뉴스&quot;가 있다면 해당 key값의 함수 실행</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+      <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+        <span class="n">db</span><span class="p">[</span><span class="n">key</span><span class="p">](</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># key 값이 없다면 대화봇 실행</span>
+    <span class="k">if</span> <span class="n">matched</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;대화봇 &gt; &quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_dialog</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="" src="../_images/Speech_chatbot_flow.png" /></p>
+<p><strong>chatbot_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 chatbot_test.py 
+</pre></div>
+</div>
+<p><strong>chatbot_test.py 결과</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>대화 시작합니다.
+입력 &gt; 댄스 음악 추천해줘
+BOT &gt; 댄스 음악 틀어줄게요.
+입력 &gt; 주말에 뭐하지
+대화봇 &gt;  사탕 만들어요.
+입력 &gt; 사탕 싫어
+대화봇 &gt;  싫어하지 말아요.
+입력 &gt; 그만
+</pre></div>
+</div>
+</section>
+<section id="mecab-test-py">
+<h2>mecab_test.py<a class="headerlink" href="#mecab-test-py" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>사용자가 입력한 문장을 분석합니다. 3가지 모드 선택이 가능합니다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Dialog</span>
+
+<span class="c1"># mode(pos, morphs, nouns)에 따른 문장 분석</span>
+<span class="k">def</span> <span class="nf">mecab_f</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input: &quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
+  
+  <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;pos&quot;</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">mecab_pos</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;morphs&quot;</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">mecab_morphs</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;nouns&quot;</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">mecab_nouns</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output: &quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">mecab_f</span><span class="p">(</span><span class="s2">&quot;아버지 가방에 들어가신다&quot;</span><span class="p">,</span> <span class="s2">&quot;nouns&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>mecab_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 mecab_test.py 
+</pre></div>
+</div>
+<p><strong>mecab_test.py 결과</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Input:  아버지 가방에 들어가신다
+Output:  <span class="o">[</span><span class="s1">&#39;아버지&#39;</span>, <span class="s1">&#39;가방&#39;</span><span class="o">]</span>
+
+<span class="c1"># (+) pos 결과</span>
+Input:  아버지 가방에 들어가신다
+Output:  <span class="o">[(</span><span class="s1">&#39;아버지&#39;</span>, <span class="s1">&#39;NNG&#39;</span><span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;가방&#39;</span>, <span class="s1">&#39;NNG&#39;</span><span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;에&#39;</span>, <span class="s1">&#39;JKB&#39;</span><span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;들어가&#39;</span>, <span class="s1">&#39;VV&#39;</span><span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;신다&#39;</span>, <span class="s1">&#39;EP+EC&#39;</span><span class="o">)]</span>
+
+<span class="c1"># (+) morphs 결과</span>
+Input:  아버지 가방에 들어가신다
+Output:  <span class="o">[</span><span class="s1">&#39;아버지&#39;</span>, <span class="s1">&#39;가방&#39;</span>, <span class="s1">&#39;에&#39;</span>, <span class="s1">&#39;들어가&#39;</span>, <span class="s1">&#39;신다&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+<ul>
+<li><p>NNG: 일반 명사 / JKB: 부사격 조사 / VV: 동사 / EP: 선어말 어미 / EC: 연결 어미</p>
+<p>( 품사 태그표: <a class="reference external" href="https://docs.google.com/spreadsheets/d/1OGAjUvalBuX-oZvZ_-9tEfYD2gQe7hTGsgUpiiBSXI8/edit#gid=0">https://docs.google.com/spreadsheets/d/1OGAjUvalBuX-oZvZ_-9tEfYD2gQe7hTGsgUpiiBSXI8/edit#gid=0</a>)</p>
+</li>
+</ul>
+</section>
+<section id="stt-test-py">
+<h2>stt_test.py<a class="headerlink" href="#stt-test-py" title="이 표제에 대한 퍼머링크"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Speech</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">Speech</span><span class="p">()</span>
+<span class="c1"># 음성 언어를 문자 데이터로 변환하여 출력</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">stt</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>stt_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 stt_test.py 
+</pre></div>
+</div>
+<p><strong>stt_test.py 결과</strong></p>
+<p>5초간 녹음된 음성을 텍스트로 변환하여 출력됩니다.</p>
+</section>
+<section id="translate-test-py">
+<h2>translate_test.py<a class="headerlink" href="#translate-test-py" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>문장을 번역합니다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Speech</span>
+
+<span class="c1"># &quot;안녕하세요&quot;를 영어로 번역 후 출력</span>
+<span class="k">def</span> <span class="nf">translate_f</span><span class="p">():</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="n">Speech</span><span class="p">()</span>
+  <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;안녕하세요&quot;</span>
+  <span class="n">ret</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input:&quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">translate_f</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>translate_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 translate_test.py 
+</pre></div>
+</div>
+<p><strong>translate_test.py 결과</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Input: 안녕하세요
+Output: Good morning 
+</pre></div>
+</div>
+</section>
+<section id="tts-test-py">
+<h2>tts_test.py<a class="headerlink" href="#tts-test-py" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>문자 데이터를 음성 언어로 변환합니다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openpibo</span>
+<span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Speech</span>
+<span class="kn">from</span> <span class="nn">openpibo.audio</span> <span class="kn">import</span> <span class="n">Audio</span>
+
+<span class="c1"># tts.mp3 파일의 문자 데이터를 음성 언어로 변환 후, 파이보 스피커에 출력</span>
+<span class="k">def</span> <span class="nf">tts_f</span><span class="p">():</span>
+  <span class="n">tObj</span> <span class="o">=</span> <span class="n">Speech</span><span class="p">()</span>
+  <span class="n">filename</span> <span class="o">=</span> <span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/audio/tts.mp3&quot;</span>
+  <span class="n">tObj</span><span class="o">.</span><span class="n">tts</span><span class="p">(</span><span class="s2">&quot;&lt;speak&gt;</span><span class="se">\</span>
+<span class="s2">              &lt;voice name=&#39;MAN_READ_CALM&#39;&gt;안녕하세요. 반갑습니다.&lt;break time=&#39;500ms&#39;/&gt;&lt;/voice&gt;</span><span class="se">\</span>
+<span class="s2">            &lt;/speak&gt;&quot;</span>\
+          <span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+  <span class="n">aObj</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
+  <span class="n">aObj</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">volume</span><span class="o">=-</span><span class="mi">1500</span><span class="p">)</span>  <span class="c1"># 파이보 스피커로 filename 출력</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">tts_f</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul>
+<li><p>speak</p>
+<ul class="simple">
+<li><p>기본적으로 모든 음성은 태그로 감싸져야 한다.</p></li>
+<li><p>태그 하위로 <code class="docutils literal notranslate"><span class="pre">,</span></code>를 제외한 모든 태그가 존재할 수 있다.</p></li>
+<li><p>문장, 문단 단위로 적용하는 것을 원칙으로 한다. 한 문장 안에서 단어별로 태그를 감싸지 않는다.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">speak</span><span class="o">&gt;</span> <span class="n">안녕하세요</span><span class="o">.</span> <span class="n">반가워요</span><span class="o">.</span> <span class="o">&lt;/</span><span class="n">speak</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>voice</p>
+<ul class="simple">
+<li><p>음성의 목소리를 변경하기 위해 사용하며, name attribute를 통해 원하는 목소리를 지정한다. 제공되는 목소리는 4가지이다.</p>
+<ul>
+<li><p>WOMAN_READ_CALM: 여성 차분한 낭독체 (default)</p></li>
+<li><p>MAN_READ_CALM: 남성 차분한 낭독체</p></li>
+<li><p>WOMAN_DIALOG_BRIGHT: 여성 밝은 대화체</p></li>
+<li><p>MAN_DIALOG_BRIGHT: 남성 밝은 대화체</p></li>
+</ul>
+</li>
+<li><p>하위로 <code class="docutils literal notranslate"><span class="pre">,</span></code>를 제외한 모든 태그(kakao: effet, prosody, break, audio, say-as, sub)가 존재할 수 있다.</p></li>
+<li><p>문장, 문단 단위로 적용하는 것을 원칙으로 한다. 한 문장 안에서 단어별로 태그를 감싸지 않는다.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">speak</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;WOMAN_READ_CALM&quot;</span><span class="o">&gt;</span> <span class="n">지금은</span> <span class="n">여성</span> <span class="n">차분한</span> <span class="n">낭독체입니다</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MAN_READ_CALM&quot;</span><span class="o">&gt;</span> <span class="n">지금은</span> <span class="n">남성</span> <span class="n">차분한</span> <span class="n">낭독체입니다</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;WOMAN_DIALOG_BRIGHT&quot;</span><span class="o">&gt;</span> <span class="n">안녕하세요</span><span class="o">.</span> <span class="n">여성</span> <span class="n">밝은</span> <span class="n">대화체예요</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MAN_DIALOG_BRIGHT&quot;</span><span class="o">&gt;</span> <span class="n">안녕하세요</span><span class="o">.</span> <span class="n">남성</span> <span class="n">밝은</span> <span class="n">대화체예요</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">speak</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>tts_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 tts_test.py 
+</pre></div>
+</div>
+<p><strong>tts_test.py 결과</strong></p>
+<p>남성의 목소리로 <code class="docutils literal notranslate"><span class="pre">안녕하세요,</span> <span class="pre">반갑습니다.</span></code> 라고 출력됩니다.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="oled.html" class="btn btn-neutral float-left" title="oled" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vision.html" class="btn btn-neutral float-right" title="vision" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 저작권 2021, Circulus Education.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

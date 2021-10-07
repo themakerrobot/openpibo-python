@@ -11,7 +11,7 @@ $ sudo python3 main.py
 
 프로그램 실행 시 다음과 같은 화면이 출력됩니다.
 
-![image-20210820110653606](README.assets/processtest.png)
+![image-20210820110653606](images/process_test/processtest.png)
 
 상단에서 기기의 시리얼넘버와 버전을 조회할 수 있으며, 부품의 ``NAME`` 을 입력하여 테스트할 수 있습니다.
 
@@ -23,7 +23,7 @@ $ sudo python3 main.py
   
   - 파이보 OLED 화면에 `Oled Testing...` 이라고 출력
   
-  ![image-20210907145853637](README.assets/image-20210907145853637.png)
+  ![image-20210907145853637](images/process_test/image-20210907145853637.png)
 
 
 
@@ -57,7 +57,7 @@ $ sudo python3 main.py
 
      (아래 화면이 출력됩니다)
 
-     ![image-20210907141722024](README.assets/image-20210907141722024.png)
+     ![image-20210907141722024](images/process_test/image-20210907141722024.png)
 
   2. 5초 뒤 녹음한 음성이 그대로 출력되는지 확인합니다.
 
@@ -67,7 +67,7 @@ $ sudo python3 main.py
 
   OLED 화면에 5초간 카메라 캡쳐 이미지 출력 후 꺼짐
 
-  ![image-20210907150123624](README.assets/image-20210907150123624.png)
+  ![image-20210907150123624](images/process_test/image-20210907150123624.png)
 
 
 
@@ -75,7 +75,7 @@ $ sudo python3 main.py
 
   R -> G -> B 순서대로 변함 (각 2초씩)
 
-  ![image-20210907150306438](README.assets/image-20210907150306438.png)
+  ![image-20210907150306438](images/process_test/image-20210907150306438.png)
 
 
 
@@ -89,7 +89,7 @@ $ sudo python3 main.py
 
   (테스트 결과는 아래 화면처럼 출력됩니다)
 
-  ![image-20210907143454951](README.assets/image-20210907143454951.png)
+  ![image-20210907143454951](images/process_test/image-20210907143454951.png)
 
   
 
@@ -105,7 +105,7 @@ $ sudo python3 main.py
 
   (테스트 결과는 아래 화면처럼 출력됩니다)
 
-  ![image-20210907144023124](README.assets/image-20210907144023124.png)
+  ![image-20210907144023124](images/process_test/image-20210907144023124.png)
 
   
 
@@ -121,7 +121,7 @@ $ sudo python3 main.py
 
   (테스트 결과는 아래 화면처럼 출력됩니다)
 
-  ![image-20210907144318481](README.assets/image-20210907144318481.png)
+  ![image-20210907144318481](images/process_test/image-20210907144318481.png)
 
   
 
@@ -135,7 +135,7 @@ $ sudo python3 main.py
 
   (테스트 결과는 아래 화면처럼 출력됩니다)
 
-  ![image-20210907144633893](README.assets/image-20210907144633893.png)
+  ![image-20210907144633893](images/process_test/image-20210907144633893.png)
 
   
 
@@ -145,7 +145,7 @@ $ sudo python3 main.py
 
   (테스트 결과)
 
-  ![image-20210907144753187](README.assets/image-20210907144753187.png)
+  ![image-20210907144753187](images/process_test/image-20210907144753187.png)
 
   
 
@@ -153,4 +153,4 @@ $ sudo python3 main.py
 
   테스트 종료 및 테스트 결과 반환
 
-  ![image-20210907150707394](README.assets/image-20210907150707394.png)
+  ![image-20210907150707394](images/process_test/image-20210907150707394.png)

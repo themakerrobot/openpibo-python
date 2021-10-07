@@ -39,23 +39,24 @@ Welcome to OPENPIBO's documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Example
+   :caption: Examples
 
-   example/audio
-   example/collect
-   example/device
-   example/motion
-   example/oled
-   example/speech
-   example/vision
+   examples/audio
+   examples/collect
+   examples/device
+   examples/motion
+   examples/oled
+   examples/speech
+   examples/vision
+   examples/edu_v1
 
 .. toctree::
    :maxdepth: 1
-   :caption: Data
+   :caption: Files
 
-   data/audio
-   data/icon
-   data/image
+   files/audio
+   files/icon
+   files/image
 
 Indices and tables
 ==================

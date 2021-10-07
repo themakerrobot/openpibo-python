@@ -41,7 +41,7 @@ pibo_audio = Audio()
 
 ```python
 # play 메소드: 오디오 파일을 재생합니다.
-pibo_audio.play('/home/pi/openpibo_files/data/audio/test.mp3')
+pibo_audio.play('/home/pi/openpibo_files/audio/test.mp3')
 
 # stop 메소드: 재생 중인 오디오 파일을 중지합니다.
 pibo_audio.stop()
@@ -59,7 +59,7 @@ pibo_audio.mute(True)
 어떤 메소드는 인자로 파일 경로를 입력해야 합니다.
 
 파일 경로를 입력하는 방법에 관해 설명하며,  
-추가로 /home/pi/openpibo_files/data/audio/ 경로에 있는 test.mp3 파일 재생 방법을 예시로 활용합니다.
+추가로 /home/pi/openpibo_files/audio/ 경로에 있는 test.mp3 파일 재생 방법을 예시로 활용합니다.
 
 1. 절대 경로를 사용하는 방법
 
@@ -68,11 +68,11 @@ pibo_audio.mute(True)
    test.mp3 파일을 재생하는 메소드는 다음과 같습니다.
 
    ```python
-   pibo_audio.play('/home/pi/openpibo_files/data/audio/test.mp3')
+   pibo_audio.play('/home/pi/openpibo_files/audio/test.mp3')
    # pibo_audio 는 Audio 클래스의 인스턴스
    ```
 
-   위 예시에서 `test.mp3`의 경로는 `'/home/pi/openpibo_files/data/audio/test.mp3'` 입니다.
+   위 예시에서 `test.mp3`의 경로는 `'/home/pi/openpibo_files/audio/test.mp3'` 입니다.
 
 2. 상대 경로를 사용하는 방법
 
@@ -82,16 +82,16 @@ pibo_audio.mute(True)
 
    ```python
    # 현재 디렉터리: /home/pi/
-   pibo_audio.play('openpibo_files/data/audio/test.mp3')
+   pibo_audio.play('openpibo_files/audio/test.mp3')
    ```
 
-   위 예시에서 `test.mp3`의 경로는 `'openpibo_files/data/audio/test.mp3'` 입니다.
+   위 예시에서 `test.mp3`의 경로는 `'openpibo_files/audio/test.mp3'` 입니다.
 
 3. 미리 지정해둔 경로를 참조하는 방법
 
    config.json 파일에 미리 지정해둔 경로를 호출하여 사용할 수 있습니다.
 
-   기본적으로 config.json에는 'DATA_PATH' key의 value로 '/home/pi/openpibo_files/data' 경로가 설정되어있습니다.
+   기본적으로 config.json에는 'DATA_PATH' key의 value로 '/home/pi/openpibo_files' 경로가 설정되어있습니다.
 
    python에서 config.json을 호출하는 방법은 다음과 같습니다.
 
@@ -99,7 +99,7 @@ pibo_audio.mute(True)
    import openpibo
 
    print(openpibo.config)
-   # {'DATA_PATH': '/home/pi/openpibo-files/data', 'KAKAO_ACCOUNT': '*****', 'robotId': ''}
+   # {'DATA_PATH': '/home/pi/openpibo-files', 'KAKAO_ACCOUNT': '*****', 'robotId': ''}
    ```
 
    이를 활용하여 test.mp3 파일의 경로를 다음과 같이 입력할 수 있습니다.
@@ -115,10 +115,10 @@ pibo_audio.mute(True)
    1. 데이터를 저장할 디렉터리를 생성하고 파일을 저장합니다.
 
       - /home/pi/ 경로에 mydata 디렉터리를 생성합니다.
-      ![](images/mkdir_mydata_ad.png)
+      ![](images/usage/mkdir_mydata_ad.png)
 
       - 생성한 디렉터리에 test.mp3 파일을 복사합니다.
-      ![](images/cp_test.png)
+      ![](images/usage/cp_test.png)
 
    2. config.json 파일을 수정합니다.
 
@@ -126,15 +126,15 @@ pibo_audio.mute(True)
       $ sudo vi /home/pi/config.json # config.json 파일 에디터를 실행합니다.
       ```
 
-      ![](images/config.png)
+      ![](images/usage/config.png)
 
       - i 키를 누르면 끼워넣기 모드가 활성화됩니다. 이때 키보드 타이핑을 하면 글씨가 입력됩니다.
 
-      ![](images/config_mydata.png)
+      ![](images/usage/config_mydata.png)
 
       - 입력을 마치면, esc 키를 눌러 끼워넣기 모드를 종료합니다. 이후 `:wq` 를 타이핑하여 파일을 저장하고 종료합니다.
 
-      ![](images/:wq.png)
+      ![](images/usage/wq.png)
 
    3. 경로를 호출해서 사용합니다.
 

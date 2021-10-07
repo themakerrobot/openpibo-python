@@ -19,15 +19,15 @@ $ sudo python3 main.py --port 8888
 
     * 예: http://192.168.2.144:8888
 
-  ![image-20210820112314329](README.assets/devicesimulator.png)
+  ![image-20210820112314329](images/device_simulator/devicesimulator.png)
 
   
 
 - 좌측 입력 바를 조작하여 **Neopixel** 을 제어할 수 있습니다.
 
-  ![image-20210907162156112](README.assets/image-20210907162156112.png)
+  ![image-20210907162156112](images/device_simulator/image-20210907162156112.png)
 
-  ![image-20210907162233280](README.assets/image-20210907162233280.png)
+  ![image-20210907162233280](images/device_simulator/image-20210907162233280.png)
 
   
 

@@ -92,7 +92,7 @@ models/
 
       OLED에 텍스트를 출력할 때 사용하는 기본 글씨체입니다.
 
-      ![](images/kdl.jpg)
+      ![](images/structure/kdl.jpg)
 
 - **모션 데이터베이스**
 

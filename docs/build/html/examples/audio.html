@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>audio &mdash; openpibo 0.8.2 문서</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/x-openpibo/examples/audio.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../genindex.html" />
+    <link rel="search" title="검색" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> openpibo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notes/setting.html">설정</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/structure.html">라이브러리 구조</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/usage.html">사용법</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/pibo_device.html">PIBO Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/kakao_api.html">KAKAO API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/vision.html">vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/edu_v1.html">edu_v1</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tools/process_test.html">Process Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/motion_creator.html">Motion Creator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/device_simulator.html">Device Simulator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">vision</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../files/audio.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/icon.html">Icon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/image.html">Image</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openpibo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>audio</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/audio.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="audio">
+<h1>audio<a class="headerlink" href="#audio" title="이 표제에 대한 퍼머링크"></a></h1>
+<section id="play-test-py">
+<h2>play_test.py<a class="headerlink" href="#play-test-py" title="이 표제에 대한 퍼머링크"></a></h2>
+<p>mp3 파일을 재생 및 정지합니다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">openpibo</span>
+<span class="kn">from</span> <span class="nn">openpibo.audio</span> <span class="kn">import</span> <span class="n">Audio</span>
+
+<span class="c1"># test.mp3 파일 5초 재생 후 정지</span>
+<span class="k">def</span> <span class="nf">tts_f</span><span class="p">():</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
+  <span class="n">obj</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/audio/test.mp3&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">volume</span><span class="o">=-</span><span class="mi">2000</span><span class="p">)</span>
+  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 5초동안 프로세스 정지</span>
+  <span class="n">obj</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">tts_f</span><span class="p">()</span>
+
+</pre></div>
+</div>
+<p><strong>play_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-example/audio $ sudo python3 play_test.py
+</pre></div>
+</div>
+<p><strong>play_test.py 결과</strong></p>
+<p>음악이 5초간 재생됩니다.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 저작권 2021, Circulus Education.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

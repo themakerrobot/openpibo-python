@@ -15,7 +15,7 @@ $ sudo python3 main.py --port 8888
 
   `--port` : 연결할 포트를 입력합니다. 만약 설정하지 않으면, 기본 포트는 `8888`입니다.
   
-  ![image-20210907151423678](README.assets/image-20210907151423678.png)
+  ![image-20210907151423678](images/motion_creator/image-20210907151423678.png)
   
   
   
@@ -29,7 +29,7 @@ $ sudo python3 main.py --port 8888
 
 - 모션을 생성합니다.
 
-  ![image-20210907151751536](README.assets/image-20210907151751536.png)
+  ![image-20210907151751536](images/motion_creator/image-20210907151751536.png)
 
   - 좌측은 모터를 제어하는 부분이고, 우측은 저장된 모션이 보여지는 부분입니다.
   
@@ -39,29 +39,29 @@ $ sudo python3 main.py --port 8888
   
     (시간은 50ms 간격으로 설정할 수 있습니다.)
   
-    ![image-20210907155124034](README.assets/image-20210907155124034.png)
+    ![image-20210907155124034](images/motion_creator/image-20210907155124034.png)
   
   - 동작테이블 각 행에 마우스를 올리면 빨간색으로 변하고, 클릭하면 해당 동작이 삭제됩니다.
   
-    ![image-20210820111320876](README.assets/motioncreator.png)
+    ![image-20210820111320876](images/motion_creator/motioncreator.png)
   
   - 동작을 테스트하려면, 우측 상단의 `재생` 버튼을 누릅니다.
   
     `cycle` 을 설정해 여러번 반복할 수도 있습니다. (cycle이 3이면, 동작이 3번 반복됩니다.)
   
-    ![image-20210907155722348](README.assets/image-20210907155722348.png)
+    ![image-20210907155722348](images/motion_creator/image-20210907155722348.png)
   
   - 우측 하단 입력창에 모션 이름을 적고 `Export` 버튼을 누르면, 코드가 생성됩니다.
   
-    ![image-20210907155919438](README.assets/image-20210907155919438.png)
+    ![image-20210907155919438](images/motion_creator/image-20210907155919438.png)
   
     또한 `/motion-creator/` 경로에 `<모션 이름>.json` 의 이름으로도 저장된 것을 확인할 수 있습니다.
   
-    ![image-20210907160525410](README.assets/image-20210907160525410.png)
+    ![image-20210907160525410](images/motion_creator/image-20210907160525410.png)
   
   - 우측 상단의 `초기화` 버튼을 누르면, 기록했던 동작들이 모두 초기화됩니다.
   
-    ![image-20210907160326781](README.assets/image-20210907160326781.png)
+    ![image-20210907160326781](images/motion_creator/image-20210907160326781.png)
   
 - 생성한 모션을 사용합니다.
 

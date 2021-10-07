@@ -69,21 +69,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../tools/motion_creator.html">Motion Creator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tools/device_simulator.html">Device Simulator</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Example</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../example/audio.html">audio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/collect.html">collect</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/device.html">device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/motion.html">motion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/oled.html">oled</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/speech.html">speech</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/vision.html">vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vision.html">vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/edu_v1.html">edu_v1</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Data</span></p>
+<p class="caption" role="heading"><span class="caption-text">Files</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../data/audio.html">Audio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data/icon.html">Icon</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data/image.html">Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/audio.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/icon.html">Icon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/image.html">Image</a></li>
 </ul>
 
         </div>
@@ -141,7 +142,7 @@
 </div>
 <p>예) audio 라이브러리의 Audio 클래스 메소드를 사용하는 방법은 다음과 같습니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># play 메소드: 오디오 파일을 재생합니다.</span>
-<span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo_files/data/audio/test.mp3&#39;</span><span class="p">)</span>
+<span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo_files/audio/test.mp3&#39;</span><span class="p">)</span>
 
 <span class="c1"># stop 메소드: 재생 중인 오디오 파일을 중지합니다.</span>
 <span class="n">pibo_audio</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
@@ -158,34 +159,34 @@
 <h2>데이터 경로 설정<a class="headerlink" href="#id4" title="이 표제에 대한 퍼머링크"></a></h2>
 <p>어떤 메소드는 인자로 파일 경로를 입력해야 합니다.</p>
 <p>파일 경로를 입력하는 방법에 관해 설명하며,<br />
-추가로 /home/pi/openpibo_files/data/audio/ 경로에 있는 test.mp3 파일 재생 방법을 예시로 활용합니다.</p>
+추가로 /home/pi/openpibo_files/audio/ 경로에 있는 test.mp3 파일 재생 방법을 예시로 활용합니다.</p>
 <ol>
 <li><p>절대 경로를 사용하는 방법</p>
 <p>절대 경로란, 파일이 가지고 있는 고유한 경로를 말합니다. 경로가 최상위 디렉터리부터 시작되는 특징이 있습니다.</p>
 <p>test.mp3 파일을 재생하는 메소드는 다음과 같습니다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo_files/data/audio/test.mp3&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo_files/audio/test.mp3&#39;</span><span class="p">)</span>
 <span class="c1"># pibo_audio 는 Audio 클래스의 인스턴스</span>
 </pre></div>
 </div>
-<p>위 예시에서 <code class="docutils literal notranslate"><span class="pre">test.mp3</span></code>의 경로는 <code class="docutils literal notranslate"><span class="pre">'/home/pi/openpibo_files/data/audio/test.mp3'</span></code> 입니다.</p>
+<p>위 예시에서 <code class="docutils literal notranslate"><span class="pre">test.mp3</span></code>의 경로는 <code class="docutils literal notranslate"><span class="pre">'/home/pi/openpibo_files/audio/test.mp3'</span></code> 입니다.</p>
 </li>
 <li><p>상대 경로를 사용하는 방법</p>
 <p>상대 경로란, 현재 위치한 디렉터리를 기준으로 해서 대상 파일의 상대적인 경로를 의미합니다.</p>
 <p>현재 디렉터리 위치가 /home/pi/ 일때 test.mp3 파일의 상대 경로는 다음과 같습니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 현재 디렉터리: /home/pi/</span>
-<span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;openpibo_files/data/audio/test.mp3&#39;</span><span class="p">)</span>
+<span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;openpibo_files/audio/test.mp3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>위 예시에서 <code class="docutils literal notranslate"><span class="pre">test.mp3</span></code>의 경로는 <code class="docutils literal notranslate"><span class="pre">'openpibo_files/data/audio/test.mp3'</span></code> 입니다.</p>
+<p>위 예시에서 <code class="docutils literal notranslate"><span class="pre">test.mp3</span></code>의 경로는 <code class="docutils literal notranslate"><span class="pre">'openpibo_files/audio/test.mp3'</span></code> 입니다.</p>
 </li>
 <li><p>미리 지정해둔 경로를 참조하는 방법</p>
 <p>config.json 파일에 미리 지정해둔 경로를 호출하여 사용할 수 있습니다.</p>
-<p>기본적으로 config.json에는 ‘DATA_PATH’ key의 value로 ‘/home/pi/openpibo_files/data’ 경로가 설정되어있습니다.</p>
+<p>기본적으로 config.json에는 ‘DATA_PATH’ key의 value로 ‘/home/pi/openpibo_files’ 경로가 설정되어있습니다.</p>
 <p>python에서 config.json을 호출하는 방법은 다음과 같습니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openpibo</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-<span class="c1"># {&#39;DATA_PATH&#39;: &#39;/home/pi/openpibo-files/data&#39;, &#39;KAKAO_ACCOUNT&#39;: &#39;*****&#39;, &#39;robotId&#39;: &#39;&#39;}</span>
+<span class="c1"># {&#39;DATA_PATH&#39;: &#39;/home/pi/openpibo-files&#39;, &#39;KAKAO_ACCOUNT&#39;: &#39;*****&#39;, &#39;robotId&#39;: &#39;&#39;}</span>
 </pre></div>
 </div>
 <p>이를 활용하여 test.mp3 파일의 경로를 다음과 같이 입력할 수 있습니다.</p>
@@ -215,7 +216,7 @@
 <ul class="simple">
 <li><p>입력을 마치면, esc 키를 눌러 끼워넣기 모드를 종료합니다. 이후 <code class="docutils literal notranslate"><span class="pre">:wq</span></code> 를 타이핑하여 파일을 저장하고 종료합니다.</p></li>
 </ul>
-<p><img alt="" src="../_images/:wq.png" /></p>
+<p><img alt="" src="../_images/wq.png" /></p>
 </li>
 <li><p>경로를 호출해서 사용합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openpibo</span>
