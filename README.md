@@ -19,9 +19,9 @@
    # ssh pi@192.168.2.144
    ```
 
-5. STT, TTS 기능을 사용하기 위해 [카카오 api키를 발급받습니다.](https://themakerrobot.github.io/x-openpibo/build/html/notes/kakao_api.html)
+5. STT, TTS 기능을 사용하기 위해 [카카오 api키를 발급받습니다.](https://themakerrobot.github.io/openpibo-python/build/html/notes/kakao_api.html)
 
-더 자세한 설명은 [공식 문서의 설정 탭](https://themakerrobot.github.io/x-openpibo/build/html/notes/setting.html)를 참고하시기 바랍니다.
+더 자세한 설명은 [공식 문서의 설정 탭](https://themakerrobot.github.io/openpibo-python/build/html/notes/setting.html)를 참고하시기 바랍니다.
 
 ## Usage
 
@@ -55,13 +55,13 @@
 
 ```python
 >>> <인스턴스 명>.<메소드 명>(<인자>)
-  # pibo_audio.play('/home/pi/openpibo-files/data/audio/test.mp3')
+  # pibo_audio.play('/home/pi/openpibo-files/audio/test.mp3')
 ```
 
-더 자세한 설명은 [공식 문서의 LIBRARIES 탭](https://themakerrobot.github.io/x-openpibo/build/html/libraries/audio.html)를 참고하시기 바랍니다.
+더 자세한 설명은 [공식 문서의 LIBRARIES 탭](https://themakerrobot.github.io/openpibo-python/build/html/libraries/audio.html)를 참고하시기 바랍니다.
 
 ## 공식 문서
 
 아래 공식 문서에서 라이브러리에 대한 더욱 자세한 설명을 보실 수 있습니다.
 
-https://themakerrobot.github.io/x-openpibo/build/html/index.html
+https://themakerrobot.github.io/openpibo-python/build/html/index.html

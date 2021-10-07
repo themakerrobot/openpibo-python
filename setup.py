@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 from openpibo import __version__ as VERSION
 
 setup(
-    name                        = 'openpibo',
+    name                        = 'openpibo-python',
     version                     = VERSION,
     packages                    = find_packages(),
     #package_data                = {'' : ['data/models/*']},
@@ -33,9 +33,9 @@ setup(
         'rich==10.6.0',
         'flask==2.0.1',
         'flask-socketio==5.1.1',
-        'openpibo_models==0.1.0',
-    ],
-    dependency_links            = [
-        'git+https://github.com/themakerrobot/openpibo_models.git#egg=openpibo_models-0.1.0',
+        'openpibo_models==0.2.0',
+        'openpibo_face_models==0.2.0',
+        'openpibo_detect_models==0.2.0',
+        'openpibo_dlib_models==0.2.0',
     ],
 )

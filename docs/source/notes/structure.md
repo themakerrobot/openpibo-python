@@ -56,14 +56,14 @@ openpibo
 
 세부 가이드는 아래의 링크를 참조해주세요.
 
-- [audio.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/audio.html)
-- [collect.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/collect.html)
-- [device.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/device.html)
-- [motion.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/motion.html)
-- [oled.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/oled.html)
-- [speech.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/speech.html)
-- [vision.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/vision.html)
-- [edu_v1.py](https://themakerrobot.github.io/x-openpibo/build/html/libraries/edu_v1.html)
+- [audio.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/audio.html)
+- [collect.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/collect.html)
+- [device.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/device.html)
+- [motion.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/motion.html)
+- [oled.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/oled.html)
+- [speech.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/speech.html)
+- [vision.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/vision.html)
+- [edu_v1.py](https://themakerrobot.github.io/openpibo-python/build/html/libraries/edu_v1.html)
 
 
 ## openpibo_models
@@ -127,7 +127,7 @@ models/
       }
       ```
 
-   새로운 모션을 만들기 위해서는 sample_db.json의 양식을 갖춰야 하며, [Motion Creator](https://themakerrobot.github.io/x-openpibo/build/html/tools/motion_creator.html)를 이용해 간편히 만들 수 있습니다.
+   새로운 모션을 만들기 위해서는 sample_db.json의 양식을 갖춰야 하며, [Motion Creator](https://themakerrobot.github.io/openpibo-python/build/html/tools/motion_creator.html)를 이용해 간편히 만들 수 있습니다.
 
 - **대화 데이터셋**
 

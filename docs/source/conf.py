@@ -18,7 +18,7 @@ from openpibo import __version__ as VERSION
 # -- Project information -----------------------------------------------------
 
 project = 'openpibo'
-copyright = '2021, Circulus Education'
+copyright = f'2021, Circulus Education, openpibo-python-{VERSION}'
 author = 'Circulus'
 
 # The full version, including alpha/beta/rc tags
@@ -30,7 +30,7 @@ release = VERSION
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-html_baseurl = 'https://themakerrobot.github.io/x-openpibo/'
+html_baseurl = 'https://themakerrobot.github.io/openpibo-python/'
 extensions = [
     'myst_parser',
     'sphinx.ext.autodoc',

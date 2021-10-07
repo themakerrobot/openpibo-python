@@ -2,7 +2,7 @@
 
 서큘러스가 제공하는 OS와 openpibo API를 사용하는 데 필요한 사전 설정을 다룹니다.
 
-OS는 파이보 DIY 키트에 포함되어 있으며, 이후 [여기](https://github.com/themakerrobot)에서 다운로드 받을 수 있습니다. openpibo API는 [깃허브](https://github.com/themakerrobot/x-openpibo)에 업로드 하였으며, 누구나 다운로드 받아 활용할 수 있습니다.
+OS는 파이보 DIY 키트에 포함되어 있으며, 이후 [여기](https://github.com/themakerrobot)에서 다운로드 받을 수 있습니다. openpibo API는 [깃허브](https://github.com/themakerrobot/openpibo-python)에 업로드 하였으며, 누구나 다운로드 받아 활용할 수 있습니다.
 
 ## 무선 네트워크 설정
 
@@ -97,9 +97,7 @@ openpibo 및 관련 패키지는 OS에 설치되어 있지만, 필요에 따라 
    터미널에 아래와 같이 입력합니다.
 
    ```bash
-   $ git clone https://github.com/themakerrobot/x-openpibo.git # 패키지 파일 다운로드
-   $ cd x-openpibo # 다운받은 패키지 폴더에 접근
-   $ sudo python3 setup.py install # 패키지 설치
+   $ sudo pip3 install openpibo-python # sudo 권한이 필요합니다.
    ```
 - openpibo-tools 설치
 
@@ -111,9 +109,9 @@ openpibo 및 관련 패키지는 OS에 설치되어 있지만, 필요에 따라 
 
    자세한 기능 및 사용 방법은 아래의 링크를 참고합니다.
 
-   - [Process Test](https://themakerrobot.github.io/x-openpibo/build/html/tools/process_test.html)
-   - [Motion Creator](https://themakerrobot.github.io/x-openpibo/build/html/tools/motion_creator.html)
-   - [Device Simulator](https://themakerrobot.github.io/x-openpibo/build/html/tools/device_simulator.html)
+   - [Process Test](https://themakerrobot.github.io/openpibo-python/build/html/tools/process_test.html)
+   - [Motion Creator](https://themakerrobot.github.io/openpibo-python/build/html/tools/motion_creator.html)
+   - [Device Simulator](https://themakerrobot.github.io/openpibo-python/build/html/tools/device_simulator.html)
 
 - openpibo-files 설치
 
@@ -126,9 +124,9 @@ openpibo 및 관련 패키지는 OS에 설치되어 있지만, 필요에 따라 
 
    자세한 내용은 아래의 링크를 참고합니다.
 
-   - [Audio](https://themakerrobot.github.io/x-openpibo/build/html/files/audio.html)
-   - [Icon](https://themakerrobot.github.io/x-openpibo/build/html/files/icon.html)
-   - [Image](https://themakerrobot.github.io/x-openpibo/build/html/files/image.html)
+   - [Audio](https://themakerrobot.github.io/openpibo-python/build/html/files/audio.html)
+   - [Icon](https://themakerrobot.github.io/openpibo-python/build/html/files/icon.html)
+   - [Image](https://themakerrobot.github.io/openpibo-python/build/html/files/image.html)
 
 - openpibo-examples 설치
 
@@ -140,7 +138,7 @@ openpibo 및 관련 패키지는 OS에 설치되어 있지만, 필요에 따라 
 
 ## KAKAO Developer Key 발급
 
-openpibo에서 음성인식(STT)과 음성합성(TTS)을 위해 KAKAO를 사용합니다. KAKAO Developers에서 회원가입 및 Key 발급이 필요하며, 발급받는 방법은 [여기](https://themakerrobot.github.io/x-openpibo/build/html/notes/kakao_api.html)를 참고합니다.
+openpibo에서 음성인식(STT)과 음성합성(TTS)을 위해 KAKAO를 사용합니다. KAKAO Developers에서 회원가입 및 Key 발급이 필요하며, 발급받는 방법은 [여기](https://themakerrobot.github.io/openpibo-python/build/html/notes/kakao_api.html)를 참고합니다.
 
 발급받은 Key는 파이보의 /home/pi/에 있는 config.json 파일에 다음과 같이 저장합니다.
 
