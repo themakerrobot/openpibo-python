@@ -5,8 +5,13 @@ import os, sys, json
 
 __version__ = '0.8.6'
 
-with open('/home/pi/config.json', 'r') as f:
-  config = json.load(f)
+if os.path.isfile('/home/pi/config.json') == False:
+  config = {"DATA_PATH":"/home/pi/openpibo-files", "KAKAO_ACCOUNT":"", "robotId":""}
+  with open('/home/pi/config.json', 'w') as f:
+    json.dump(config, f)
+else:
+  with open('/home/pi/config.json', 'r') as f:
+    config = json.load(f)
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_path)
