@@ -1,15 +1,10 @@
 from setuptools import setup, find_packages
 from openpibo import __version__ as VERSION
 
-setup(
-    name                        = 'openpibo-python',
-    version                     = VERSION,
-    packages                    = find_packages(),
-    #package_data                = {'' : ['data/models/*']},
-    #include_package_data        = True,
-    #zip_safe                    = False,
-    python_requires             = '>=3',
-    install_requires            = [
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
+
+requirements = [
         'opencv-python==4.1.0.25',
         'opencv-contrib-python==4.1.0.25',
         'dlib==19.19.0',
@@ -26,9 +21,33 @@ setup(
         'rich==10.6.0',
         'flask==2.0.1',
         'flask-socketio==5.1.1',
-        'openpibo_models==0.2.2',
-        'openpibo_face_models==0.2.1',
-        'openpibo_detect_models==0.2.1',
-        'openpibo_dlib_models==0.2.1',
+        'openpibo_models>=0.3.1',
+        'openpibo_face_models>=0.3.1',
+        'openpibo_detect_models>=0.3.1',
+        'openpibo_dlib_models>=0.3.1',
+]
+
+test_requirements = [
+]
+
+setup(
+    name                = 'openpibo-python',
+    version             = VERSION,
+    description         = 'openpibo-python package.',
+    long_description    = readme,
+    author              = "circulus",
+    author_email        = 'leeyunjai@circul.us',
+    url                 = 'https://github.com/themakerrobot/openpibo-python',
+    packages            = find_packages(),
+    install_requires    = requirements,
+    keywords            = 'openpibo',
+    classifiers         = [
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
+    test_suite          = 'tests',
+    tests_require       = test_requirements
 )
