@@ -26,7 +26,7 @@ Functions:
 :meth:`~openpibo.speech.Speech.translate`
 :meth:`~openpibo.speech.Speech.tts`
 :meth:`~openpibo.speech.Speech.stt`
-  
+
   Kakao 음성 API를 사용하여 사람의 음성 언어를 인식, 합성하거나 Google 번역 모듈을 사용하여 번역을 합니다.
 
   * 번역 (한국어, 영어)
@@ -68,7 +68,7 @@ Functions:
     '''curl -v -X POST "https://dapi.kakao.com/v2/translation/translate" \
     -d "src_lang=kr" \
     -d "target_lang=en" \
-    --data-urlencode "query=지난해 3월 오픈한 카카오톡 주문하기는 현재까지 약 250만명의 회원을 확보했으며, 주문 가능한 프랜차이즈 브랜드는 38개, 가맹점수는 약 1만 5천여곳에 달한다. 전 국민에게 친숙한 카카오톡 UI를 활용하기 때문에 남녀노소 누구나 쉽게 이용할 수 있으며, 별도의 앱을 설치할 필요 없이 카카오톡 내에서 모든 과정이 이뤄지는 것이 특징이다. 지난해 9월 업계 최초로 날짜와 시간을 예약한 뒤 설정한 매장에서 주문 음식을 찾아가는 ‘픽업’ 기능을 도입했고, 올해 1월 스마트스피커 ‘카카오미니’에서 음성을 통해 주문 가능한 메뉴를 안내받을 수 있도록 서비스를 연동하며 차별화를 꾀했다. 중소사업자들이 카카오톡 주문하기에 입점하게 되면 4,300만 카카오톡 이용자들과의 접점을 확보하고, 간편한 주문 과정으로 만족도를 높일 수 있게 된다. 카카오톡 메시지를 통해 신메뉴 출시, 프로모션 등의 소식을 전달할 수 있고, 일대일 채팅 기능을 적용하면 고객과 직접 상담도 가능하다." \
+    --data-urlencode "query=안녕하세요, 반갑습니다." \
     -H "Authorization: KakaoAK {REST_API_KEY}"'''
 
     '''
@@ -91,13 +91,13 @@ Functions:
   def tts(self, string, filename="tts.mp3"):
     """
     TTS(Text to Speech)
-    
+
     Text(문자)를 Speech(말)로 변환하여 파일로 저장합니다.
 
     example::
 
       pibo_speech.tts('안녕하세요! 만나서 반가워요!', '/home/pi/tts.mp3')
-    
+
     :param str string: 변환할 문구
 
     :param str filename: 변환된 음성파일의 경로
@@ -113,7 +113,7 @@ Functions:
     <voice name="WOMAN_DIALOG_BRIGHT" speechStyle="SS_ALT_FAST_1">금요일이 좋아요.</voice> </speak>' > result.mp3'''
 
     if self.kakao_account in [None, '']:
-      return False
+      raise Exception('Kakao account invalid')
 
     url = "https://kakaoi-newtone-openapi.kakao.com/v1/synthesize"
     headers = {
@@ -144,23 +144,22 @@ Functions:
     """
 
     if self.kakao_account in [None, '']:
-      return False
+      raise Exception('Kakao account invalid')
 
-    cmd = "arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {};rm stream.raw".format(timeout, filename)
-    os.system(cmd)
+    os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {filename};rm stream.raw')
 
     '''curl -v "https://kakaoi-newtone-openapi.kakao.com/v1/recognize" \
     -H "Transfer-Encoding: chunked" -H "Content-Type: application/octet-stream" \
     -H "Authorization: KakaoAK API_KEY" \
     --data-binary @stream.wav '''
-
     url = 'https://kakaoi-newtone-openapi.kakao.com/v1/recognize'
     headers = {
       'Content-Type': 'application/octet-stream',
       'Authorization': 'KakaoAK ' + self.kakao_account
     }
 
-    data = open(filename, 'rb').read()
+    with open(filename, 'rb') as f:
+      data = f.read()
     res = requests.post(url, headers=headers, data=data)
     try:
       result_json_string = res.text[res.text.index('{"type":"finalResult"'):res.text.rindex('}')+1]
@@ -208,7 +207,7 @@ Functions:
 
       pibo_dialog.mecab_pos('아버지가 방에 들어가셨다.')
       # [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어가', 'VV'), ('셨', 'EP+EP'), ('다', 'EF'), ('.', 'SF')]
-    
+
     :param str string: 분석할 문장 (한글)
 
     :returns: 형태소 분석 결과
@@ -227,7 +226,7 @@ Functions:
 
       pibo_dialog.mecab_morphs('아버지가 방에 들어가셨다.')
       # ['아버지', '가', '방', '에', '들어가', '셨', '다', '.']
-    
+
     :param str string: 분석할 문장 (한글)
 
     :returns: 형태소 분석 결과
@@ -246,16 +245,17 @@ Functions:
 
       pibo_dialog.mecab_nouns('아버지가 방에 들어가셨다.')
       # ['아버지', '방']
-    
+
     :param str string: 분석할 문장 (한글)
 
     :returns: 문장에서 추출한 명사 목록
 
       ``list`` 타입 입니다.
     """
+
     return self.mecab.nouns(string)
 
-  def get_dialog(self, q):
+  def conversation(self, q):
     """
     일상대화에 대한 답을 추출합니다.
 
@@ -271,7 +271,7 @@ Functions:
     max_ans = []
     c = self.mecab_morphs(q)
     for line in self.dialog_db:
-      acc = getDiff(line[0], c)
+      acc = get_distance(line[0], c)
 
       if acc == max_acc:
         max_ans.append(line)
@@ -282,9 +282,9 @@ Functions:
 
     return random.choice(max_ans)[1]
 
-def getDiff(aT, bT):
+def get_distance(aT, bT):
   """
-  (``Dialog`` 클래스의 ``get_dialog`` 메소드의 내부함수)
+  (``Dialog`` 클래스의 ``conversation`` 메소드의 내부함수)
 
   사용자의 질문과 유사한 데이터를 찾는 함수입니다.
   """

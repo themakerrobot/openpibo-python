@@ -9,6 +9,7 @@ from .modules.oled import ssd1306, board, busio, digitalio
 from PIL import Image, ImageDraw, ImageFont
 import PIL.ImageOps
 import cv2
+import numpy
 import os
 
 import openpibo_models
@@ -36,7 +37,7 @@ Functions:
   * 도형 그리기
 
   그림을 그리면 인스턴스 변수 ``image`` 에 저장됩니다. 이를 ``show`` 메소드를 사용하여 oled 화면에 출력할 수 있습니다.
-  
+
   본 class에서 문자 또는 그림을 그리는 행위는 인스턴스 변수 ``image`` 의 데이터를 변경시키는 것으로 정의합니다.
 
   example::
@@ -68,29 +69,29 @@ Functions:
     self.image = Image.new("1", (self.width, self.height))
     self.oled.fill(0)
     self.oled.show()
-  
+
   def show(self):
     """
     인스턴스 변수 ``image`` 를 oled 화면에 표시합니다.
-    
+
     **이 메소드를 사용하지 않으면 그림을 그려도 oled 화면에 아무것도 출력되지 않습니다.**
-    
+
     example::
 
       # 그림을 그린 후
-    
+
       pibo_oled.show()
     """
-    
+
     self.oled.image(self.image)
     self.oled.show()
- 
+
   def clear(self):
     """
     인스턴스 변수 ``image`` 를 초기화 하고, oled 화면을 지웁니다.
-    
+
     example::
-    
+
       pibo_oled.clear()
     """
 
@@ -107,7 +108,7 @@ Functions:
       # 불러올 폰트의 경로가 /home/pi/mydata/font.ttf 라면,
 
       pibo_oled.set_font('/home/pi/mydata/font.ttf', 10)
-    
+
     :param str filename: 폰트 파일 경로
 
       폰트 확장자는 **ttf** 와 **otf** 모두 지원합니다.
@@ -121,9 +122,13 @@ Functions:
       filename = self.font_path
     if size == None:
       size = self.font_size
+
+    if not os.path.isfile(filename):
+      raise Exception('"{filename}" not found.')
+
     self.font = ImageFont.truetype(filename, size)
 
-  def draw_text(self, points, text):
+  def draw_text(self, points, text:str):
     """
     문자를 그립니다.(한글, 영어 지원)
 
@@ -136,13 +141,19 @@ Functions:
     :param str text: 문자열 내용
     """
 
+    if type(points) is tuple:
+      raise Exception(f'type of "{points}" must be tuple.')
+
+    if len(points) != 2:
+      raise Exception(f'the number of "{points}" is 2')
+
     draw = ImageDraw.Draw(self.image)
     draw.text(points, text, font=self.font, fill=255)
 
   def draw_image(self, filename):
     """
     그림을 그립니다.
-    
+
     **128x64** 크기의 **png** 확장자만 허용됩니다.
 
     example::
@@ -151,6 +162,9 @@ Functions:
 
     :param str filename: 그림파일 경로
     """
+
+    if not os.path.isfile(filename):
+      raise Exception('"{filename}" not found.') 
 
     self.image = Image.open(filename).convert('1')
 
@@ -166,12 +180,16 @@ Functions:
 
       pibo_camera = Camera()
       img = pibo_camera.read(128, 64)
-      
+
       pibo_oled.draw_data(img)
       pibo_oled.show()
 
     :param numpy.ndarray img: 이미지 객체
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
+
     self.image = Image.fromarray(img).convert('1')
 
   def draw_rectangle(self, points, fill=None):
@@ -181,14 +199,23 @@ Functions:
     example::
 
       pibo_oled.draw_rectangle((10, 10, 80, 40), True)
-    
+
     :param tuple points: 사각형의 좌측상단 좌표, 사각형의 우측하단 좌표 (x1, y1, x2, y2)
-    
+
     :param bool fill:
 
       * ``True`` : 사각형 내부를 채웁니다.
       * ``False`` : 사각형 내부를 채우지 않습니다.
     """
+
+    if type(points) is tuple:
+      raise Exception(f'type of "{points}" must be tuple.')
+
+    if len(points) != 4:
+      raise Exception(f'the number of "{points}" is 4')
+
+    if not fill in [None, True, False]:
+      raise Exception(f'"{fill}" must be one of [None, True, False]')
 
     draw = ImageDraw.Draw(self.image)
     draw.rectangle(points, outline=1, fill=fill)
@@ -209,6 +236,15 @@ Functions:
       * ``False`` : 타원 내부를 채우지 않습니다.
     """
 
+    if type(points) is tuple:
+      raise Exception(f'type of "{points}" must be tuple.')
+
+    if len(points) != 4:
+      raise Exception(f'the number of "{points}" is 4')
+
+    if not fill in [None, True, False]:
+      raise Exception(f'"{fill}" must be one of [None, True, False]')
+
     draw = ImageDraw.Draw(self.image)
     draw.ellipse(points, outline=1, fill=fill)
 
@@ -219,9 +255,15 @@ Functions:
     example::
 
       pibo_oled.draw_line((30, 20, 60, 50))
-    
+
     :param points points: 선의 시작 좌표, 선의 끝 좌표 (x1, y1, x2, y2)
     """
+
+    if type(points) is tuple:
+      raise Exception(f'type of "{points}" must be tuple.')
+
+    if len(points) != 4:
+      raise Exception(f'the number of "{points}" is 4')
 
     draw = ImageDraw.Draw(self.image)
     draw.line(points, fill=True)
@@ -229,9 +271,9 @@ Functions:
   def invert(self):
     """
     그려진 이미지를 흑백 반전시킵니다.
-    
+
     example::
-    
+
       pibo_oled.invert()
     """
     self.image = self.image.convert("L")
@@ -247,7 +289,7 @@ Functions:
     example::
 
       pibo_oled.size_check('/home/pi/openpibo-files/image/bus.jpg')
-    
+
     :param str filename: 확인 할 파일 경로
 
     :returns: 이미지의 크기
@@ -256,5 +298,8 @@ Functions:
 
       ``(y축 길이, x축 길이, 채널 수)`` 로 표현됩니다.
     """
+
+    if not os.path.isfile(filename):
+      raise Exception('"{filename}" not found.') 
 
     return cv2.imread(filename).shape

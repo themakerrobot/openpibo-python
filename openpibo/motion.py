@@ -85,7 +85,7 @@ Functions:
 :meth:`~openpibo.motion.Motion.get_motion`
 :meth:`~openpibo.motion.Motion.set_motion_raw`
 :meth:`~openpibo.motion.Motion.stop`
-  
+
   파이보의 움직임을 제어합니다.
 
   example::
@@ -115,7 +115,7 @@ Functions:
       # 불러올 모션 데이터베이스의 경로가 /home/pi/mydata/motion.json 라면,
 
       pibo_motion.set_profile('/home/pi/mydata/motion.json')
-    
+
     :param str path: 모터 프로파일 경로"""
 
     with open(path, 'r') as f:
@@ -139,7 +139,6 @@ Functions:
       -80~80의 숫자가 들어갑니다.
       자세한 범위는 상단의 ``모터 제한 각도`` 를 참고해주세요.
     """
-
     os.system("servo write {} {}".format(no, position*10))
 
   def set_motors(self, positions, movetime=None):
@@ -148,26 +147,24 @@ Functions:
 
     movetime이 짧을수록 모션을 취하는 속도가 빨라집니다.
     만약 ``movetime`` 이 ``None`` 이라면, 속도는 이전 설정값으로 유지됩니다.
-    
+
     example::
 
       pibo_motion.set_motors([0, 0, -80, 0, 0, 0, 0, 0, 80, 0])
-    
-    :param list position: 0-9번 모터 각도 배열
-    
-    :param int movetime: 모터 이동 시간(ms)
-    
-      50ms 단위, 모터가 정해진 위치까지 이동하는 시간
-      
-      (모터 컨트롤러와의 overhead문제로 정밀하지는 않음)"""
 
+    :param list position: 0-9번 모터 각도 배열
+
+    :param int movetime: 모터 이동 시간(ms)
+
+      50ms 단위, 모터가 정해진 위치까지 이동하는 시간
+
+      (모터 컨트롤러와의 overhead문제로 정밀하지는 않음)"""
     mpos = [positions[i]*10 for i in range(len(positions))]
-    
+
     if movetime == None:
       os.system("servo mwrite {}".format(" ".join(map(str, mpos))))
     else:
       os.system("servo move {} {}".format(" ".join(map(str, mpos)), movetime))
-    return True
 
   def set_speed(self, n, spd):
     """
@@ -176,7 +173,7 @@ Functions:
     example::
 
       pibo_motion.set_speed(3, 255)
-    
+
     :param int n: 모터 번호
 
     :param int spd: 모터 속도
@@ -184,7 +181,6 @@ Functions:
       0~255 사이 값입니다.
       숫자가 클수록 속도가 빨라집니다.
     """
-
     os.system("servo speed {} {}".format(n, spd))
 
   def set_speeds(self, spds):
@@ -194,12 +190,11 @@ Functions:
     example::
 
       pibo_motion.set_speeds([20, 50, 40, 20, 20, 10, 20, 50, 40, 20])
-    
+
     :param list spds: 0-9번 모터 속도 배열
 
       배열 안의 각 가속도는 0~255 사이 정수입니다.
     """
-
     os.system("servo speed all {}".format(" ".join(map(str, spds))))
 
   def set_acceleration(self, n, accl):
@@ -208,11 +203,11 @@ Functions:
 
     가속도를 설정하게 되면, 속도가 0에서 시작하여 설정된 속도까지 점점 빨라집니다.
     그리고 점점 느려지다가 종료 지점에서 속도가 0이 됩니다.
-    
+
     example::
-    
+
       pibo_motion.set_acceleration(3, 5)
-    
+
     :param int n: 모터 번호
 
     :param int accl: 모터 속도
@@ -220,7 +215,6 @@ Functions:
       0~255 사이 값입니다.
       숫자가 클수록 가속도가 커집니다.
     """
-
     os.system("servo accelerate {} {}".format(n, accl))
 
   def set_accelerations(self, accls):
@@ -230,12 +224,11 @@ Functions:
     example::
 
       pibo_motion.set_accelerations([5, 5, 5, 5, 10, 10, 5, 5, 5, 5])
-    
+
     :param list accls: 0-9번 모터 가속도 배열
 
       배열 안의 각 가속도는 0~255 사이 정수입니다.
     """
-
     os.system("servo accelerate all {}".format(" ".join(map(str, accls))))
 
   def get_motion(self, name=None):
@@ -244,11 +237,11 @@ Functions:
 
     ``name`` 매개변수가 ``None`` 이면, 현재 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,
     ``None`` 이 아니면, 해당 이름의 모션에 대한 데이터를 출력합니다.
-    
+
     example::
-    
+
       pibo_motion.get_motion('forward1')
-    
+
     :param str name: 동작 이름
 
       profile에 저장되어있는 동작의 이름입니다.
@@ -274,11 +267,8 @@ Functions:
             'init': [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]
           }
     """
+    return list(self.profile.keys()) if name == None else self.profile.get(name)
 
-    ret = self.profile.get(name)
-    ret = list(self.profile.keys()) if ret == None else ret
-    return ret
-  
   def set_motion_raw(self, exe, cycle=1):
     """
     모션 프로파일의 동작을 실행합니다.
@@ -289,7 +279,7 @@ Functions:
         {'init_def': 1, 'init': [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]},
         1
       )
-    
+
     :param str exe: 특정 동작을 위한 각 모터의 움직임이 기록된 데이터 입니다.
 
       다음과 같은 양식을 따릅니다::
@@ -303,7 +293,7 @@ Functions:
             ...
           ]
         }
-      
+
       * ``init_def`` 는 초기동작의 유무입니다.
       * ``init`` 은 동작을 시작하기 전의 준비동작입니다.
       * ``pos`` 는 연속된 동작이 담긴 list 입니다.
@@ -313,19 +303,17 @@ Functions:
 
       동작을 몇 번 반복할지 결정합니다.
     """
-
-    ret = True
     if exe == None:
-      ret = False
-      return ret
+      return False
+
     seq,cnt,cycle_cnt = 0,0,0
     self.stopped = False
 
     if exe["init_def"] == 1:
       self.set_motors(exe["init"], seq)
-    
+
     if "pos" not in exe:
-      return ret
+      return True
 
     time.sleep(0.5)
     while True:
@@ -344,7 +332,7 @@ Functions:
           cnt,seq = 0,0
           continue
         break
-    return ret
+    return True
 
   def set_motion(self, name, cycle=1):
     """
@@ -354,20 +342,18 @@ Functions:
     example::
 
       pibo_motion.set_motion('dance1')
-    
+
     :param str name: 동작 이름
 
       모션 프로파일에 저장되어있는 동작의 이름입니다.
 
       초기화 시 기본 모션 프로파일에 있는 동작(forward1, forward2, sleep, dance1 등)을 실행할 수 있습니다.
-    
+
     :param int cycle:
 
       동작 반복 횟수
     """
-
-    exe = self.profile.get(name)
-    return self.set_motion_raw(exe, cycle)
+    return self.set_motion_raw(self.profile.get(name), cycle)
 
   def stop(self):
     """
@@ -378,7 +364,6 @@ Functions:
       # 동작을 수행 중일 때,
       pibo_motion.stop()
     """
-
     self.stopped = True
 
 class PyMotion:
@@ -422,11 +407,11 @@ Functions:
     example::
 
       pibo_pymotion.set_motor(3, 30)
-    
+
     :param int n: 모터 번호. 0~9 사이의 정수입니다.
 
     :param int degree: 모터 각도. -80~80 사이의 정수입니다.
-    
+
       자세한 범위는 상단의 ``모터 제한 각도`` 를 참고해주세요.
 
     :returns: ``True`` / ``False``
@@ -447,13 +432,13 @@ Functions:
   def set_motors(self, d_lst): # pos array
     """
     전체 모터를 특정 위치로 이동합니다.
-    
+
     example::
-    
+
       pibo_pymotion.set_motors([20, 0, 0, 12, 10, 10, -10, -10, 0, 0])
-    
+
     :param list d_lst: 0~9번 모터각도.
-    
+
       **d_lst** 에 들어가는 범위는 상단의 ``모터 제한 각도`` 와 같습니다.
 
     :returns: ``True`` / ``False``
@@ -481,7 +466,7 @@ Functions:
     example::
 
       pibo_pymotion.set_speed(3, 255)
-    
+
     :param int n: 모터 번호. 0~9 정수입니다.
 
     :param int val: 모터 속도. 0~255 정수입니다.
@@ -510,11 +495,11 @@ Functions:
     example::
 
       pibo_pymotion.set_acceleration(3, 10)
-    
+
     :param int n: 모터 번호. 0~9 정수입니다.
 
     :param int val: 모터 가속도. 0~255 정수입니다.
-    
+
     :returns: ``True`` / ``False``
     """
 

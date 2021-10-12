@@ -4,7 +4,7 @@
 Class:
 :obj:`~openpibo.device.Device`
 
-메인 컨트롤러로 메시지 (``#code:data!`` 포맷) 가 전달됩니다.  
+메인 컨트롤러로 메시지 (``#code:data!`` 포맷) 가 전달됩니다.
 이후 메인컨트롤러는 메시지를 파악하여 주어진 기능을 수행합니다.
 
 다음 메시지 상세 설명은 기능 이름에 대해 code, data, get, set으로 설명됩니다.
@@ -30,7 +30,7 @@ Class:
     * data: -
     * get: 'ok'
     * set: 전원종료 요청
-  
+
   * DC_CONN
 
     파이보의 충전기 연결 여부를 확인합니다.
@@ -65,7 +65,7 @@ Class:
   * NEOPIXEL
 
     파이보의 눈(네오픽셀) 색을 변경합니다.
-  
+
     * code: 20
     * data: 네오픽셀 색 R,G,B ('R,G,B') (예: '255,255,255')
 
@@ -105,7 +105,7 @@ Class:
   * NEOPIXEL_EACH
 
     파이보의 양쪽 눈(네오픽셀) 색을 각각 변경합니다.
-  
+
     * code: 23
     * data: 왼쪽 네오픽셀 색 R,G,B와 오른쪽 네오픽셀 색 R,G,B ('R,G,B,R,G,B') (예: '255,255,255,255,255,255')
 
@@ -128,7 +128,7 @@ Class:
 
     * get: 'ok'
     * set: 네오픽셀설정 (R,G,B,R,G,B) 양쪽 각각 설정 (색상 천천히 변경)
-  
+
   * NEOPIXEL_LOOP
 
     파이보의 눈(네오픽셀) 색을 무지개색으로 일정시간동안 변경합니다.
@@ -140,7 +140,7 @@ Class:
 
     * get: 'ok'
     * set: 네오픽셀을 무지개색으로 일정시간 반복
-  
+
   * NEOPIXEL_OFFSET_SET
 
     파이보의 눈(네오픽셀) 색의 설정 시 반영 정도를 설정합니다.   
@@ -163,7 +163,7 @@ Class:
     * data: -
     * get: 네오픽셀 오프셋 정보 (예: '27:255,255,255,255,255,255')
     * set: -
-  
+
   * NEOPIXEL_EACH_ORG
 
     파이보의 양쪽 눈(네오픽셀) 색을 각각 변경합니다. 단, 오프셋의 영향을 받지 않습니다.
@@ -180,7 +180,7 @@ Class:
   * PIR
 
     PIR 센서를 켜고 끕니다.
-  
+
     * code: 30
     * data: PIR 센서의 활성화 여부 (예: 'on')
 
@@ -193,7 +193,7 @@ Class:
   * SYSTEM
 
     각종 시스템 정보를 출력합니다.
-  
+
     * code: 40
     * data: -
     * get: 아래의 정보가 모두 출력됩니다.
@@ -247,24 +247,36 @@ Functions:
     pibo_device = Device()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
-  code = {
-    "VERSION":"10",
-    "HALT":"11",
-    "DC_CONN":"14",
-    "BATTERY":"15",
-    "NEOPIXEL":"20",
-    "NEOPIXEL_EACH":"23",
-    "PIR":"30",
-    "SYSTEM":"40",
+  code_list ={
+    "VERSION"               :"10",
+    "HALT"                  :"11",
+    "DC_CONN"               :"14",
+    "BATTERY"               :"15",
+    "REBOOT"                :"17",
+    "NEOPIXEL"              :"20",
+    "NEOPIXEL_FADE"         :"21",
+    "NEOPIXEL_BRIGHTNESS"   :"22",
+    "NEOPIXEL_EACH"         :"23",
+    "NEOPIXEL_FADE_EACH"    :"24",
+    "NEOPIXEL_LOOP"         :"25",
+    "NEOPIXEL_OFFSET_SET"   :"26",
+    "NEOPIXEL_OFFSET_GET"   :"27",
+    "NEOPIXEL_EACH_ORG"     :"28",
+    "PIR"                   :"30",
+    "SYSTEM"                :"40",
   }
   """
   Device가 사용하는 ``code`` 정보입니다.
   """
 
   def __init__(self):
-    """Device 클래스를 초기화합니다."""
+    """
+    Device 클래스를 초기화합니다.
+    """
+
     self.dev = serial.Serial(port="/dev/ttyS0", baudrate=9600)
     self.lock = Lock()
+    self.code_val_list = [i for i in code_list]
 
   def locked(self):
     """
@@ -289,7 +301,7 @@ Functions:
       pibo_device.send_cmd(20, '255,255,255')
 
     :param str or int code: 메시지 코드
-    
+
       * 10 : VERSION
       * 11 : HALT
       * 14 : DC_CONN
@@ -306,7 +318,7 @@ Functions:
       * 28 : NEOPIXEL_EACH_ORG
       * 30 : PIR
       * 40 : SYSTEM
-    
+
     :param str data: 메시지
 
       ``code`` 의 값에 따라 데이터의 형식이 다릅니다. code에 따라 data가 요구되지 않을 수도 있습니다.
@@ -324,10 +336,14 @@ Functions:
         pibo_device.send_cmd(30, 'on')
 
       **자세한 설명은 상단 "메시지 상세 설명" 참고하시기 바랍니다**
-    
+
     :returns str: Device로부터 받은 응답
-    
+
     """
+
+    if not str(code) in self.code_val_list:
+      raise Exception(f'"{code}" not support')
+
     return self.send_raw("#{}:{}!".format(code, data))
 
   def send_raw(self, raw):
@@ -339,23 +355,25 @@ Functions:
 
       pibo_device.send_raw('#20:255,255,255!')
       pibo_device.send_raw('#22:64!')
-    
+
     :param str raw: 실제 전달되는 메시지
 
       Device에 전송되는 메시지의 포맷은 ``#code:data!`` 입니다.
       해당 메시지를 메인 컨트롤러에 전송합니다.
 
       **자세한 설명은 상단 "메시지 상세 설명" 참고하시기 바랍니다**
-    
+
     :returns: Device로부터 받은 응답
     """
-    if self.lock.locked() == True:
-      return False
+
+    #if self.locked() == True:
+    #  return False
 
     self.lock.acquire()
     self.dev.write(raw.encode('utf-8'))
     data = ""
     time.sleep(0.05)
+
     while True:
       ch = self.dev.read().decode()
       if ch == '#' or ch == '\r' or ch == '\n':
@@ -363,5 +381,7 @@ Functions:
       if ch == '!':
         break
       data += ch
+
     self.lock.release()
     return data
+

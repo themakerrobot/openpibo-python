@@ -97,12 +97,6 @@ Functions:
                 [0, 0, 0],
                 ...,
                 [0, 0, 0],
-                [0, 0, 0]],
-
-              [[0, 0, 0],
-                [0, 0, 0],
-                ...,
-                [0, 0, 0],
                 [0, 0, 0]]], dtype=uint8)
     """
 
@@ -117,7 +111,7 @@ Functions:
     example::
 
       pibo_camera.read(640, 480)
-    
+
     :param int w: 촬영할 이미지의 가로 픽셀 크기 입니다.
 
       0 ~ 2592 사이 값 입니다. (default 640)
@@ -142,12 +136,12 @@ Functions:
 
       img = pibo_camera.read()
       pibo_camera.imwrite('/home/pi/image.jpg', img)
-    
+
     :param str filename: 저장할 파일 경로
 
       확장자는 jpg 또는 png를 사용할 수 있습니다.
 
-    :param numpy.ndarray img: 저장할 이미지 객체 
+    :param numpy.ndarray img: 저장할 이미지 객체
     """
 
     return cv2.imwrite(filename, img)
@@ -177,7 +171,7 @@ Functions:
     example::
 
       pibo_camera.waitKey(1000)
-    
+
     :param int timeout: 이미지를 보는 시간(ms)
     """
 
@@ -206,7 +200,7 @@ Functions:
     vs.stop()
     return True
 
-  def rectangle(self, img, p1, p2, color=(255,255,255), tickness=1):
+  def rectangle(self, img, p1, p2, colors=(255,255,255), tickness=1):
     """
     이미지에 직사각형을 그립니다.
 
@@ -214,21 +208,42 @@ Functions:
 
       img = pibo_camera.read()
       pibo_camera.rectangle(img, (10, 10), (300, 200), (255, 255, 255), 1)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :param tuple(int, int) p1: 좌측상단 좌표 (x, y)
 
     :param tuple(int, int) p2: 우측하단 좌표 (x, y)
 
-    :param tuple(int, int, int) color: RGB 값 (r, g, b)
+    :param tuple(int, int, int) colors: RGB 값 (r, g, b)
 
     :param int tickness: 사각형 모서리의 두께 (픽셀 단위)
     """
 
-    return cv2.rectangle(img, p1, p2, color, tickness)
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
 
-  def putText(self, img, text, p, size=1, color=(255,255,255), tickness=1):
+    if type(p1) is tuple:
+      raise Exception(f'type of "{p1}" must be tuple.')
+
+    if len(p1) != 2:
+      raise Exception(f'the number of "{p1}" is 2')
+
+    if type(p2) is tuple:
+      raise Exception(f'type of "{p2}" must be tuple.')
+
+    if len(p2) != 2:
+      raise Exception(f'the number of "{p2}" is 2')
+
+    if type(colors) is tuple:
+      raise Exception(f'type of "{colors}" must be tuple.')
+
+    if len(colors) != 3:
+      raise Exception(f'the number of "{colors}" is 3')
+
+    return cv2.rectangle(img, p1, p2, colors, tickness)
+
+  def putText(self, img, text, points, size=1, colors=(255,255,255), tickness=1):
     """
     이미지에 문자를 입력합니다. (영어만 가능)
 
@@ -241,15 +256,31 @@ Functions:
 
     :param str text: 표시할 문자열
 
-    :param tuple(int, int) p: 텍스트 블록 좌측하단 좌표 (x, y)
+    :param tuple(int, int) points: 텍스트 블록 좌측하단 좌표 (x, y)
 
     :param int size: 표시할 글자의 크기
 
-    :param tuple(int, int, int) color: 글자 색깔 RGB 값 (r, g, b)
+    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (r, g, b)
 
     :param int tickness: 글자 두께
     """
-    return cv2.putText(img, text, p, cv2.FONT_HERSHEY_SIMPLEX, size, color, tickness)
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
+
+    if type(points) is tuple:
+      raise Exception(f'type of "{points}" must be tuple.')
+
+    if len(points) != 2:
+      raise Exception(f'the number of "{points}" is 2')
+
+    if type(colors) is tuple:
+      raise Exception(f'type of "{colors}" must be tuple.')
+
+    if len(colors) != 3:
+      raise Exception(f'the number of "{colors}" is 3')
+
+    return cv2.putText(img, text, p, cv2.FONT_HERSHEY_SIMPLEX, size, colors, tickness)
 
   def cartoonize(self, img):
     """
@@ -259,11 +290,14 @@ Functions:
 
       img = pibo_camera.read()
       new_image = pibo_camera.cartoonize(img)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :returns: 변환된 ``numpy.ndarray`` 이미지 객체
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
 
     numDownSamples = 2 # number of downscaling steps
     numBilateralFilters = 7  # number of bilateral filtering steps
@@ -317,23 +351,37 @@ Functions:
     :returns: 크기 변환 후의 이미지 객체
     """
 
-    img = cv2.resize(img, (w, h))
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return img
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
 
-  def rotate10(self, img):
+    return cv2.cvtColor(cv2.resize(img, (w, h)), cv2.COLR_BGR2GRAY)
+
+  def rotate(self, img, degree, ratio=1.0):
     """
-    이미지를 반시계 방향으로 10도만큼 회전시킵니다.
+    이미지를 회전시킵니다.
 
     example::
 
       img = pibo_camera.read()
-      pibo_camera.rotate10(img)
-    
+      pibo_camera.rotate(img, 10, 0.9)
+
     :param numpy.ndarray img: 이미지 객체
 
-    :returns: 10도 회전한 ``numpy.ndarray`` 이미지 객체
+    :param int degree: 회전할 각도
+
+    :param float ratio: 축소 또는 확대할 비율
+
+    :returns: 회전한 ``numpy.ndarray`` 이미지 객체
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
+
+    if type(degree) is not int or abs(degree) >= 360:
+      raise Exception(f'{degree} is Integer and -360 < degree < 360')
+
+    if type(ratio) is not float or ratio >= 1.0:
+      raise Exception(f'"{ratio} is Float and ratio < 1.0')
 
     rows, cols = img.shape[0:2]
     m10 = cv2.getRotationMatrix2D((cols/2,rows/2), 10, 0.9)
@@ -352,13 +400,17 @@ Functions:
 
       img = pibo_camera.read()
       new_img = pibo_camera.bgr_hls(img)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :returns: 변환된 ``numpy.ndarray`` 이미지 객체
     """
 
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
+
     return cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
+
 
 class Face:
   """
@@ -423,7 +475,7 @@ Functions:
     """
 
     self.facedb = [[], []]
-  
+
   def detect(self, img):
     """
     얼굴을 탐색합니다.
@@ -444,6 +496,14 @@ Functions:
         [(10, 10, 40, 50), (120, 30, 160, 70), (130, 140, 200, 260)]
     """
 
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.') 
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = self.face_detector.detectMultiScale(gray, 1.1, 5)
+    #(x,y,w,h) = faces[0]
+    return faces
+
   def train_face(self, img, face, name):
     """
     얼굴을 학습하여 얼굴 데이터베이스에 저장합니다.
@@ -454,13 +514,19 @@ Functions:
       faces = pibo_face.detect(img)
       face = faces[0] # face는 faces중 하나
       pibo_face.train_face(img, face, 'honggildong')
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :param numpy.ndarray face: 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)
 
     :param str name: 디텍팅한 얼굴에 붙일 이름
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.') 
+
+    if len(face) != 4:
+      raise Exception('"face" is [x,y,w,h]')
 
     x,y,w,h = face
     rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
@@ -482,7 +548,7 @@ Functions:
       faces = pibo_face.detect(img)
       face = faces[0] # face는 faces중 하나
       pibo_face.recognize(img, face)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
@@ -493,6 +559,12 @@ Functions:
 
       오차도가 0.4 이하일 때 동일인으로 판정합니다.
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.') 
+
+    if len(face) != 4:
+      raise Exception('"face" is [x,y,w,h]')
 
     if len(self.facedb[0]) < 1:
       return False
@@ -511,11 +583,6 @@ Functions:
       data["name"] = self.facedb[0][matches.index(min(matches))]
     return data
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = self.face_detector.detectMultiScale(gray, 1.1, 5)
-    #(x,y,w,h) = faces[0]
-    return faces
-
   def get_ageGender(self, img, face):
     """
     얼굴의 나이, 성별을 추정합니다.
@@ -526,7 +593,7 @@ Functions:
       faces = pibo_face.detect(img)
       face = faces[0] # face는 faces중 하나
       pibo_face.get_ageGender(img, face)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
@@ -534,21 +601,22 @@ Functions:
     :returns: ``{"age": 나이, "gender": 성별}``
 
       * age: 나이의 범위를 tuple() 형태로 출력한다.
-      
+
         ex) (15, 20) # 15살에서 20살 정도
 
       * gender: ``male`` / ``female``
-    
+
     참고: https://github.com/kairess/age_gender_estimation
     """
 
-    data = []
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
 
-    x1, y1, w, h = face
-    x2 = x1+w
-    y2 = y1+h
+    if len(face) != 4:
+      raise Exception('"face" is [x,y,w,h]')
 
-    face_img = img[y1:y2, x1:x2].copy()
+    x, y, w, h = face
+    face_img = img[y:y+h, x:x+w].copy()
     blob = cv2.dnn.blobFromImage(face_img, scalefactor=1, size=(227, 227),
       mean=(78.4263377603, 87.7689143744, 114.895847746),
       swapRB=False, crop=False)
@@ -563,13 +631,11 @@ Functions:
     age_preds = self.agenet.forward()
     age = self.age_class[age_preds[0].argmax()]
 
-    data = {"age":age, "gender":gender}
-
     # visualize
     #cv2.rectangle(img, (x1, y1), (x2, y2), (255,255,255), 2)
     #cv2.putText(img, "{} {}".format(gender, age), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128,128), 2)
-    return data
-  
+    return {"age":age, "gender":gender}
+
   def get_db(self):
     """
     사용 중인 얼굴 데이터베이스를 확인합니다.
@@ -595,7 +661,7 @@ Functions:
     """
 
     return self.facedb
-  
+
   def save_db(self, filename):
     """
     얼굴 데이터베이스를 파일로 저장합니다.
@@ -603,7 +669,7 @@ Functions:
     example::
 
       pibo_face.save_db('/home/pi/facedb')
-    
+
     :param str filename: 저장할 얼굴 데이터베이스 파일의 경로입니다.
     """
 
@@ -617,7 +683,7 @@ Functions:
     example::
 
       pibo_face.delete_face('honggildong')
-    
+
     :param str name: 삭제할 얼굴의 이름
 
     :returns: ``True`` / ``False``
@@ -643,8 +709,12 @@ Functions:
     :param str filename: 불러 올 ``facedb`` 파일의 경로입니다.
     """
 
+    if not os.path.isfile(filename):
+      raise Exception('"{filename}" not found.')
+
     with open(filename, "rb") as f :
       self.facedb = pickle.load(f)
+
 
 class Detect:
   """
@@ -683,20 +753,23 @@ Functions:
     인식 가능한 사물은 다음과 같습니다::
 
       "background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", 
-      "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", 
+      "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike",
       "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"
 
     example::
 
       img = pibo_camera.read()
       pibo_detect.detect_object(img)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :returns: ``{"name":이름, "score":정확도, "position":사물좌표(startX, startY, endX, endY)}``
 
       * score는 0~100 사이의 float 값 입니다.
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
 
     data = []
     (h, w) = img.shape[:2]
@@ -726,11 +799,14 @@ Functions:
 
       img = pibo_camera.read()
       pibo_detect.detect_qr(img)
-    
+
     :param numpy.ndarray img: 이미지 객체
 
     :returns: ``{"data": 내용, "type": 바코드 / QR코드}``
     """
+
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
 
     barcodes = pyzbar.decode(img)
     return {"data":barcodes[0].data.decode("utf-8"), "type":barcodes[0].type} if len(barcodes) > 0  else {"data":"", "type":""}
@@ -749,5 +825,7 @@ Functions:
     :returns: 인식된 문자열
     """
 
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    return pytesseract.image_to_string(img_rgb, lang='eng+kor', config=r'--oem 3 --psm 6')
+    if not type(img) is numpy.ndarray:
+      raise Exception('"img" is not image data from opencv.')
+
+    return pytesseract.image_to_string(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), lang='eng+kor', config=r'--oem 3 --psm 6')

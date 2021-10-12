@@ -30,7 +30,7 @@ Functions:
     def search(self, search_text: str):
         """
         위키백과에서 ``search_text`` 를 검색합니다.
-        
+
         example::
 
             result = pibo_wiki.search('사과')
@@ -38,7 +38,7 @@ Functions:
         :param str search_text: 위키백과에서의 검색어
 
         :returns: 내용을 dictionary 배열 형태로 반환합니다.
-        
+
             대부분의 경우 '0'번 항목에 개요를 표시하고, 검색된 내용이 없을 경우 None을 반환합니다.
 
             example::
@@ -168,13 +168,16 @@ Functions:
                 or None
         """
 
+        region = Weather.region_list.get(search_region)
+        if region == None:
+          raise Exception(f'"{search_region}" not support')
+
         _forecast = ''
         _today = {}
         _tomorrow = {}
         _after_tomorrow = {}
 
-        region_num = Weather.region_list.get(search_region)
-        url = f'https://www.weather.go.kr/w/weather/forecast/short-term.do?stnId={region_num}'
+        url = f'https://www.weather.go.kr/w/weather/forecast/short-term.do?stnId={region}'
         resp = requests.get(url, headers={'User-Agent' : 'Mozilla/5.0'})
         soup = BeautifulSoup(resp.content, 'html.parser')
         forecasts = soup.find('div', {'class': 'cmp-view-content'}).text
@@ -209,7 +212,7 @@ Functions:
     example::
 
         from openpibo.collect import News
-    
+
         pibo_news = News()
         # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
     """
@@ -262,25 +265,24 @@ Functions:
                 ]
                 or None
         """
-        _articles = []
-        _code = News.topic_list.get(search_topic)
-        
-        if _code == None:
-            return None
+        topic = News.topic_list.get(search_topic)
+        if topic == None:
+          raise Exception(f'"{search_topic}" not support')
 
-        url = f'https://fs.jtbc.joins.com//RSS/{_code}.xml'
-        resp = requests.get(url, headers={'User-Agent' : 'Mozilla/5.0'})
-        soup = BeautifulSoup(resp.content, 'xml')
+        _articles = []
+        url = f'https://fs.jtbc.joins.com//RSS/{topic}.xml'
+        res = requests.get(url, headers={'User-Agent' : 'Mozilla/5.0'})
+        soup = BeautifulSoup(res.content, 'xml')
         items = soup.findAll('item')
         for item in items:
-            _articles.append({
-                'title':item.find('title').text,
-                'link':item.find('link').text,
-                'description':item.find('description').text,
-                'pubDate':item.find('pubDate').text
-            })
+          _articles.append({
+            'title':item.find('title').text,
+            'link':item.find('link').text,
+            'description':item.find('description').text,
+            'pubDate':item.find('pubDate').text
+          })
         return _articles
-    
+
 
 if __name__ == "__main__":
     # wiki = Wikipedia()

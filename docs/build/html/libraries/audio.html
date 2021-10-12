@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>audio &mdash; openpibo 0.9.0 문서</title>
+  <title>audio &mdash; openpibo 0.9.4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/audio.html" />
@@ -107,14 +107,19 @@
            <div itemprop="articleBody">
              
   <section id="module-openpibo.audio">
-<span id="audio"></span><h1>audio<a class="headerlink" href="#module-openpibo.audio" title="이 표제에 대한 퍼머링크"></a></h1>
+<span id="audio"></span><h1>audio<a class="headerlink" href="#module-openpibo.audio" title="제목 주소"></a></h1>
 <p>mp3, wav 오디오 파일을 재생 및 정지합니다.</p>
 <p>Class:
 <a class="reference internal" href="#openpibo.audio.Audio" title="openpibo.audio.Audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Audio</span></code></a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="openpibo.audio.isNumber">
+<span class="sig-prename descclassname"><span class="pre">openpibo.audio.</span></span><span class="sig-name descname"><span class="pre">isNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.isNumber" title="정의 주소"></a></dt>
+<dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.audio.Audio">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.audio.</span></span><span class="sig-name descname"><span class="pre">Audio</span></span><a class="headerlink" href="#openpibo.audio.Audio" title="이 정의에 대한 퍼머링크"></a></dt>
-<dd><p>기반 클래스: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">openpibo.audio.</span></span><span class="sig-name descname"><span class="pre">Audio</span></span><a class="headerlink" href="#openpibo.audio.Audio" title="정의 주소"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <a class="reference internal" href="#openpibo.audio.Audio.play" title="openpibo.audio.Audio.play"><code class="xref py py-meth docutils literal notranslate"><span class="pre">play()</span></code></a>
 <a class="reference internal" href="#openpibo.audio.Audio.stop" title="openpibo.audio.Audio.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>
@@ -131,14 +136,14 @@
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.audio.Audio.play">
-<span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'local'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-2000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.play" title="이 정의에 대한 퍼머링크"></a></dt>
+<span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'local'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-2000.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.play" title="정의 주소"></a></dt>
 <dd><p>mp3 또는 wav 파일을 재생합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo-files/audio/test.mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="s1">&#39;-2000&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">매개변수</dt>
+<dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – <p>재생할 파일의 경로를 지정합니다.</p>
 <p>mp3와 wav 형식을 지원합니다.</p>
@@ -170,7 +175,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.audio.Audio.stop">
-<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.stop" title="이 정의에 대한 퍼머링크"></a></dt>
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.stop" title="정의 주소"></a></dt>
 <dd><p>백그라운드에서 재생중인 오디오를 정지합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
@@ -180,7 +185,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.audio.Audio.mute">
-<span class="sig-name descname"><span class="pre">mute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.mute" title="이 정의에 대한 퍼머링크"></a></dt>
+<span class="sig-name descname"><span class="pre">mute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.mute" title="정의 주소"></a></dt>
 <dd><p>파이보를 무음모드로 만듭니다.</p>
 <p>인스턴스(pibo_audio)를 생성하면, 기본적으로 무음모드는 해제되어있습니다.</p>
 <p>무음모드에서는 <code class="docutils literal notranslate"><span class="pre">play</span></code> 메소드를 사용해도 소리가 출력되지 않습니다.</p>
@@ -189,7 +194,7 @@
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">매개변수</dt>
+<dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: 무음모드 설정.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: 무음모드 해제.</p></li>
@@ -214,7 +219,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; 저작권 2021, Circulus Education, openpibo-python-0.9.0.</p>
+    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.4.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
