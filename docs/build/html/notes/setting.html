@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>설정 &mdash; openpibo 0.9.4 documentation</title>
+  <title>설정 &mdash; openpibo 0.9.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/notes/setting.html" />
@@ -132,14 +132,15 @@
 <li><p>ssid: 연결할 wifi 이름입니다.</p></li>
 <li><p>psk: 연결할 wifi의 비밀번호입니다.</p></li>
 </ul>
-<p>wifi의 비밀번호가 없는 경우, psk를 입력하지 않고,<br />
-key_mgmt에 WPA-PSK 대신 NONE을 입력합니다.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">=</span><span class="p">{</span>
-   <span class="n">ssid</span><span class="o">=</span><span class="s2">&quot;circulus-ops&quot;</span>
-   <span class="n">key_mgmt</span><span class="o">=</span><span class="n">NONE</span>
+   <span class="n">ssid</span><span class="o">=</span><span class="s2">&quot;pibo&quot;</span>
+   <span class="n">psk</span><span class="o">=</span><span class="s2">&quot;!pibo0314&quot;</span>
+   <span class="n">key_mgmt</span><span class="o">=</span><span class="n">WPA</span><span class="o">-</span><span class="n">PSK</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>wifi의 비밀번호가 없는 경우, psk를 입력하지 않고,<br />
+key_mgmt에 WPA-PSK 대신 NONE을 입력합니다.</p>
 </li>
 <li><p>컴퓨터에서 MicroSD 카드를 분리한 후 파이보에 연결합니다.</p>
 <p><img alt="" src="../_images/sd_con.jpg" /></p>
@@ -255,7 +256,7 @@ SSH를 통해 파이보에 접속하고 파이보를 제어하거나 필요한 �
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.4.</p>
+    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.2.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

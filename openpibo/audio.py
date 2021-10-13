@@ -79,19 +79,19 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception('"{filename}" not found.') 
+      raise Exception(f'"{filename}" not found.') 
 
     if not filename.split('.')[-1] in ['mp3', 'wav']:
-      raise Exception('"{filename}" is not "mp3" or "wav".')
+      raise Exception(f'"{filename}" is not "mp3" or "wav".')
 
     if not out in ['local', 'hdmi', 'both']:
-      raise Exception('"{out}" not include in "local", "hdmi", "both".')
+      raise Exception(f'"{out}" not include in "local", "hdmi", "both".')
 
     if not isNumber(volume):
-      raise Exception('"{volume}" is not Number.')
+      raise Exception(f'"{volume}" is not Number.')
 
     if type(background) != bool:
-      raise Exception('"{background}" is not bool.')
+      raise Exception(f'"{background}" is not bool.')
 
     opt = '&' if background else ''
     os.system(f'omxplayer -o {out} --vol {volume} {filename} {opt}')

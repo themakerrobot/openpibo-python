@@ -86,6 +86,10 @@ Functions:
     except Exception as ex:
       result = {"result":False, "value":""}
     return result['value']'''
+
+    if not to in ['en', 'ko']:
+      raise Exception(f'"{to}" must be "en" or "ko"')
+
     return self.translator.translate(string, lang_tgt=to)
 
   def tts(self, string, filename="tts.mp3"):
@@ -154,7 +158,7 @@ Functions:
     --data-binary @stream.wav '''
     url = 'https://kakaoi-newtone-openapi.kakao.com/v1/recognize'
     headers = {
-      'Content-Type': 'application/octet-stream',
+      'Content-Type': 'application/octet-stliream',
       'Authorization': 'KakaoAK ' + self.kakao_account
     }
 
@@ -168,14 +172,15 @@ Functions:
     result = json.loads(result_json_string)
     return result['value']
 
+
 class Dialog:
   """
 Functions:
 :meth:`~openpibo.speech.Dialog.mecab_pos`
 :meth:`~openpibo.speech.Dialog.mecab_morphs`
 :meth:`~openpibo.speech.Dialog.mecab_nouns`
-:meth:`~openpibo.speech.Dialog.get_dialog`
-:meth:`~openpibo.speech.Dialog.getDiff`
+:meth:`~openpibo.speech.Dialog.conversation`
+:meth:`~openpibo.speech.Dialog.get_distance`
 
   파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.
 
@@ -264,7 +269,12 @@ Functions:
     example::
 
       pibo_dialog.get_dialog('나랑 같이 놀자')
-      # '지금 그러고 있어요.'
+    
+    :param str string: 질문하는 문장 (한글)
+
+    :returns: 답변하는 문장 (한글)
+
+      ``string`` 타입 입니다.
     """
 
     max_acc = 0

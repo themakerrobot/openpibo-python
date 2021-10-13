@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>speech &mdash; openpibo 0.9.4 documentation</title>
+  <title>speech &mdash; openpibo 0.9.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/speech.html" />
@@ -214,8 +214,8 @@
 <a class="reference internal" href="#openpibo.speech.Dialog.mecab_pos" title="openpibo.speech.Dialog.mecab_pos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mecab_pos()</span></code></a>
 <a class="reference internal" href="#openpibo.speech.Dialog.mecab_morphs" title="openpibo.speech.Dialog.mecab_morphs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mecab_morphs()</span></code></a>
 <a class="reference internal" href="#openpibo.speech.Dialog.mecab_nouns" title="openpibo.speech.Dialog.mecab_nouns"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mecab_nouns()</span></code></a>
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dialog()</span></code>
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">getDiff()</span></code></p>
+<a class="reference internal" href="#openpibo.speech.Dialog.conversation" title="openpibo.speech.Dialog.conversation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">conversation()</span></code></a>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">get_distance()</span></code></p>
 <blockquote>
 <div><p>파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
 <ul class="simple">
@@ -300,9 +300,18 @@
 <p>저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_dialog</span><span class="o">.</span><span class="n">get_dialog</span><span class="p">(</span><span class="s1">&#39;나랑 같이 놀자&#39;</span><span class="p">)</span>
-<span class="c1"># &#39;지금 그러고 있어요.&#39;</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – 질문하는 문장 (한글)</p>
+</dd>
+<dt class="field-even">반환</dt>
+<dd class="field-even"><p><p>답변하는 문장 (한글)</p>
+<p><code class="docutils literal notranslate"><span class="pre">string</span></code> 타입 입니다.</p>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -327,7 +336,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.4.</p>
+    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.2.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

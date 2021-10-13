@@ -25,15 +25,16 @@ OS는 파이보 DIY 키트에 포함되어 있으며, 이후 [여기](https://gi
    - ssid: 연결할 wifi 이름입니다.
    - psk: 연결할 wifi의 비밀번호입니다.
 
-   wifi의 비밀번호가 없는 경우, psk를 입력하지 않고,  
-   key_mgmt에 WPA-PSK 대신 NONE을 입력합니다.
-
    ```
    network={
-      ssid="circulus-ops"
-      key_mgmt=NONE
+      ssid="pibo"
+      psk="!pibo0314"
+      key_mgmt=WPA-PSK
    }
    ```
+
+   wifi의 비밀번호가 없는 경우, psk를 입력하지 않고,  
+   key_mgmt에 WPA-PSK 대신 NONE을 입력합니다.
 
 3. 컴퓨터에서 MicroSD 카드를 분리한 후 파이보에 연결합니다.
 

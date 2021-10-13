@@ -84,6 +84,7 @@ Functions:
 :meth:`~openpibo.motion.Motion.set_accelerations`
 :meth:`~openpibo.motion.Motion.get_motion`
 :meth:`~openpibo.motion.Motion.set_motion_raw`
+:meth:`~openpibo.motion.Motion.set_motion`
 :meth:`~openpibo.motion.Motion.stop`
 
   파이보의 움직임을 제어합니다.
@@ -104,7 +105,7 @@ Functions:
     with open(self.profile_path, 'r') as f:
       self.profile = json.load(f)
 
-  def set_profile(self, path):
+  def set_profile(self, filename):
     """
     만들어둔 모션 데이터베이스를 불러와 모션 프로파일에 저장합니다.
 
@@ -116,12 +117,16 @@ Functions:
 
       pibo_motion.set_profile('/home/pi/mydata/motion.json')
 
-    :param str path: 모터 프로파일 경로"""
+    :param str filename: 모터 프로파일 경로
+    """
 
-    with open(path, 'r') as f:
+    if not os.path.isfile(filename):
+      raise Exception(f'"{filename}" not found.')
+
+    with open(filename, 'r') as f:
       self.profile = json.load(f)
 
-  def set_motor(self, no, position):
+  def set_motor(self, n, pos):
     """
     모터 1개를 특정 위치로 이동합니다.
     
@@ -129,19 +134,29 @@ Functions:
     
       pibo_motion.set_motor(2, 30)
     
-    :param int no: 모터 번호
+    :param int n: 모터 번호
     
       0~9의 숫자가 들어갑니다.
       해당 번호의 위치는 상단의 ``모터 번호당 위치`` 를 참고해주세요.
     
-    :param int position: 모터 각도
+    :param int pos: 모터 각도
     
       -80~80의 숫자가 들어갑니다.
       자세한 범위는 상단의 ``모터 제한 각도`` 를 참고해주세요.
     """
-    os.system("servo write {} {}".format(no, position*10))
 
-  def set_motors(self, positions, movetime=None):
+    if type(n) is not int:
+      raise Exception (f'"{n}" is not Integer')
+
+    if abs(n) > 9:
+      raise Exception (f'"{n}" is not 0 ~ 9')
+    
+    if type(pos) is not int:
+      raise Exception(f'"{pos}" is not Integer')
+
+    os.system(f"servo write {n} {pos*10}")
+
+  def set_motors(self, pos_list, movetime=None):
     """
     전체 모터를 특정 위치로 이동합니다.
 
@@ -152,19 +167,24 @@ Functions:
 
       pibo_motion.set_motors([0, 0, -80, 0, 0, 0, 0, 0, 80, 0])
 
-    :param list position: 0-9번 모터 각도 배열
+    :param list pos_list: 0-9번 모터 각도 배열
 
     :param int movetime: 모터 이동 시간(ms)
 
       50ms 단위, 모터가 정해진 위치까지 이동하는 시간
 
-      (모터 컨트롤러와의 overhead문제로 정밀하지는 않음)"""
-    mpos = [positions[i]*10 for i in range(len(positions))]
+      (모터 컨트롤러와의 overhead문제로 정밀하지는 않음)
+    """
+
+    if len(pos_list) != 10:
+      raise Exception (f'"{pos_list}"\'s length is not 10.')
+
+    mpos = [pos_list[i]*10 for i in range(len(pos_list))]
 
     if movetime == None:
-      os.system("servo mwrite {}".format(" ".join(map(str, mpos))))
+      os.system(f'servo mwrite {" ".join(map(str, mpos))}')
     else:
-      os.system("servo move {} {}".format(" ".join(map(str, mpos)), movetime))
+      os.system(f'servo move {" ".join(map(str, mpos))} {movetime}')
 
   def set_speed(self, n, spd):
     """
@@ -181,9 +201,22 @@ Functions:
       0~255 사이 값입니다.
       숫자가 클수록 속도가 빨라집니다.
     """
-    os.system("servo speed {} {}".format(n, spd))
+    
+    if type(n) is not int:
+      raise Exception (f'"{n}" is not Integer')
 
-  def set_speeds(self, spds):
+    if abs(n) > 9:
+      raise Exception (f'"{n}" is not 0 ~ 9')
+    
+    if type(spd) is not int:
+      raise Exception (f'"{spd}" is not Integer')
+    
+    if abs(spd) > 255:
+      raise Exception (f'"{spd}" is not 0 ~ 255')
+
+    os.system(f'servo speed {n} {spd}')
+
+  def set_speeds(self, spd_list):
     """
     전체 모터의 속도를 설정합니다.
 
@@ -191,11 +224,15 @@ Functions:
 
       pibo_motion.set_speeds([20, 50, 40, 20, 20, 10, 20, 50, 40, 20])
 
-    :param list spds: 0-9번 모터 속도 배열
+    :param list spd_list: 0-9번 모터 속도 배열
 
       배열 안의 각 가속도는 0~255 사이 정수입니다.
     """
-    os.system("servo speed all {}".format(" ".join(map(str, spds))))
+    
+    if len(spd_list) != 10:
+      raise Exception (f'"{spd_list}"\'s length is not 10.')
+
+    os.system(f'servo speed all {" ".join(map(str, spd_list))}')
 
   def set_acceleration(self, n, accl):
     """
@@ -215,9 +252,22 @@ Functions:
       0~255 사이 값입니다.
       숫자가 클수록 가속도가 커집니다.
     """
-    os.system("servo accelerate {} {}".format(n, accl))
+    
+    if type(n) is not int:
+      raise Exception (f'"{n}" is not Integer')
 
-  def set_accelerations(self, accls):
+    if abs(n) > 9:
+      raise Exception (f'"{n}" is not 0 ~ 9')
+    
+    if type(accl) is not int:
+      raise Exception (f'"{accl}" is not Integer')
+    
+    if abs(accl) > 255:
+      raise Exception (f'"{accl}" is not 0 ~ 255')
+
+    os.system(f'servo accelerate {n} {accl}')
+
+  def set_accelerations(self, accl_list):
     """
     전체 모터의 가속도를 설정합니다.
 
@@ -225,11 +275,15 @@ Functions:
 
       pibo_motion.set_accelerations([5, 5, 5, 5, 10, 10, 5, 5, 5, 5])
 
-    :param list accls: 0-9번 모터 가속도 배열
+    :param list accl_list: 0-9번 모터 가속도 배열
 
       배열 안의 각 가속도는 0~255 사이 정수입니다.
     """
-    os.system("servo accelerate all {}".format(" ".join(map(str, accls))))
+
+    if len(accl_list) != 10:
+      raise Exception (f'"{accl_list}"\'s length is not 10.')
+
+    os.system(f'servo accelerate all {" ".join(map(str, accl_list))}')
 
   def get_motion(self, name=None):
     """
@@ -267,6 +321,7 @@ Functions:
             'init': [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]
           }
     """
+
     return list(self.profile.keys()) if name == None else self.profile.get(name)
 
   def set_motion_raw(self, exe, cycle=1):
@@ -303,8 +358,12 @@ Functions:
 
       동작을 몇 번 반복할지 결정합니다.
     """
+
     if exe == None:
-      return False
+      raise Exception(f'"{exe}" is not motion data.')
+
+    if type(cycle) is not int or cycle < 1:
+      raise Exception(f'"{cycle} is not Integer or <= 0.')
 
     seq,cnt,cycle_cnt = 0,0,0
     self.stopped = False
@@ -313,7 +372,7 @@ Functions:
       self.set_motors(exe["init"], seq)
 
     if "pos" not in exe:
-      return True
+      return
 
     time.sleep(0.5)
     while True:
@@ -332,7 +391,6 @@ Functions:
           cnt,seq = 0,0
           continue
         break
-    return True
 
   def set_motion(self, name, cycle=1):
     """
@@ -366,6 +424,7 @@ Functions:
     """
     self.stopped = True
 
+
 class PyMotion:
   """
 Functions:
@@ -387,20 +446,20 @@ Functions:
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
-  _defaults = {
-    "device_path":"/dev/ttyACM0",
-  }
+  motor_range = [25,35,80,30,50,25,25,35,80,30]
+  """
+  PyMotion이 사용하는 Motor 별 가능한 범위입니다.
+  0 -> 9 번 모터 순서이며, 절대값입니다. (모터0 이동가능범위: -25 ~ 25)
+  """
 
   def __init__(self):
     """
     PyMotion 클래스를 초기화합니다.
     """
 
-    self.__dict__.update(self._defaults) # set up default values
-    self.dev = serial.Serial(port=self.device_path, baudrate=115200)
-    self.motor_range = [25,35,80,30,50,25,25,35,80,30]
+    self.dev = serial.Serial(port="/dev/ttyACM0", baudrate=115200)
 
-  def set_motor(self, n, degree):
+  def set_motor(self, n, pos):
     """
     모터 1개를 특정 위치로 이동합니다.
 
@@ -410,26 +469,30 @@ Functions:
 
     :param int n: 모터 번호. 0~9 사이의 정수입니다.
 
-    :param int degree: 모터 각도. -80~80 사이의 정수입니다.
+    :param int pos: 모터 각도. -80~80 사이의 정수입니다.
 
       자세한 범위는 상단의 ``모터 제한 각도`` 를 참고해주세요.
-
-    :returns: ``True`` / ``False``
     """
 
-    ret = True
+    if type(n) is not int:
+      raise Exception(f'"{n}" is not Integer')
 
-    if abs(degree) > self.motor_range[n]:
-      return False, "range error ch:{} range:-{} ~ {}".format(n, -1*self.motor_range[n], self.motor_range[n])
+    if n < 0 or n > 9:
+      raise Exception(f'"{n}" is not 0 ~ 9')
 
-    pos = (degree*10 + 1500)*4
-    lsb = pos & 0x7f #7 bits for least significant byte
-    msb = (pos >> 7) & 0x7f #shift 7 and take next 7 bits for msb
+    if type(pos) is not int:
+      raise Exception(f'"{pos}" is not Integer')
+
+    if abs(pos) > PyMotion.motor_range[n]:
+      raise Exception(f'range error ch:{n} range:-{PyMotion.motor_range[n]} ~ {PyMotion.motor_range[n]}')
+
+    pos_val = (pos*10 + 1500)*4
+    lsb = pos_val & 0x7f #7 bits for least significant byte
+    msb = (pos_val >> 7) & 0x7f #shift 7 and take next 7 bits for msb
     cmd = chr(0x84) + chr(n) + chr(lsb) + chr(msb)
     self.dev.write(bytes(cmd,'latin-1'))
-    return ret, ""
 
-  def set_motors(self, d_lst): # pos array
+  def set_motors(self, pos_list): # pos array
     """
     전체 모터를 특정 위치로 이동합니다.
 
@@ -437,29 +500,24 @@ Functions:
 
       pibo_pymotion.set_motors([20, 0, 0, 12, 10, 10, -10, -10, 0, 0])
 
-    :param list d_lst: 0~9번 모터각도.
+    :param list pos_list: 0~9번 모터각도.
 
-      **d_lst** 에 들어가는 범위는 상단의 ``모터 제한 각도`` 와 같습니다.
-
-    :returns: ``True`` / ``False``
+      **pos_list** 에 들어가는 범위는 상단의 ``모터 제한 각도`` 와 같습니다.
     """
 
-    ret = True
+    for n in range(len(pos_list)):
+      if abs(pos_list[n]) > PyMotion.motor_range[n]:
+        raise Exception(f'range error ch:{n} range:-{PyMotion.motor_range[n]} ~ {PyMotion.motor_range[n]}')
 
-    for i in range(len(d_lst)):
-      if abs(d_lst[i]) > self.motor_range[i]:
-        return False, "range error ch:{} range:-{} ~ {}".format(i, -1*self.motor_range[i], self.motor_range[i])
-
-    p_lst = [(d_lst[i]*10+1500)*4 for i in range(len(d_lst))]
+    pos_list_val = [(pos_list[i]*10+1500)*4 for i in range(len(d_lst))]
     cmd = chr(0x9F) + chr(10) + chr(0)
-    for pos in p_lst:
+    for pos in pos_list_val:
       lsb = pos & 0x7f #7 bits for least significant byte
       msb = (pos >> 7) & 0x7f #shift 7 and take next 7 bits for msb
       cmd += chr(lsb) + chr(msb)
     self.dev.write(bytes(cmd,'latin-1'))
-    return ret, ""
 
-  def set_speed(self, n, val):
+  def set_speed(self, n, spd):
     """
     모터 1개의 속도를 설정합니다.
 
@@ -469,23 +527,28 @@ Functions:
 
     :param int n: 모터 번호. 0~9 정수입니다.
 
-    :param int val: 모터 속도. 0~255 정수입니다.
-
-    :returns: ``True`` / ``False``
+    :param int spd: 모터 속도. 0~255 정수입니다.
     """
 
-    ret = True
+    if type(n) is not int:
+      raise Exception (f'"{n}" is not Integer')
 
-    if abs(val) > 255:
-      return False, "range error range: 0~255"
+    if abs(n) > 9:
+      raise Exception (f'"{n}" is not 0 ~ 9')
 
-    lsb = val & 0x7f #7 bits for least significant byte
-    msb = (val >> 7) & 0x7f #shift 7 and take next 7 bits for msb
+    if type(spd) is not int:
+      raise Exception (f'"{spd}" is not Integer')
+    
+    if abs(spd) > 255:
+      raise Exception (f'"{spd}" is not 0 ~ 255')
+
+
+    lsb = spd & 0x7f #7 bits for least significant byte
+    msb = (spd >> 7) & 0x7f #shift 7 and take next 7 bits for msb
     cmd = chr(0x87) + chr(n) + chr(lsb) + chr(msb)
     self.dev.write(bytes(cmd,'latin-1'))
-    return ret, ""
 
-  def set_acceleration(self, n, val):
+  def set_acceleration(self, n, accl):
     """
     모터 1개의 가속도를 설정합니다.
 
@@ -498,21 +561,25 @@ Functions:
 
     :param int n: 모터 번호. 0~9 정수입니다.
 
-    :param int val: 모터 가속도. 0~255 정수입니다.
-
-    :returns: ``True`` / ``False``
+    :param int accl: 모터 가속도. 0~255 정수입니다.
     """
 
-    ret = True
+    if type(n) is not int:
+      raise Exception (f'"{n}" is not Integer')
 
-    if abs(val) > 255:
-      return False, "range error range: 0~255"
+    if abs(n) > 9:
+      raise Exception (f'"{n}" is not 0 ~ 9')
 
-    lsb = val & 0x7f #7 bits for least significant byte
-    msb = (val >> 7) & 0x7f #shift 7 and take next 7 bits for msb
+    if type(accl) is not int:
+      raise Exception (f'"{accl}" is not Integer')
+    
+    if abs(accl) > 255:
+      raise Exception (f'"{accl}" is not 0 ~ 255')
+
+    lsb = accl & 0x7f #7 bits for least significant byte
+    msb = (accl >> 7) & 0x7f #shift 7 and take next 7 bits for msb
     cmd = chr(0x89) + chr(n) + chr(lsb) + chr(msb)
     self.dev.write(bytes(cmd,'latin-1'))
-    return ret, ""
 
   def set_init(self):
     """
@@ -522,10 +589,6 @@ Functions:
 
       pibo_pymotion.set_init()
 
-    :returns: ``True`` / ``False``
     """
 
-    ret = True
-    cmd = chr(0xA2)
-    self.dev.write(bytes(cmd,'latin-1'))
-    return ret, ""
+    self.dev.write(bytes(chr(0xA2),'latin-1'))

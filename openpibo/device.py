@@ -266,7 +266,7 @@ Functions:
     "SYSTEM"                :"40",
   }
   """
-  Device가 사용하는 ``code`` 정보입니다.
+  Device가 사용하는 ``code_list`` 정보입니다.
   """
 
   def __init__(self):
@@ -276,7 +276,7 @@ Functions:
 
     self.dev = serial.Serial(port="/dev/ttyS0", baudrate=9600)
     self.lock = Lock()
-    self.code_val_list = [i for i in code_list]
+    self.code_val_list = [i for i in Device.code_list.values()]
 
   def locked(self):
     """

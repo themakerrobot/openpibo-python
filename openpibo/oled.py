@@ -120,11 +120,12 @@ Functions:
 
     if filename == None:
       filename = self.font_path
+
     if size == None:
       size = self.font_size
 
     if not os.path.isfile(filename):
-      raise Exception('"{filename}" not found.')
+      raise Exception(f'"{filename}" not found.')
 
     self.font = ImageFont.truetype(filename, size)
 
@@ -141,11 +142,11 @@ Functions:
     :param str text: 문자열 내용
     """
 
-    if type(points) is tuple:
+    if type(points) is not tuple:
       raise Exception(f'type of "{points}" must be tuple.')
 
     if len(points) != 2:
-      raise Exception(f'the number of "{points}" is 2')
+      raise Exception(f'the number of "{points}" must be 2')
 
     draw = ImageDraw.Draw(self.image)
     draw.text(points, text, font=self.font, fill=255)
@@ -164,7 +165,7 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception('"{filename}" not found.') 
+      raise Exception(f'"{filename}" not found.') 
 
     self.image = Image.open(filename).convert('1')
 
@@ -187,7 +188,7 @@ Functions:
     :param numpy.ndarray img: 이미지 객체
     """
 
-    if not type(img) is numpy.ndarray:
+    if type(img) is not numpy.ndarray:
       raise Exception('"img" is not image data from opencv.')
 
     self.image = Image.fromarray(img).convert('1')
@@ -208,7 +209,7 @@ Functions:
       * ``False`` : 사각형 내부를 채우지 않습니다.
     """
 
-    if type(points) is tuple:
+    if type(points) is not tuple:
       raise Exception(f'type of "{points}" must be tuple.')
 
     if len(points) != 4:
@@ -236,7 +237,7 @@ Functions:
       * ``False`` : 타원 내부를 채우지 않습니다.
     """
 
-    if type(points) is tuple:
+    if type(points) is not tuple:
       raise Exception(f'type of "{points}" must be tuple.')
 
     if len(points) != 4:
@@ -259,7 +260,7 @@ Functions:
     :param points points: 선의 시작 좌표, 선의 끝 좌표 (x1, y1, x2, y2)
     """
 
-    if type(points) is tuple:
+    if type(points) is not tuple:
       raise Exception(f'type of "{points}" must be tuple.')
 
     if len(points) != 4:
@@ -300,6 +301,6 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception('"{filename}" not found.') 
+      raise Exception(f'"{filename}" not found.') 
 
     return cv2.imread(filename).shape
