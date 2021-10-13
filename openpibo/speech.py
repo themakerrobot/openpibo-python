@@ -260,7 +260,7 @@ Functions:
 
     return self.mecab.nouns(string)
 
-  def conversation(self, q):
+  def get_dialog(self, q):
     """
     일상대화에 대한 답을 추출합니다.
 
@@ -294,7 +294,7 @@ Functions:
 
 def get_distance(aT, bT):
   """
-  (``Dialog`` 클래스의 ``conversation`` 메소드의 내부함수)
+  (``Dialog`` 클래스의 ``get_dialog`` 메소드의 내부함수)
 
   사용자의 질문과 유사한 데이터를 찾는 함수입니다.
   """
