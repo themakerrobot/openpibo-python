@@ -27,7 +27,7 @@ pi@raspberrypi:~/openpibo-examples/oled $ sudo python3 figure_test.py
 
 **figure_test.py 결과**
 
-![](images/OLED_figure_test.JPG)
+![](images/oled_figure_test.jpg)
 
 ## image_test.py
 
@@ -60,7 +60,7 @@ pi@raspberrypi:~/openpibo-examples/oled $ sudo python3 image_test.py
 
 **image_test.py 결과**
 
-![OLED_image](images/OLED_image.png)
+![](images/oled_image.png)
 
 ## self_test.py
 
@@ -121,4 +121,4 @@ pi@raspberrypi:~/openpibo-examples/oled $ sudo python3 text_test.py
 
 **text_test.py 결과**
 
-![](images/OLED_text_test.JPG)
+![](images/oled_text_test.jpg)

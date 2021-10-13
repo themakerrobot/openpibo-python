@@ -82,7 +82,7 @@ if __name__ == "__main__":
   main()
 ```
 
-![](images/Speech_chatbot_flow.png)
+![](images/speech_chatbot_flow.png)
 
 **chatbot_test.py 실행**
 

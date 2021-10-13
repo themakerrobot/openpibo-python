@@ -39,7 +39,7 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 camera_test.py
 
 **camera_test.py 결과**
 
-![Vision_camera](images/Vision_camera.png)
+![](images/vision_camera.png)
 
 ## detect_test.py
 
@@ -86,7 +86,7 @@ oO a |
 Fs
 ```
 
-![](images/Vision_detect1.JPG)
+![](images/vision_detect.jpg)
 
 ## draw_test.py
 
@@ -126,7 +126,7 @@ pi@raspberrypi:~/openpibo-example/vision $ sudo python3 draw_test.py
 
 **draw_test.py 결과**
 
-![](images/Vision_draw.png)
+![](images/vision_draw.png)
 
 ## face_recognize_test.py
 
@@ -188,7 +188,7 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 face_recognize_test.py
 
 **face_recognize_test.py 결과**
 
-![](images/Vision_face_reog.png)
+![](images/vision_face_recog.png)
 
 ## face_train_test.py
 
@@ -289,4 +289,4 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 streaming_test.py
 
 **streaming_test.py 결과**
 
-![Vision_streaming_test](images/Vision_streaming_test.png)
+![](images/vision_streaming_test.png)
