@@ -114,21 +114,34 @@
 <section id="collect-test-py">
 <h2>collect_test.py<a class="headerlink" href="#collect-test-py" title="제목 주소"></a></h2>
 <p>각종 데이터를 수집해옵니다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.collect</span> <span class="kn">import</span> <span class="n">Wikipedia</span><span class="p">,</span> <span class="n">Weather</span><span class="p">,</span> <span class="n">News</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.collect</span> <span class="kn">import</span> <span class="n">Wikipedia</span>
+<span class="kn">from</span> <span class="nn">openpibo.collect</span> <span class="kn">import</span> <span class="n">Weather</span>
+<span class="kn">from</span> <span class="nn">openpibo.collect</span> <span class="kn">import</span> <span class="n">News</span>
 
-<span class="n">wiki</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="p">()</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;사과&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=== Wikipedia ===&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result:&#39;</span><span class="p">,</span> <span class="n">wiki</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">])</span>
 
-<span class="n">weather</span> <span class="o">=</span> <span class="n">Weather</span><span class="p">()</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;서울&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">=== Weather ===&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Keyword:&#39;</span><span class="p">,</span> <span class="n">Weather</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result:&#39;</span><span class="p">,</span> <span class="n">weather</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="c1"># 위키 검색</span>
+  <span class="n">wiki</span> <span class="o">=</span> <span class="n">Wikipedia</span><span class="p">()</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">wiki</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;사과&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=== Wikipedia ===&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">])</span>
 
-<span class="n">news</span> <span class="o">=</span> <span class="n">News</span><span class="p">()</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;경제&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">=== News ===&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Keyword:&#39;</span><span class="p">,</span> <span class="n">News</span><span class="o">.</span><span class="n">topic_list</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result:&#39;</span><span class="p">,</span> <span class="n">news</span><span class="p">)</span>
+  <span class="c1"># 날씨 검색</span>
+  <span class="n">weather</span> <span class="o">=</span> <span class="n">Weather</span><span class="p">()</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">weather</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;서울&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">=== Weather ===&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Keyword:&#39;</span><span class="p">,</span> <span class="n">Weather</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+  <span class="c1"># 뉴스 검색</span>
+  <span class="n">news</span> <span class="o">=</span> <span class="n">News</span><span class="p">()</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">news</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;경제&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">=== News ===&#39;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Keyword:&#39;</span><span class="p">,</span> <span class="n">News</span><span class="o">.</span><span class="n">topic_list</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>collect_test.py 실행</strong></p>

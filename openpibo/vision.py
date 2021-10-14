@@ -38,7 +38,7 @@ Functions:
 :meth:`~openpibo.vision.Camera.putText`
 :meth:`~openpibo.vision.Camera.cartoonize`
 :meth:`~openpibo.vision.Camera.convert_img`
-:meth:`~openpibo.vision.Camera.rotate10`
+:meth:`~openpibo.vision.Camera.rotate`
 :meth:`~openpibo.vision.Camera.bgrhls`
 
 
@@ -220,26 +220,26 @@ Functions:
     :param int tickness: 사각형 모서리의 두께 (픽셀 단위)
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
-    if type(p1) is tuple:
-      raise Exception(f'type of "{p1}" must be tuple.')
+    if type(p1) is not tuple:
+      raise Exception(f'"{p1}" must be tuple type')
 
     if len(p1) != 2:
-      raise Exception(f'the number of "{p1}" is 2')
+      raise Exception(f'len({p1}) must be 2')
 
-    if type(p2) is tuple:
-      raise Exception(f'type of "{p2}" must be tuple.')
+    if type(p2) is not tuple:
+      raise Exception(f'"{p2}" must be tuple type')
 
     if len(p2) != 2:
-      raise Exception(f'the number of "{p2}" is 2')
+      raise Exception(f'len({p2}) must be 2')
 
-    if type(colors) is tuple:
-      raise Exception(f'type of "{colors}" must be tuple.')
+    if type(colors) is not tuple:
+      raise Exception(f'"{colors}" must be tuple type')
 
     if len(colors) != 3:
-      raise Exception(f'the number of "{colors}" is 3')
+      raise Exception(f'len({colors}) must be 3')
 
     return cv2.rectangle(img, p1, p2, colors, tickness)
 
@@ -265,22 +265,22 @@ Functions:
     :param int tickness: 글자 두께
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
-    if type(points) is tuple:
-      raise Exception(f'type of "{points}" must be tuple.')
+    if type(points) is not tuple:
+      raise Exception(f'"{points}" must be tuple type')
 
     if len(points) != 2:
-      raise Exception(f'the number of "{points}" is 2')
+      raise Exception(f'len({points}) must be 2')
 
-    if type(colors) is tuple:
-      raise Exception(f'type of "{colors}" must be tuple.')
+    if type(colors) is not tuple:
+      raise Exception(f'"{colors}" must be tuple type')
 
     if len(colors) != 3:
-      raise Exception(f'the number of "{colors}" is 3')
+      raise Exception(f'len({colors}) must be 3')
 
-    return cv2.putText(img, text, p, cv2.FONT_HERSHEY_SIMPLEX, size, colors, tickness)
+    return cv2.putText(img, text, points, cv2.FONT_HERSHEY_SIMPLEX, size, colors, tickness)
 
   def cartoonize(self, img):
     """
@@ -296,8 +296,8 @@ Functions:
     :returns: 변환된 ``numpy.ndarray`` 이미지 객체
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     numDownSamples = 2 # number of downscaling steps
     numBilateralFilters = 7  # number of bilateral filtering steps
@@ -351,8 +351,8 @@ Functions:
     :returns: 크기 변환 후의 이미지 객체
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     return cv2.cvtColor(cv2.resize(img, (w, h)), cv2.COLR_BGR2GRAY)
 
@@ -374,14 +374,14 @@ Functions:
     :returns: 회전한 ``numpy.ndarray`` 이미지 객체
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     if type(degree) is not int or abs(degree) >= 360:
-      raise Exception(f'{degree} is Integer and -360 < degree < 360')
+      raise Exception(f'{degree} must be integer type and -360~360')
 
     if type(ratio) is not float or ratio >= 1.0:
-      raise Exception(f'"{ratio} is Float and ratio < 1.0')
+      raise Exception(f'"{ratio} must be float type and 0~1.0')
 
     rows, cols = img.shape[0:2]
     m10 = cv2.getRotationMatrix2D((cols/2,rows/2), 10, 0.9)
@@ -406,8 +406,8 @@ Functions:
     :returns: 변환된 ``numpy.ndarray`` 이미지 객체
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     return cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
 
@@ -496,8 +496,8 @@ Functions:
         [(10, 10, 40, 50), (120, 30, 160, 70), (130, 140, 200, 260)]
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.') 
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv') 
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = self.face_detector.detectMultiScale(gray, 1.1, 5)
@@ -522,11 +522,11 @@ Functions:
     :param str name: 디텍팅한 얼굴에 붙일 이름
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.') 
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv') 
 
     if len(face) != 4:
-      raise Exception('"face" is [x,y,w,h]')
+      raise Exception('"face" must be [x,y,w,h]')
 
     x,y,w,h = face
     rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
@@ -560,11 +560,11 @@ Functions:
       오차도가 0.4 이하일 때 동일인으로 판정합니다.
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.') 
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv') 
 
     if len(face) != 4:
-      raise Exception('"face" is [x,y,w,h]')
+      raise Exception('"face" must be [x,y,w,h]')
 
     if len(self.facedb[0]) < 1:
       return False
@@ -609,11 +609,11 @@ Functions:
     참고: https://github.com/kairess/age_gender_estimation
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     if len(face) != 4:
-      raise Exception('"face" is [x,y,w,h]')
+      raise Exception('"face" must be [x,y,w,h]')
 
     x, y, w, h = face
     face_img = img[y:y+h, x:x+w].copy()
@@ -710,7 +710,7 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception('"{filename}" not found.')
+      raise Exception('"{filename}" does not exist')
 
     with open(filename, "rb") as f :
       self.facedb = pickle.load(f)
@@ -768,8 +768,8 @@ Functions:
       * score는 0~100 사이의 float 값 입니다.
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     data = []
     (h, w) = img.shape[:2]
@@ -805,8 +805,8 @@ Functions:
     :returns: ``{"data": 내용, "type": 바코드 / QR코드}``
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     barcodes = pyzbar.decode(img)
     return {"data":barcodes[0].data.decode("utf-8"), "type":barcodes[0].type} if len(barcodes) > 0  else {"data":"", "type":""}
@@ -825,7 +825,7 @@ Functions:
     :returns: 인식된 문자열
     """
 
-    if not type(img) is numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
     return pytesseract.image_to_string(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), lang='eng+kor', config=r'--oem 3 --psm 6')

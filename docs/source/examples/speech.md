@@ -10,54 +10,47 @@
 from openpibo.speech import Dialog
 
 def weather(cmd):
-  lst, _type = ["오늘", "내일"], None
+  topic = None
 
-  # 분석한 문장 중 "오늘", "내일"이 있다면 _type=item으로 설정
-  for item in lst:
+  # 분석한 문장 중 "오늘", "내일"이 있다면 topic 으로 설정
+  for item in ['오늘', '내일']:
     if item in cmd:
-      _type = item
+      topic = item
 
-  if _type == None:
-    print("BOT > 오늘, 내일 날씨만 가능해요. ")
-  else:
-    print("BOT > {} 뉴스 알려줄게요.".format(_type))
-
+  answer = f'{topic} 날씨 알려줄게요' if topic else '오늘, 내일 날씨만 가능해요.'
+  print(f'날씨 > {answer}')
 
 def music(cmd):
-  lst, _type = ["발라드", "댄스", "락"], None
+  topic = None
 
-  # 분석한 문장 중 "발라드", "댄스", "락"이 있다면 _type=item으로 설정
-  for item in lst:
+  # 분석한 문장 중 "발라드", "댄스", "락"이 있다면 topic 으로 설정
+  for item in ['발라드', '댄스', '락']:
     if item in cmd:
-      _type = item
+      topic = item
 
-  if _type == None:
-    print("BOT > 발라드, 락, 댄스 음악만 가능해요.")
-  else:
-    print("BOT > {} 음악 틀어줄게요.".format(_type))
+  answer = f'{topic} 음악 들려줄게요' if topic else '발라드, 댄스, 락 음악만 가능해요.'
+  print(f'음악 > {answer}')
 
 def news(cmd):
-  lst, _type = ["경제", "스포츠", "문화"], None
+  topic = None
 
-  # 분석한 문장 중 "경제", "스포츠", "문화"가 있다면 _type=item으로 설정
-  for item in lst:
+  # 분석한 문장 중 "경제", "스포츠", "문화"가 있다면 topic 으로 설정
+  for item in ['경제', '스포츠', '문화']:
     if item in cmd:
-      _type = item
+      topic = item
 
-  if _type == None:
-    print("BOT > 경제, 문화, 스포츠 뉴스만 가능해요.")
-  else:
-    print("BOT > {} 뉴스 알려줄게요.".format(_type))
+  answer = f'{topic} 뉴스 들려줄게요' if topic else '경제, 스포츠, 문화 뉴스만 가능해요.'
+  print(f'뉴스 > {answer}')
 
-db = {
+func = {
   "날씨":weather,
   "음악":music, 
   "뉴스":news,
 }
 
 # 사용자가 입력한 문장에 대해 형태소 분석을 실시하여 파이보가 실행하는 함수가 달라짐
-def main():
-  obj = Dialog()
+def run():
+  o = Dialog()
   print("대화 시작합니다.")
   while True:
     c = input("입력 > ")
@@ -66,20 +59,20 @@ def main():
       break
 
     # 사용자가 입력한 질문에 대한 형태소 분석
-    d = obj.mecab_morphs(c)
+    d = o.mecab_morphs(c)
     # print("형태소 분석: ", d)
     # 분석한 문장 중 "날씨", "음악", "뉴스"가 있다면 해당 key값의 함수 실행
-    for key in db.keys():
+    for key in func.keys():
       if key in d:
-        db[key](d)
+        func[key](d)
         matched = True
 
     # key 값이 없다면 대화봇 실행
     if matched == False:
-      print("대화봇 > ", obj.get_dialog(c))
+      print(f'대화 > {o.get_dialog(c)}')
 
 if __name__ == "__main__":
-  main()
+  run()
 ```
 
 ![](images/speech_chatbot_flow.png)
@@ -95,11 +88,11 @@ pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 chatbot_test.py
 ```shell
 대화 시작합니다.
 입력 > 댄스 음악 추천해줘
-BOT > 댄스 음악 틀어줄게요.
+음악 > 댄스 음악 들려줄게요.
 입력 > 주말에 뭐하지
-대화봇 >  사탕 만들어요.
+대화 > 사탕 만들어요.
 입력 > 사탕 싫어
-대화봇 >  싫어하지 말아요.
+대화 > 싫어하지 말아요.
 입력 > 그만
 ```
 
@@ -111,20 +104,21 @@ BOT > 댄스 음악 틀어줄게요.
 from openpibo.speech import Dialog
 
 # mode(pos, morphs, nouns)에 따른 문장 분석
-def mecab_f(string, mode):
-  print("Input: ", string)
-  obj = Dialog()
+def run():
+  o = Dialog()
+  string = "아버지 가방에 들어가신다"
   
-  if mode == "pos":
-    data = obj.mecab_pos(string)
-  elif mode == "morphs":
-    data = obj.mecab_morphs(string)
-  elif mode == "nouns":
-    data = obj.mecab_nouns(string)
-  print("Output: ", data)
+  print("입력: ", string)
+  
+  result = o.mecab_pos(string)
+  print(f' pos: {result}')
+  result = o.mecab_morphs(string)
+  print(f' morphs: {result}')
+  result = o.mecab_nouns(string)
+  print(f' nouns: {result}')
 
 if __name__ == "__main__":
-  mecab_f("아버지 가방에 들어가신다", "nouns")
+  run()
 ```
 
 **mecab_test.py 실행**
@@ -136,16 +130,10 @@ pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 mecab_test.py
 **mecab_test.py 결과**
 
 ```shell
-Input:  아버지 가방에 들어가신다
-Output:  ['아버지', '가방']
-
-# (+) pos 결과
-Input:  아버지 가방에 들어가신다
-Output:  [('아버지', 'NNG'), ('가방', 'NNG'), ('에', 'JKB'), ('들어가', 'VV'), ('신다', 'EP+EC')]
-
-# (+) morphs 결과
-Input:  아버지 가방에 들어가신다
-Output:  ['아버지', '가방', '에', '들어가', '신다']
+입력:  아버지 가방에 들어가신다
+ pos: [('아버지', 'NNG'), ('가방', 'NNG'), ('에', 'JKB'), ('들어가', 'VV'), ('신다', 'EP+EC')]
+ morphs: ['아버지', '가방', '에', '들어가', '신다']
+ nouns: ['아버지', '가방']
 ```
 
 - NNG: 일반 명사 / JKB: 부사격 조사 / VV: 동사 / EP: 선어말 어미 / EC: 연결 어미
@@ -157,10 +145,14 @@ Output:  ['아버지', '가방', '에', '들어가', '신다']
 ```python
 from openpibo.speech import Speech
 
-obj = Speech()
-# 음성 언어를 문자 데이터로 변환하여 출력
-ret = obj.stt()
-print(ret)
+def run():
+  o = Speech()
+  # 음성 언어를 문자 데이터로 변환하여 출력
+  result = o.stt()
+  print(result)
+
+if __name__ == "__main__":
+  run()
 ```
 
 **stt_test.py 실행**
@@ -180,16 +172,20 @@ pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 stt_test.py
 ```python
 from openpibo.speech import Speech
 
-# "안녕하세요"를 영어로 번역 후 출력
-def translate_f():
-  obj = Speech()
-  string = "안녕하세요"
-  ret = obj.translate(string, to="en")
-  print("Input:", string)
-  print("Output:", ret)
+# "즐거운 하루 보내세요."를 영어로 번역 후 출력
+def run():
+  o = Speech()
+  string = "즐거운 하루 보내세요."
+ 
+  print(f'입력 > {string}')
+
+  result = o.translate(string, to="en")
+  print(f' ko->en > {result}')
+  result = o.translate(string, to="ko")
+  print(f' en->ko > {result}')
 
 if __name__ == "__main__":
-  translate_f()
+  run()
 ```
 
 **translate_test.py 실행**
@@ -201,8 +197,9 @@ pi@raspberrypi:~/openpibo-examples/speech $ sudo python3 translate_test.py
 **translate_test.py 결과**
 
 ```shell
-Input: 안녕하세요
-Output: Good morning 
+입력 > 즐거운 하루 보내세요.
+ ko->en > Have a nice day. 
+ en->ko > 즐거운 하루 보내세요. 
 ```
 
 ## tts_test.py
@@ -215,19 +212,19 @@ from openpibo.speech import Speech
 from openpibo.audio import Audio
 
 # tts.mp3 파일의 문자 데이터를 음성 언어로 변환 후, 파이보 스피커에 출력
-def tts_f():
-  tObj = Speech()
+def run():
+  o_speech = Speech()
+  o_audio = Audio()
+
   filename = openpibo.config['DATA_PATH']+"/audio/tts.mp3"
-  tObj.tts("<speak>\
+  o_speech.tts("<speak>\
               <voice name='MAN_READ_CALM'>안녕하세요. 반갑습니다.<break time='500ms'/></voice>\
             </speak>"\
           , filename)
-  print(filename)
-  aObj = Audio()
-  aObj.play(filename, out='local', volume=-1500)  # 파이보 스피커로 filename 출력
+  o_audio.play(filename, out='local', volume=-1500)  # 파이보 스피커로 filename 출력
 
 if __name__ == "__main__":
-  tts_f()
+  run()
 ```
 
 - speak

@@ -67,7 +67,7 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">audio</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#play-test-py">play_test.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#audio-test-py">audio_test.py</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="collect.html">collect</a></li>
@@ -111,8 +111,8 @@
              
   <section class="tex2jax_ignore mathjax_ignore" id="audio">
 <h1>audio<a class="headerlink" href="#audio" title="제목 주소"></a></h1>
-<section id="play-test-py">
-<h2>play_test.py<a class="headerlink" href="#play-test-py" title="제목 주소"></a></h2>
+<section id="audio-test-py">
+<h2>audio_test.py<a class="headerlink" href="#audio-test-py" title="제목 주소"></a></h2>
 <p>mp3 파일을 재생 및 정지합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 
@@ -120,22 +120,21 @@
 <span class="kn">from</span> <span class="nn">openpibo.audio</span> <span class="kn">import</span> <span class="n">Audio</span>
 
 <span class="c1"># test.mp3 파일 5초 재생 후 정지</span>
-<span class="k">def</span> <span class="nf">tts_f</span><span class="p">():</span>
-  <span class="n">obj</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
-  <span class="n">obj</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/audio/test.mp3&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">volume</span><span class="o">=-</span><span class="mi">2000</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/audio/test.mp3&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">volume</span><span class="o">=-</span><span class="mi">2000</span><span class="p">)</span>
   <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 5초동안 프로세스 정지</span>
-  <span class="n">obj</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">tts_f</span><span class="p">()</span>
-
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>play_test.py 실행</strong></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-example/audio $ sudo python3 play_test.py
+<p><strong>audio_test.py 실행</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/audio $ sudo python3 audio_test.py
 </pre></div>
 </div>
-<p><strong>play_test.py 결과</strong></p>
+<p><strong>audio_test.py 결과</strong></p>
 <p>음악이 5초간 재생됩니다.</p>
 </section>
 </section>

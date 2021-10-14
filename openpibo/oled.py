@@ -28,7 +28,6 @@ Functions:
 :meth:`~openpibo.oled.Oled.draw_ellipse`
 :meth:`~openpibo.oled.Oled.draw_line`
 :meth:`~openpibo.oled.Oled.invert`
-:meth:`~openpibo.oled.Oled.size_check`
 
   파이보의 OLED를 통해 다양한 그림을 표현합니다.
 
@@ -125,7 +124,7 @@ Functions:
       size = self.font_size
 
     if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" not found.')
+      raise Exception(f'"{filename}" does not exist')
 
     self.font = ImageFont.truetype(filename, size)
 
@@ -143,10 +142,10 @@ Functions:
     """
 
     if type(points) is not tuple:
-      raise Exception(f'type of "{points}" must be tuple.')
+      raise Exception(f'"{points}" must be tuple type')
 
     if len(points) != 2:
-      raise Exception(f'the number of "{points}" must be 2')
+      raise Exception(f'len({points}) must be 2')
 
     draw = ImageDraw.Draw(self.image)
     draw.text(points, text, font=self.font, fill=255)
@@ -165,7 +164,7 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" not found.') 
+      raise Exception(f'"{filename}" does not exist') 
 
     self.image = Image.open(filename).convert('1')
 
@@ -189,7 +188,7 @@ Functions:
     """
 
     if type(img) is not numpy.ndarray:
-      raise Exception('"img" is not image data from opencv.')
+      raise Exception('"img" must be image data from opencv.')
 
     self.image = Image.fromarray(img).convert('1')
 
@@ -210,13 +209,13 @@ Functions:
     """
 
     if type(points) is not tuple:
-      raise Exception(f'type of "{points}" must be tuple.')
+      raise Exception(f'"{points}" must be tuple type')
 
     if len(points) != 4:
-      raise Exception(f'the number of "{points}" is 4')
+      raise Exception(f'len({points}) must be 4')
 
     if not fill in [None, True, False]:
-      raise Exception(f'"{fill}" must be one of [None, True, False]')
+      raise Exception(f'"{fill}" must be (None|True|False)')
 
     draw = ImageDraw.Draw(self.image)
     draw.rectangle(points, outline=1, fill=fill)
@@ -238,13 +237,13 @@ Functions:
     """
 
     if type(points) is not tuple:
-      raise Exception(f'type of "{points}" must be tuple.')
+      raise Exception(f'"{points}" must be tuple type')
 
     if len(points) != 4:
-      raise Exception(f'the number of "{points}" is 4')
+      raise Exception(f'len({points}) must be 4')
 
     if not fill in [None, True, False]:
-      raise Exception(f'"{fill}" must be one of [None, True, False]')
+      raise Exception(f'"{fill}" must be (None|True|False)')
 
     draw = ImageDraw.Draw(self.image)
     draw.ellipse(points, outline=1, fill=fill)
@@ -257,14 +256,14 @@ Functions:
 
       pibo_oled.draw_line((30, 20, 60, 50))
 
-    :param points points: 선의 시작 좌표, 선의 끝 좌표 (x1, y1, x2, y2)
+    :param tuple points: 선의 시작 좌표, 선의 끝 좌표 (x1, y1, x2, y2)
     """
 
     if type(points) is not tuple:
-      raise Exception(f'type of "{points}" must be tuple.')
+      raise Exception(f'"{points}" must be tuple type')
 
     if len(points) != 4:
-      raise Exception(f'the number of "{points}" is 4')
+      raise Exception(f'len({points}) must be 4')
 
     draw = ImageDraw.Draw(self.image)
     draw.line(points, fill=True)
@@ -281,26 +280,3 @@ Functions:
     self.image = PIL.ImageOps.invert(self.image)
     self.image = self.image.convert("1")
 
-  def size_check(self, filename):
-    """
-    이미지의 크기를 확인합니다.
-
-    주로 oled의 크기인 128x64 사이즈인지 확인하기 위해 사용됩니다.
-
-    example::
-
-      pibo_oled.size_check('/home/pi/openpibo-files/image/bus.jpg')
-
-    :param str filename: 확인 할 파일 경로
-
-    :returns: 이미지의 크기
-
-      tuple 타입 입니다.
-
-      ``(y축 길이, x축 길이, 채널 수)`` 로 표현됩니다.
-    """
-
-    if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" not found.') 
-
-    return cv2.imread(filename).shape

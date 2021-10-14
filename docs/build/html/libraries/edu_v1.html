@@ -109,35 +109,29 @@
   <section id="module-openpibo.edu_v1">
 <span id="edu-v1"></span><h1>edu_v1<a class="headerlink" href="#module-openpibo.edu_v1" title="제목 주소"></a></h1>
 <p>각 메소드의 반환값은 다음과 같은 형식으로 구성됩니다.</p>
-<ul>
+<ul class="simple">
 <li><p>실행 성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">data</span> <span class="pre">또는</span> <span class="pre">None}</span></code></p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>메소드에서 반환되는 데이터가 있을 경우 해당 데이터가 출력되고, 없으면 None이 출력됩니다.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p>실행 실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p>
-<blockquote>
-<div><ul>
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">errcode</span></code> 에 err 숫자 코드가, <code class="docutils literal notranslate"><span class="pre">errmsg</span></code> 에 해당 error 발생 원인이 출력됩니다.</p></li>
 <li><p>err 숫자코드의 의미와 발생 원인은 다음과 같습니다.</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> : 메소드 실행 성공</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> : Argument error - 메소드 실행에 필요한 필수 인자 값 미기입</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> : Argument error - 메소드 실행에 필요한 필수 인자 값 오류</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-2</span></code> : Extension error - filename에 확장자 미기입 또는 잘못된 확장자 형식 입력</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-3</span></code> : NotFound error - 존재하지 않는 데이터 입력</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-3</span></code> : NotFound error - 존재하지 않는 파일 입력</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-4</span></code> : Exist error - 이미 존재하는 데이터의 중복 생성</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-5</span></code> : Range error - 지정된 범위를 벗어난 값 입력</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-6</span></code> : Running error - 이미 실행 중인 함수의 중복 사용</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-6</span></code> : Runtime error - 동작 중 오류 발생</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-7</span></code> : Syntax error - 잘못된 형식의 인자 값 입력</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-8</span></code> : Exception error - 위 error 이외의 다른 이유로 메소드 실행에 실패한 경우</p></li>
 </ul>
-</div></blockquote>
 </li>
 </ul>
-</div></blockquote>
 </li>
 </ul>
 <dl class="py class">
@@ -165,8 +159,8 @@
 </pre></div>
 </div>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.code_list">
-<span class="sig-name descname"><span class="pre">code_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'Argument</span> <span class="pre">error':</span> <span class="pre">-1,</span> <span class="pre">'Exception</span> <span class="pre">error':</span> <span class="pre">-8,</span> <span class="pre">'Exist</span> <span class="pre">error':</span> <span class="pre">-4,</span> <span class="pre">'Extension</span> <span class="pre">error':</span> <span class="pre">-2,</span> <span class="pre">'NotFound</span> <span class="pre">error':</span> <span class="pre">-3,</span> <span class="pre">'Range</span> <span class="pre">error':</span> <span class="pre">-5,</span> <span class="pre">'Running</span> <span class="pre">error':</span> <span class="pre">-6,</span> <span class="pre">'Success':</span> <span class="pre">0,</span> <span class="pre">'Syntax</span> <span class="pre">error':</span> <span class="pre">-7}</span></em><a class="headerlink" href="#openpibo.edu_v1.Pibo.code_list" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.return_msg_list">
+<span class="sig-name descname"><span class="pre">return_msg_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'Argument</span> <span class="pre">error':</span> <span class="pre">-1,</span> <span class="pre">'Exception</span> <span class="pre">error':</span> <span class="pre">-8,</span> <span class="pre">'NotFound</span> <span class="pre">error':</span> <span class="pre">-3,</span> <span class="pre">'Runtime</span> <span class="pre">error':</span> <span class="pre">-6,</span> <span class="pre">'Success':</span> <span class="pre">0}</span></em><a class="headerlink" href="#openpibo.edu_v1.Pibo.return_msg_list" title="정의 주소"></a></dt>
 <dd><p>반환되는 <code class="docutils literal notranslate"><span class="pre">errmsg</span></code> 에 대한 <code class="docutils literal notranslate"><span class="pre">errcode</span></code> 입니다.</p>
 </dd></dl>
 
@@ -224,40 +218,21 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.isAlpha">
-<span class="sig-name descname"><span class="pre">isAlpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.isAlpha" title="정의 주소"></a></dt>
-<dd><p>(<code class="docutils literal notranslate"><span class="pre">eye_on</span></code> 의 내부함수)</p>
-<p><code class="docutils literal notranslate"><span class="pre">eye_on</span></code> 메소드에서 입력값이 숫자인지 문자인지 판단하기 위한 메소드 입니다.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.eye_on">
 <span class="sig-name descname"><span class="pre">eye_on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.eye_on" title="정의 주소"></a></dt>
 <dd><p>LED를 켭니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 양쪽 눈 제어</span>
-<span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span> <span class="c1"># 양쪽 눈 개별 제어</span>
-<span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span> <span class="c1"># 양쪽 눈 제어(&#39;RED&#39;, &#39;red&#39; 가능)</span>
-<span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="s1">&#39;aqua&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">)</span> <span class="c1"># 양쪽 눈 개별 제어</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>       <span class="c1"># 양쪽 눈 제어</span>
+<span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span> <span class="c1"># 양쪽 눈 각각 제어</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>color</strong> – <ul>
+<dd class="field-odd"><p><strong>color</strong> – <ul class="simple">
 <li><p>RGB (0~255 숫자)</p></li>
-<li><p>color name (영어 대소문자 모두 가능)</p>
-<blockquote>
-<div><p>color_list:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">black</span><span class="p">,</span> <span class="n">white</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">orange</span><span class="p">,</span> <span class="n">yellow</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">aqua</span><span class="p">,</span> <span class="n">purple</span><span class="p">,</span> <span class="n">pink</span>
-</pre></div>
-</div>
-</div></blockquote>
-</li>
+<li><p>(R, G, B) -&gt; 양쪽 눈 함께 제어</p></li>
+<li><p>(R,G,B,R,G,B) -&gt; 양쪽 눈 각각 제어</p></li>
 </ul>
-<p>두 가지 방식을 동시에 사용할 수 없습니다:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo</span><span class="o">.</span><span class="n">eye_on</span><span class="p">(</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span>
-</pre></div>
-</div>
 </p>
 </dd>
 <dt class="field-even">반환</dt>
@@ -290,151 +265,18 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.add_color">
-<span class="sig-name descname"><span class="pre">add_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">rgb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.add_color" title="정의 주소"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">colordb</span></code> 에 원하는 색상을 추가합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">add_color</span><span class="p">(</span><span class="s1">&#39;sky&#39;</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str</em>) – 추가할 색상 이름</p></li>
-<li><p><strong>rgb</strong> – RGB. 0~255 사이의 정수 입니다.</p></li>
-</ul>
-</dd>
-<dt class="field-even">반환</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.get_colordb">
-<span class="sig-name descname"><span class="pre">get_colordb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.get_colordb" title="정의 주소"></a></dt>
-<dd><p>사용 중인 <code class="docutils literal notranslate"><span class="pre">colordb</span></code> 를 확인합니다.</p>
-<p>(<code class="docutils literal notranslate"><span class="pre">pibo.eye_on()</span></code> 에 입력할 수 있는 color 목록 조회)</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">get_colordb</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">현재</span> <span class="pre">사용</span> <span class="pre">중인</span> <span class="pre">colordb}</span></code></p></li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.init_colordb">
-<span class="sig-name descname"><span class="pre">init_colordb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.init_colordb" title="정의 주소"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">colordb</span></code> 를 기존에 제공하는 <code class="docutils literal notranslate"><span class="pre">colordb</span></code> 상태로 초기화합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">init_colordb</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.save_colordb">
-<span class="sig-name descname"><span class="pre">save_colordb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.save_colordb" title="정의 주소"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">colordb</span></code> 를 파일로 저장합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">save_colordb</span><span class="p">(</span><span class="s1">&#39;/home/pi/new_colordb&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – 저장할 데이터베이스 파일 경로</p>
-</dd>
-<dt class="field-even">반환</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.load_colordb">
-<span class="sig-name descname"><span class="pre">load_colordb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.load_colordb" title="정의 주소"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">colordb</span></code> 를 불러옵니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">load_colordb</span><span class="p">(</span><span class="s1">&#39;/home/pi/new_colordb&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – 불러올 데이터베이스 파일 경로</p>
-</dd>
-<dt class="field-even">반환</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.delete_color">
-<span class="sig-name descname"><span class="pre">delete_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.delete_color" title="정의 주소"></a></dt>
-<dd><p><code class="docutils literal notranslate"><span class="pre">colordb</span></code> 에 등록된 색상을 삭제합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">delete_color</span><span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>color</strong> (<em>str</em>) – 삭제할 색상 이름</p>
-</dd>
-<dt class="field-even">반환</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.check_device">
-<span class="sig-name descname"><span class="pre">check_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.check_device" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">check_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.check_device" title="정의 주소"></a></dt>
 <dd><p>디바이스의 상태를 확인합니다. (일회성)</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">check_device</span><span class="p">(</span><span class="s1">&#39;battery&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">check_device</span><span class="p">()</span>
+
+<span class="n">BATTERY</span><span class="p">,</span> <span class="n">PIR</span><span class="p">,</span> <span class="n">TOUCH</span><span class="p">,</span> <span class="n">DC_CONN</span><span class="p">,</span> <span class="n">BUTTON의</span> <span class="n">상태를</span> <span class="n">조회할</span> <span class="n">수</span> <span class="n">있습니다</span><span class="o">.</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>system</strong> (<em>str</em>) – <p><code class="docutils literal notranslate"><span class="pre">system</span></code> / <code class="docutils literal notranslate"><span class="pre">battery</span></code> (대문자도 가능)</p>
-<p><code class="docutils literal notranslate"><span class="pre">system</span></code> 입력 시 PIR, TOUCH, DC_CONN, BUTTON의 상태를 조회할 수 있습니다.</p>
-</p>
-</dd>
-<dt class="field-even">반환</dt>
-<dd class="field-even"><p><ul class="simple">
+<dt class="field-odd">반환</dt>
+<dd class="field-odd"><p><ul class="simple">
 <li><p>성공: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">Device로부터</span> <span class="pre">응답}</span></code></p></li>
 <li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
 </ul>
@@ -446,28 +288,26 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.thread_device">
 <span class="sig-name descname"><span class="pre">thread_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.thread_device" title="정의 주소"></a></dt>
-<dd><p>(<code class="docutils literal notranslate"><span class="pre">start_devices</span></code> 의 내부함수)</p>
-<p><code class="docutils literal notranslate"><span class="pre">start_devices</span></code> 메소드에서 디바이스의 상태를 파악하여 해당 메시지를 <code class="docutils literal notranslate"><span class="pre">func</span></code> 하는 메소드입니다.</p>
-<p><code class="docutils literal notranslate"><span class="pre">func</span></code> 에는 print 함수가 들어가서 메시지가 계속해서 출력(print) 됩니다.</p>
+<dd><p>(<code class="docutils literal notranslate"><span class="pre">start_thread_device</span></code> 의 내부함수)</p>
+<p>디바이스로 부터 기본 메시지를 수신하는 Thread 함수입니다.
+시스템체크(1초 주기), 배터리체크(10초 주기) 입니다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">func</span></code> 는 Device의 메시지를 수신합니다.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.start_devices">
-<span class="sig-name descname"><span class="pre">start_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.start_devices" title="정의 주소"></a></dt>
-<dd><p>디바이스의 상태를 확인합니다.</p>
+<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.start_thread_device">
+<span class="sig-name descname"><span class="pre">start_thread_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.start_thread_device" title="정의 주소"></a></dt>
+<dd><p>thread_device 함수를 시작합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">msg_device</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">check_devices</span><span class="p">():</span>
-    <span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">start_devices</span><span class="p">(</span><span class="n">msg_device</span><span class="p">)</span>
-
-<span class="n">check_devices</span><span class="p">()</span>
+<span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">start_thread_device</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>func</strong> – Device로부터 받은 응답을 확인하기 위한 함수</p>
+<dd class="field-odd"><p><strong>func</strong> – thread_device 함수를 시작합니다.</p>
 </dd>
 <dt class="field-even">반환</dt>
 <dd class="field-even"><p><ul class="simple">
@@ -537,13 +377,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.motors">
-<span class="sig-name descname"><span class="pre">motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.motors" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speeds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.motors" title="정의 주소"></a></dt>
 <dd><p>10개의 모터를 개별 제어합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">motors</span><span class="p">(</span>
-    <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span>
-    <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span>
-    <span class="n">accel</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
+  <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span>
+  <span class="n">speed</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span>
+  <span class="n">accel</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -676,18 +516,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.check_motor">
-<span class="sig-name descname"><span class="pre">check_motor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.check_motor" title="정의 주소"></a></dt>
-<dd><p>(<code class="docutils literal notranslate"><span class="pre">motors</span></code> , <code class="docutils literal notranslate"><span class="pre">motors_movetime</span></code> 메소드의 내부함수 입니다.)</p>
-<p>모터의 각도를 설정할 때, 허용 각도 범위 내에 해당하는지 판별하기 위한 함수입니다.</p>
-<p>각 모터의 허용 각도 범위는 아래와 같습니다:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">25</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">30</span><span class="p">]</span>
-<span class="c1"># 0번 모터는 -25 ~ 25 범위의 모터 각도를 가집니다.</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.show_display">
 <span class="sig-name descname"><span class="pre">show_display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.show_display" title="정의 주소"></a></dt>
 <dd><p>화면에 표시합니다.</p>
@@ -776,8 +604,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>points</strong> (<em>tuple</em><em>(</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>)</em>) – <p>선 - 시작 좌표, 끝 좌표(x, y, x1, y1)</p>
-<p>사각형, 원 - 좌측상단, 우측하단 좌표 튜플(x, y, x1, y1)</p>
+<li><p><strong>points</strong> (<em>tuple</em><em>(</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>)</em>) – <p>선 - 시작 좌표, 끝 좌표(x1,y1,x2,y2)</p>
+<p>사각형, 원 - 좌측상단, 우측하단 좌표 튜플(x1,y1,x2,y2)</p>
 </p></li>
 <li><p><strong>shape</strong> (<em>str</em>) – 도형 종류 - <code class="docutils literal notranslate"><span class="pre">rectangle</span></code> / <code class="docutils literal notranslate"><span class="pre">circle</span></code> / <code class="docutils literal notranslate"><span class="pre">line</span></code></p></li>
 <li><p><strong>fill</strong> (<em>bool</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> (채움) / <code class="docutils literal notranslate"><span class="pre">False</span></code> (채우지 않음)</p></li>
@@ -834,15 +662,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.points_check">
-<span class="sig-name descname"><span class="pre">points_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.points_check" title="정의 주소"></a></dt>
-<dd><p>(<code class="docutils literal notranslate"><span class="pre">draw_text</span></code> , <code class="docutils literal notranslate"><span class="pre">draw_figure</span></code> 의 내부함수 입니다.)</p>
-<p>text와 figure의 위치를 결정하는 points가 적절한 포맷인지 확인하기 위한 메소드입니다.</p>
-<p>text는 point가 2개 (x, y) 필요합니다. (시작지점)</p>
-<p>figure는 point가 4개 (x, y, x1, y1) 필요합니다. (시작지점, 끝지점)</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.translate">
 <span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ko'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.translate" title="정의 주소"></a></dt>
 <dd><p>구글 번역기를 이용해 문장을 번역합니다.</p>
@@ -869,61 +688,26 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.tts">
-<span class="sig-name descname"><span class="pre">tts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tts.mp3'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.tts" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">tts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voice_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'WOMAN_READ_CALM'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tts.mp3'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.tts" title="정의 주소"></a></dt>
 <dd><p>Text(문자)를 Speech(음성)로 변환합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">tts</span><span class="p">(</span>
-    <span class="s2">&quot;&lt;speak&gt;&lt;voice name=&#39;MAN_READ_CALM&#39;&gt;안녕하세요. 반갑습니다.&lt;break time=&#39;500ms&#39;/&gt;&lt;/voice&gt;&lt;/speak&gt;&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;/home/pi/tts.mp3&quot;</span>
-    <span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">tts</span><span class="p">(</span><span class="s2">&quot;안녕하세요. 반갑습니다.&quot;</span><span class="p">,</span> <span class="s2">&quot;WOMAN_READ_CALM&quot;</span><span class="p">,</span> <span class="s2">&quot;/home/pi/tts.mp3&quot;</span><span class="p">)</span>
+<span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">tts</span><span class="p">(</span><span class="s2">&quot;안녕하세요. 반갑습니다.&quot;</span><span class="p">,</span> <span class="s2">&quot;WOMAN_READ_CALM&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;/home/pi/tts.mp3&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<em>str</em>) – <p>변환할 문장</p>
+<li><p><strong>string</strong> (<em>str</em>) – 변환할 문장</p></li>
+<li><p><strong>voice_type</strong> (<em>str</em>) – <p>목소리 종류</p>
 <ul>
-<li><p>&lt;speak&gt;</p>
-<blockquote>
-<div><ul>
-<li><p>기본적으로 모든 음성은 태그로 감싸져야 합니다.</p></li>
-<li><p>문장, 문단 단위로 적용하는 것을 원칙으로 합니다.</p>
-<p>한 문장 안에서 단어별로 태그를 감싸지 않습니다.</p>
-</li>
-<li><p>&lt;speak&gt; 안녕하세요. 반가워요. &lt;/speak&gt;</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p>&lt;voice&gt;</p>
-<blockquote>
-<div><ul>
-<li><p>음성의 목소리를 변경하기 위해 사용하며,</p>
-<p>name attribute를 통해 원하는 목소리를 지정합니다.</p>
-<p>제공되는 목소리는 4가지입니다.</p>
-<ul class="simple">
 <li><p>WOMAN_READ_CALM: 여성 차분한 낭독체 (default)</p></li>
 <li><p>MAN_READ_CALM: 남성 차분한 낭독체</p></li>
 <li><p>WOMAN_DIALOG_BRIGHT: 여성 밝은 대화체</p></li>
 <li><p>MAN_DIALOG_BRIGHT: 남성 밝은 대화체</p></li>
 </ul>
-</li>
-<li><p>문장, 문단 단위로 적용하는 것을 원칙으로 합니다.</p>
-<p>한 문장 안에서 단어별로 태그를 감싸지 않습니다.</p>
-</li>
-</ul>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">speak</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;WOMAN_READ_CALM&quot;</span><span class="o">&gt;</span> <span class="n">여성</span> <span class="n">차분한</span> <span class="n">낭독체입니다</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MAN_READ_CALM&quot;</span><span class="o">&gt;</span> <span class="n">남성</span> <span class="n">차분한</span> <span class="n">낭독체입니다</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;WOMAN_DIALOG_BRIGHT&quot;</span><span class="o">&gt;</span> <span class="n">여성</span> <span class="n">밝은</span> <span class="n">대화체예요</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">voice</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MAN_DIALOG_BRIGHT&quot;</span><span class="o">&gt;</span> <span class="n">남성</span> <span class="n">밝은</span> <span class="n">대화체예요</span><span class="o">.&lt;/</span><span class="n">voice</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">speak</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-</ul>
 </p></li>
+<li><p><strong>break_time</strong> (<em>int</em>) – 쉬는 시간 (단위: ms)</p></li>
 <li><p><strong>filename</strong> (<em>str</em>) – 저장할 파일 경로(mp3, wav)</p></li>
 </ul>
 </dd>
@@ -986,18 +770,18 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.camera_on">
-<span class="sig-name descname"><span class="pre">camera_on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.camera_on" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.thread_camera">
+<span class="sig-name descname"><span class="pre">thread_camera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.thread_camera" title="정의 주소"></a></dt>
 <dd><p>(<code class="docutils literal notranslate"><span class="pre">start_camera</span></code> 메소드의 내부함수 입니다.)</p>
 <p>카메라로 짧은 주기로 사진을 찍어 128x64 크기로 변환한 후 OLED에 보여줍니다.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.start_camera">
-<span class="sig-name descname"><span class="pre">start_camera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.start_camera" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.start_thread_camera">
+<span class="sig-name descname"><span class="pre">start_thread_camera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.start_thread_camera" title="정의 주소"></a></dt>
 <dd><p>카메라가 촬영하는 영상을 OLED에 보여줍니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">start_camera</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">start_thread_camera</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1064,25 +848,15 @@
 </div>
 <p>인식 가능한 사물 목록:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;background&quot;</span><span class="p">,</span> <span class="s2">&quot;aeroplane&quot;</span><span class="p">,</span> <span class="s2">&quot;bicycle&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;boat&quot;</span><span class="p">,</span> <span class="s2">&quot;bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> 
-<span class="s2">&quot;car&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;chair&quot;</span><span class="p">,</span> <span class="s2">&quot;cow&quot;</span><span class="p">,</span> <span class="s2">&quot;diningtable&quot;</span><span class="p">,</span> <span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;horse&quot;</span><span class="p">,</span> <span class="s2">&quot;motorbike&quot;</span><span class="p">,</span> 
+<span class="s2">&quot;car&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;chair&quot;</span><span class="p">,</span> <span class="s2">&quot;cow&quot;</span><span class="p">,</span> <span class="s2">&quot;diningtable&quot;</span><span class="p">,</span> <span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;horse&quot;</span><span class="p">,</span> <span class="s2">&quot;motorbike&quot;</span><span class="p">,</span>
 <span class="s2">&quot;person&quot;</span><span class="p">,</span> <span class="s2">&quot;pottedplant&quot;</span><span class="p">,</span> <span class="s2">&quot;sheep&quot;</span><span class="p">,</span> <span class="s2">&quot;sofa&quot;</span><span class="p">,</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;tvmonitor&quot;</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">반환</dt>
-<dd class="field-odd"><p><ul>
-<li><p>성공:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;errcode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;errmsg&quot;</span><span class="p">:</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">이름</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">점수</span><span class="p">,</span> 
-        <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="n">사물좌표</span><span class="p">(</span><span class="n">startX</span><span class="p">,</span> <span class="n">startY</span><span class="p">,</span> <span class="n">endX</span><span class="p">,</span> <span class="n">endY</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>성공:<code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">{&quot;name&quot;:</span> <span class="pre">이름,</span> <span class="pre">&quot;score&quot;:</span> <span class="pre">점수,</span> <span class="pre">&quot;position&quot;:</span> <span class="pre">사물좌표(startX,</span> <span class="pre">startY,</span> <span class="pre">endX,</span> <span class="pre">endY)}}</span></code></p></li>
+<li><p>실패:<code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
 </ul>
 </p>
 </dd>
@@ -1099,16 +873,9 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">반환</dt>
-<dd class="field-odd"><p><ul>
-<li><p>성공:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;errcode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;errmsg&quot;</span><span class="p">:</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">내용</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">바코드</span><span class="o">/</span><span class="n">QR코드</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>성공:<code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">{&quot;data&quot;:</span> <span class="pre">내용,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">바코드/QR코드}}</span></code></p></li>
+<li><p>실패:<code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
 </ul>
 </p>
 </dd>
@@ -1164,16 +931,9 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">반환</dt>
-<dd class="field-odd"><p><ul>
-<li><p>성공:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;errcode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;errmsg&quot;</span><span class="p">:</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">얼굴</span> <span class="n">좌표</span><span class="p">(</span><span class="n">startX</span><span class="p">,</span> <span class="n">startY</span><span class="p">,</span> <span class="n">endX</span><span class="p">,</span> <span class="n">endY</span><span class="p">)</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>성공:<code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">True,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;Success&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">얼굴</span> <span class="pre">좌표(startX,</span> <span class="pre">startY,</span> <span class="pre">endX,</span> <span class="pre">endY)}</span></code></p></li>
+<li><p>실패:<code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
 </ul>
 </p>
 </dd>
@@ -1197,14 +957,11 @@
 </p>
 </dd>
 <dt class="field-even">반환</dt>
-<dd class="field-even"><p><ul>
-<li><p>성공:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;errcode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;errmsg&quot;</span><span class="p">:</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> 
-<span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">이름</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">정확도</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="n">성별</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">나이</span><span class="p">}}</span>
-<span class="c1"># 정확도 0.4 이하 동일인 판정</span>
-</pre></div>
-</div>
-</li>
+<dd class="field-even"><p><ul class="simple">
+<li><p>성공:
+{“result”: True, “errcode”: 0, “errmsg”: “Success”, 
+“data”: {“name”: 이름, “score”: 정확도, “gender”: 성별, “age”: 나이}}
+# 정확도 0.4 이하 동일인 판정</p></li>
 <li><p>실패: <code class="docutils literal notranslate"><span class="pre">{&quot;result&quot;:</span> <span class="pre">False,</span> <span class="pre">&quot;errcode&quot;:</span> <span class="pre">errcode,</span> <span class="pre">&quot;errmsg&quot;:</span> <span class="pre">&quot;errmsg&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">None}</span></code></p></li>
 </ul>
 </p>
@@ -1339,17 +1096,10 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.check_onair">
-<span class="sig-name descname"><span class="pre">check_onair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.check_onair" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.get_image">
+<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.get_image" title="정의 주소"></a></dt>
 <dd><p>(내부함수 입니다.)</p>
 <p>카메라로부터 현재 이미지를 가져옵니다.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.check_file">
-<span class="sig-name descname"><span class="pre">check_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.check_file" title="정의 주소"></a></dt>
-<dd><p>(내부함수 입니다.)</p>
-<p>파일을 불러올 때, 불러오려는 파일이 존재하는지 여부를 판단합니다.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1360,8 +1110,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.get_codeMean">
-<span class="sig-name descname"><span class="pre">get_codeMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">errcode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.get_codeMean" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.edu_v1.Pibo.decode_return_msg">
+<span class="sig-name descname"><span class="pre">decode_return_msg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">errcode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.edu_v1.Pibo.decode_return_msg" title="정의 주소"></a></dt>
 <dd><p>err 숫자코드의 의미를 조회합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_edu_v1</span><span class="o">.</span><span class="n">get_codeMean</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>

@@ -87,8 +87,11 @@ Functions:
       result = {"result":False, "value":""}
     return result['value']'''
 
-    if not to in ['en', 'ko']:
-      raise Exception(f'"{to}" must be "en" or "ko"')
+    if type(string) is not str:
+      raise Exception(f'"{string}" must be str type')
+    
+    if type(to) is not str or to not in ('en', 'ko'):
+      raise Exception(f'"{to}" must be (en|ko)')
 
     return self.translator.translate(string, lang_tgt=to)
 

@@ -6,12 +6,15 @@
 from openpibo.motion import Motion
 
 # wave3 모션 10번 반복
+def run():
+  o = Motion()
+  o.set_motion(name="wave3", cycle=10)
+
 if __name__ == "__main__":
-  m = Motion()
-  m.set_motion(name="wave3", cycle=10)
+  run()
 ```
 
-아래는 motion_db.json의 일부입니다. motion_db는 `Motion.get_motion` 메소드로 확인할 수 있습니다.
+아래는 motion_db.json의 일부입니다. motion_db는 `Motion Class의 get_motion` 메소드로 확인할 수 있습니다.
 
 ```
 {
@@ -48,30 +51,30 @@ pi@raspberrypi:~/openpibo-examples/motion $ sudo python3 motion_test.py
 ## motor_test.py
 
 ```python
-from openpibo.motion import Motion
-
 import time
 
-m = Motion()
+from openpibo.motion import Motion
 
-def move(n, degree, speed, accel):
-  m.set_speed(n, speed)         # n번 모터의 속도를 speed로 변경
-  m.set_acceleration(n, accel)  # n번 모터의 가속도를 accel로 변경
-  m.set_motor(n, degree)        # n번 모터의 위치를 degree로 이동
+def move(n, pos, spd, accl):
+  o.set_speed(n, spd)         # n번 모터의 속도를 spd로 변경
+  o.set_acceleration(n, accl)  # n번 모터의 가속도를 accl로 변경
+  o.set_motor(n, pos)        # n번 모터의 위치를 pos로 이동
 
-# 'move() 실행 -> 1초 휴식 -> move() 실행 -> 1초 휴식'을 무한 반복
-def test():
+# 'move() 실행 -> 3초 휴식 -> move() 실행 -> 3초 휴식'을 무한 반복
+def run():
   while True:
     move(2, 30, 100, 10)
     move(8, 30,  10, 10)
-    time.sleep(1)               # 단위: 초(sec)
+    time.sleep(3)               # 단위: 초(sec)
 
     move(2, -30, 100, 10)
     move(8, -30,  10, 10)
-    time.sleep(1)
+    time.sleep(3)
 
 if __name__ == "__main__":
-  test()
+  o = Motion()
+
+  run()
 ```
 
 **motor_test.py 실행**
@@ -87,22 +90,22 @@ pi@raspberrypi:~/openpibo-examples/motion $ sudo python3 motor_test.py
 ## multi_motor_test.py
 
 ```python
-from openpibo.motion import Motion
-
 import time
 
+from openpibo.motion import Motion
+
 # 'set_motors() 실행 -> 1.1초 휴식 -> set_motors() 실행 -> 1.1초 휴식'을 무한 반복
-def move_test():
-  m = Motion()
+def run():
+  o = Motion()
 
   while True:
-    m.set_motors(positions=[0,0,30,20, 30,0, 0,0,30,20], movetime=1000)
+    o.set_motors(positions=[0,0,30,20, 30,0, 0,0,30,20], movetime=1000)
     time.sleep(1.1)
-    m.set_motors(positions=[0,0,-30,-20, -30,0, 0,0,-30,-20], movetime=1000)
+    o.set_motors(positions=[0,0,-30,-20, -30,0, 0,0,-30,-20], movetime=1000)
     time.sleep(1.1)
 
 if __name__ == "__main__":
-  move_test()
+  run()
 ```
 
 **multi_motor_test.py 실행**
@@ -118,34 +121,30 @@ pi@raspberrypi:~/openpibo-examples/motion $ sudo python3 multi_motor_test.py
 ## pymotor_test.py
 
 ```python
-from openpibo.motion import PyMotion
-
 import time
 
-m = PyMotion()
+from openpibo.motion import PyMotion
 
-def move(n, speed, accel, degree):
-  m.set_speed(n, speed)
-  m.set_acceleration(n, accel)
-  m.set_motor(n, degree)
+def move(n, pos, spd, accl):
+  o.set_speed(n, spd)         # n번 모터의 속도를 spd로 변경
+  o.set_acceleration(n, accl)  # n번 모터의 가속도를 accl로 변경
+  o.set_motor(n, pos)        # n번 모터의 위치를 pos로 이동
 
 # 2초 간격으로 move() 실행 무한 반복
-def test():
+def run():
   while True:
-    move(2, 50, 0, 30)
+    move(2, 30, 50,  0)
+    move(8, 30, 50, 10)
     time.sleep(2)
   
-    move(2, 50, 10, -30)
+    move(2,-30, 50,  0)
+    move(8,-30, 50, 10)
     time.sleep(2)
 
-# Init 출력 -> move() -> 1초  휴식 -> Start 출력 -> test()
 if __name__ == "__main__":
-  print("Init")
-  move(2, 20, 0, 0)
-  time.sleep(1)
+  o = PyMotion()
 
-  print("Start")
-  test()
+  run()
 ```
 
 **pymotor_test.py 실행**
@@ -156,9 +155,4 @@ pi@raspberrypi:~/openpibo-examples/motion $ sudo python3 pymotor_test.py
 
 **pymotor_test.py 결과**
 
-```shell
-Init
-Start
-```
-
-위와 같이 출력되며, 오른쪽 팔을 무한히 움직입니다.
+파이보가 양팔을 무한히 움직입니다.

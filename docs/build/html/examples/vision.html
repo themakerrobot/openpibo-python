@@ -128,24 +128,25 @@
 <p>사진을 촬영하고 저장합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 
-<span class="k">def</span> <span class="nf">test_func</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
   <span class="c1"># instance</span>
-  <span class="n">cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
 
   <span class="c1"># Capture / Read file</span>
   <span class="c1"># 이미지 촬영</span>
-  <span class="n">img</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
   <span class="c1">#img = cam.imread(&quot;/home/pi/test.jpg&quot;)</span>
 
   <span class="c1"># Write(test.jpg라는 이름을 촬영한 이미지 저장)</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
 
-  <span class="c1"># display (only GUI): 3초동안 &#39;TITLE&#39;이라는 제목으로 이미지 보여줌</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;TITLE&quot;</span><span class="p">)</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span> <span class="c1"># 단위: ms</span>
+  <span class="k">if</span> <span class="n">gui</span><span class="p">:</span>
+    <span class="c1"># display (only GUI): 3초동안 &#39;TITLE&#39; 이름의 윈도우 창에서 이미지 보여줌</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;TITLE&quot;</span><span class="p">)</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span> <span class="c1"># 단위: ms</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test_func</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>camera_test.py 실행</strong></p>
@@ -161,21 +162,20 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 <span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Detect</span>
 
-<span class="k">def</span> <span class="nf">test_func</span><span class="p">():</span>
-  <span class="c1"># instance</span>
-  <span class="n">cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>  <span class="c1"># Camera 클래스에 대한 객체 생성</span>
-  <span class="n">det</span> <span class="o">=</span> <span class="n">Detect</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o_cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+  <span class="n">o_det</span> <span class="o">=</span> <span class="n">Detect</span><span class="p">()</span>
 
   <span class="c1"># Capture / Read file</span>
-  <span class="n">img</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-  <span class="c1">#img = cam.imread(&quot;image.jpg&quot;)</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">o_cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="c1">#img = o_cam.imread(&quot;image.jpg&quot;)</span>
 
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Object Detect: &quot;</span><span class="p">,</span> <span class="n">det</span><span class="o">.</span><span class="n">detect_object</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>  <span class="c1"># 객체 인식</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Qr Detect:&quot;</span><span class="p">,</span> <span class="n">det</span><span class="o">.</span><span class="n">detect_qr</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>           <span class="c1"># QR코드 인식</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Text Detect:&quot;</span><span class="p">,</span> <span class="n">det</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>       <span class="c1"># 문자 인식</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Object Detect: &quot;</span><span class="p">,</span> <span class="n">o_det</span><span class="o">.</span><span class="n">detect_object</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>  <span class="c1"># 객체 인식</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QR Detect:&quot;</span><span class="p">,</span> <span class="n">o_det</span><span class="o">.</span><span class="n">detect_qr</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>           <span class="c1"># QR코드 인식</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Text Detect:&quot;</span><span class="p">,</span> <span class="n">o_det</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>       <span class="c1"># 문자 인식</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test_func</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>detect_test.py 실행</strong></p>
@@ -184,7 +184,7 @@
 </div>
 <p><strong>detect_test.py 결과</strong></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Object Detect:  <span class="o">[{</span><span class="s1">&#39;name&#39;</span>: <span class="s1">&#39;bus&#39;</span>, <span class="s1">&#39;score&#39;</span>: <span class="m">80</span>.67924976348877, <span class="s1">&#39;position&#39;</span>: <span class="o">(</span><span class="m">2</span>, <span class="m">0</span>, <span class="m">627</span>, <span class="m">478</span><span class="o">)}]</span>
-Qr Detect: <span class="o">{</span><span class="s1">&#39;data&#39;</span>: <span class="s1">&#39;http://www.wando.go.kr/l04xd2@&#39;</span>, <span class="s1">&#39;type&#39;</span>: <span class="s1">&#39;QRCODE&#39;</span><span class="o">}</span>
+QR Detect: <span class="o">{</span><span class="s1">&#39;data&#39;</span>: <span class="s1">&#39;http://www.wando.go.kr/l04xd2@&#39;</span>, <span class="s1">&#39;type&#39;</span>: <span class="s1">&#39;QRCODE&#39;</span><span class="o">}</span>
 Text Detect: ’
 &gt; fxr
 cends, This restaurant has ungie portions
@@ -201,31 +201,31 @@ Fs
 <p>이미지에 그림과 글씨를 입력합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 
-<span class="k">def</span> <span class="nf">test_func</span><span class="p">():</span>
-  <span class="c1"># instance</span>
-  <span class="n">cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
 
   <span class="c1"># Capture / Read file</span>
-  <span class="n">img</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
   <span class="c1">#img = cam.imread(&quot;/home/pi/test.jpg&quot;)</span>
 
   <span class="c1"># Draw rectangle, Text</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>    <span class="c1"># 화면의 (100,100), (300,300) 위치에 사각형 그리기</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;Hello Camera&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>  <span class="c1"># 화면의 (50,50) Hello Camera 쓰기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>    <span class="c1"># 화면의 (100,100), (300,300) 위치에 사각형 그리기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;Hello Camera&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>  <span class="c1"># 화면의 (50,50) Hello Camera 쓰기</span>
 
   <span class="c1"># Write</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>  <span class="c1"># test.jpg로 이미지 저장</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>  <span class="c1"># test.jpg로 이미지 저장</span>
 
-  <span class="c1"># display (only GUI): 3초동안 &#39;TITLE&#39;이라는 제목으로 이미지 보여줌</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;TITLE&quot;</span><span class="p">)</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">gui</span><span class="p">:</span>
+    <span class="c1"># display (only GUI): 3초동안 &#39;TITLE&#39;이라는 제목으로 이미지 보여줌</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;TITLE&quot;</span><span class="p">)</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test_func</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>draw_test.py 실행</strong></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-example/vision $ sudo python3 draw_test.py
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 draw_test.py
 </pre></div>
 </div>
 <p><strong>draw_test.py 결과</strong></p>
@@ -237,48 +237,50 @@ Fs
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 <span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Face</span>
 
-<span class="k">def</span> <span class="nf">test_f</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
   <span class="c1"># instance</span>
-  <span class="n">cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
-  <span class="n">faceObj</span> <span class="o">=</span> <span class="n">Face</span><span class="p">()</span>
+  <span class="n">o_cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+  <span class="n">o_face</span> <span class="o">=</span> <span class="n">Face</span><span class="p">()</span>
 
   <span class="c1"># Capture / Read file</span>
-  <span class="n">img</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">o_cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
   <span class="c1">#img = cam.imread(&quot;/home/pi/test.jpg&quot;)</span>
  
   <span class="n">disp</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
   <span class="c1"># detect faces</span>
-  <span class="n">faceList</span> <span class="o">=</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+  <span class="n">faceList</span> <span class="o">=</span> <span class="n">o_face</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">faceList</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No face&quot;</span><span class="p">)</span>
     <span class="k">return</span> 
  
   <span class="c1"># get ageGender</span>
-  <span class="n">ret</span> <span class="o">=</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">get_ageGender</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faceList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-  <span class="n">age</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+  <span class="n">result</span><span class="o">=</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_ageGender</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faceList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">age</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
 
   <span class="c1"># draw rectangle</span>
   <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">faceList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
-  <span class="n">cam</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">))</span>
+  <span class="n">o_cam</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">))</span>
 
   <span class="c1"># recognize using facedb(동일인이라 판정되면 이름, 아니면 Guest)</span>
-  <span class="n">ret</span> <span class="o">=</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faceList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-  <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Guest&quot;</span> <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="kc">False</span> <span class="k">else</span> <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">o_face</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faceList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Guest&quot;</span> <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="kc">False</span> <span class="k">else</span> <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
 
-  <span class="n">cam</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/ </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">age</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mi">10</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/ </span><span class="si">{</span><span class="n">gender</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+  <span class="n">o_cam</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">/ </span><span class="si">{</span><span class="n">gender</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mi">10</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
-  <span class="c1"># display (only GUI): 모니터에서 3초간 VIEW라는 제목으로 이미지 확인</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="s2">&quot;VIEW&quot;</span><span class="p">)</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">gui</span><span class="p">:</span>
+    <span class="c1"># display (only GUI): 모니터에서 3초간 VIEW라는 제목으로 이미지 확인</span>
+    <span class="n">o_cam</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="s2">&quot;VIEW&quot;</span><span class="p">)</span>
+    <span class="n">o_cam</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
 
   <span class="c1"># Write: test.jpg로 이미지 저장</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="n">disp</span><span class="p">)</span>
+  <span class="n">o_cam</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="n">disp</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test_f</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>face_recognize_test.py 실행</strong></p>
@@ -290,54 +292,54 @@ Fs
 </section>
 <section id="face-train-test-py">
 <h2>face_train_test.py<a class="headerlink" href="#face-train-test-py" title="제목 주소"></a></h2>
-<p>이미지에서 얼굴을 찾아 학습하여 데이터베이스에 저장하고 로드한  뒤 다시 삭제합니다.</p>
+<p>이미지에서 얼굴을 찾아 학습하여 데이터베이스에 저장하고 로드한 뒤 다시 삭제합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 <span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Face</span>
 
-<span class="k">def</span> <span class="nf">test_func</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
   <span class="c1"># instance</span>
-  <span class="n">cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
-  <span class="n">faceObj</span> <span class="o">=</span> <span class="n">Face</span><span class="p">()</span>
+  <span class="n">o_cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+  <span class="n">o_face</span> <span class="o">=</span> <span class="n">Face</span><span class="p">()</span>
 
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start DB:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start DB:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
   
   <span class="c1"># Capture / Read file</span>
-  <span class="n">img</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-  <span class="c1">#img = cam.imread(&quot;/home/pi/test.jpg&quot;)</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">o_cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="c1">#img = o_cam.imread(&quot;/home/pi/test.jpg&quot;)</span>
 
   <span class="c1"># Train face</span>
-  <span class="n">faces</span> <span class="o">=</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+  <span class="n">faces</span> <span class="o">=</span> <span class="n">o_face</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; No face&quot;</span><span class="p">)</span>
   <span class="k">else</span><span class="p">:</span>
     <span class="c1"># 얼굴 학습(학습할  이미지 데이터, 얼굴 1개 위치, 학습할 얼굴 이름)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Train:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">train_face</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;yjlee&quot;</span><span class="p">))</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Train, DB:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Train:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">train_face</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;yjlee&quot;</span><span class="p">))</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Train, DB:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
-  <span class="n">img</span> <span class="o">=</span> <span class="n">cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-  <span class="n">faces</span> <span class="o">=</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+  <span class="n">img</span> <span class="o">=</span> <span class="n">o_cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">faces</span> <span class="o">=</span> <span class="n">o_face</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; No face&quot;</span><span class="p">)</span>
   <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Recognize:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Recognize:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
   <span class="c1"># Save DB</span>
-  <span class="n">faceObj</span><span class="o">.</span><span class="n">save_db</span><span class="p">(</span><span class="s2">&quot;./facedb&quot;</span><span class="p">)</span>
+  <span class="n">o_face</span><span class="o">.</span><span class="n">save_db</span><span class="p">(</span><span class="s2">&quot;./facedb&quot;</span><span class="p">)</span>
 
   <span class="c1"># Reset DB</span>
-  <span class="n">faceObj</span><span class="o">.</span><span class="n">init_db</span><span class="p">()</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After reset db, DB:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">o_face</span><span class="o">.</span><span class="n">init_db</span><span class="p">()</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After reset db, DB:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
   
   <span class="c1"># Load DB</span>
-  <span class="n">faceObj</span><span class="o">.</span><span class="n">load_db</span><span class="p">(</span><span class="s2">&quot;facedb&quot;</span><span class="p">)</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Load db, DB:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">o_face</span><span class="o">.</span><span class="n">load_db</span><span class="p">(</span><span class="s2">&quot;facedb&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Load db, DB:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
   <span class="c1"># delete Face</span>
-  <span class="n">faceObj</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="s2">&quot;yjlee&quot;</span><span class="p">)</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Delete face:&quot;</span><span class="p">,</span> <span class="n">faceObj</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">o_face</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="s2">&quot;yjlee&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Delete face:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test_func</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>face_train_test.py 실행</strong></p>
@@ -361,15 +363,17 @@ Fs
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 
 <span class="c1"># 모니터에 3초간 이미지 스트리밍</span>
-<span class="k">def</span> <span class="nf">test_func</span><span class="p">():</span>
-  <span class="c1"># instance</span>
-  <span class="n">cam</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
 
-  <span class="c1"># For streaming (only GUI)</span>
-  <span class="n">cam</span><span class="o">.</span><span class="n">streaming</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">gui</span><span class="p">:</span>
+    <span class="c1"># For streaming (only GUI)</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">streaming</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No GUI&quot;</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test_func</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">(</span><span class="n">gui</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>streaming_test.py 실행</strong></p>

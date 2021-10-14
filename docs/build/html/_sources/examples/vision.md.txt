@@ -11,24 +11,25 @@
 ```python
 from openpibo.vision import Camera
 
-def test_func():
+def run(gui=False):
   # instance
-  cam = Camera()
+  o = Camera()
 
   # Capture / Read file
   # 이미지 촬영
-  img = cam.read()
+  img = o.read()
   #img = cam.imread("/home/pi/test.jpg")
 
   # Write(test.jpg라는 이름을 촬영한 이미지 저장)
-  cam.imwrite("test.jpg", img)
+  o.imwrite("test.jpg", img)
 
-  # display (only GUI): 3초동안 'TITLE'이라는 제목으로 이미지 보여줌
-  cam.imshow(img, "TITLE")
-  cam.waitKey(3000) # 단위: ms
+  if gui:
+    # display (only GUI): 3초동안 'TITLE' 이름의 윈도우 창에서 이미지 보여줌
+    o.imshow(img, "TITLE")
+    o.waitKey(3000) # 단위: ms
 
 if __name__ == "__main__":
-  test_func()
+  run(gui=False)
 ```
 
 **camera_test.py 실행**
@@ -49,21 +50,20 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 camera_test.py
 from openpibo.vision import Camera
 from openpibo.vision import Detect
 
-def test_func():
-  # instance
-  cam = Camera()  # Camera 클래스에 대한 객체 생성
-  det = Detect()
+def run():
+  o_cam = Camera()
+  o_det = Detect()
 
   # Capture / Read file
-  img = cam.read()
-  #img = cam.imread("image.jpg")
+  img = o_cam.read()
+  #img = o_cam.imread("image.jpg")
 
-  print("Object Detect: ", det.detect_object(img))  # 객체 인식
-  print("Qr Detect:", det.detect_qr(img))           # QR코드 인식
-  print("Text Detect:", det.detect_text(img))       # 문자 인식
+  print("Object Detect: ", o_det.detect_object(img))  # 객체 인식
+  print("QR Detect:", o_det.detect_qr(img))           # QR코드 인식
+  print("Text Detect:", o_det.detect_text(img))       # 문자 인식
 
 if __name__ == "__main__":
-  test_func()
+  run()
 ```
 
 **detect_test.py 실행**
@@ -76,7 +76,7 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 detect_test.py
 
 ```shell
 Object Detect:  [{'name': 'bus', 'score': 80.67924976348877, 'position': (2, 0, 627, 478)}]
-Qr Detect: {'data': 'http://www.wando.go.kr/l04xd2@', 'type': 'QRCODE'}
+QR Detect: {'data': 'http://www.wando.go.kr/l04xd2@', 'type': 'QRCODE'}
 Text Detect: ’
 > fxr
 cends, This restaurant has ungie portions
@@ -95,33 +95,33 @@ Fs
 ```python
 from openpibo.vision import Camera
 
-def test_func():
-  # instance
-  cam = Camera()
+def run(gui=False):
+  o = Camera()
 
   # Capture / Read file
-  img = cam.read()
+  img = o.read()
   #img = cam.imread("/home/pi/test.jpg")
 
   # Draw rectangle, Text
-  cam.rectangle(img, (100,100), (300,300))    # 화면의 (100,100), (300,300) 위치에 사각형 그리기
-  cam.putText(img, "Hello Camera", (50, 50))  # 화면의 (50,50) Hello Camera 쓰기
+  o.rectangle(img, (100,100), (300,300))    # 화면의 (100,100), (300,300) 위치에 사각형 그리기
+  o.putText(img, "Hello Camera", (50, 50))  # 화면의 (50,50) Hello Camera 쓰기
 
   # Write
-  cam.imwrite("test.jpg", img)  # test.jpg로 이미지 저장
+  o.imwrite("test.jpg", img)  # test.jpg로 이미지 저장
 
-  # display (only GUI): 3초동안 'TITLE'이라는 제목으로 이미지 보여줌
-  cam.imshow(img, "TITLE")
-  cam.waitKey(3000)
+  if gui:
+    # display (only GUI): 3초동안 'TITLE'이라는 제목으로 이미지 보여줌
+    o.imshow(img, "TITLE")
+    o.waitKey(3000)
 
 if __name__ == "__main__":
-  test_func()
+  run(gui=False)
 ```
 
 **draw_test.py 실행**
 
 ```shell
-pi@raspberrypi:~/openpibo-example/vision $ sudo python3 draw_test.py
+pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 draw_test.py
 ```
 
 **draw_test.py 결과**
@@ -136,48 +136,50 @@ pi@raspberrypi:~/openpibo-example/vision $ sudo python3 draw_test.py
 from openpibo.vision import Camera
 from openpibo.vision import Face
 
-def test_f():
+def run(gui=False):
   # instance
-  cam = Camera()
-  faceObj = Face()
+  o_cam = Camera()
+  o_face = Face()
 
   # Capture / Read file
-  img = cam.read()
+  img = o_cam.read()
   #img = cam.imread("/home/pi/test.jpg")
  
   disp = img.copy()
 
   # detect faces
-  faceList = faceObj.detect(img)
+  faceList = o_face.detect(img)
 
   if len(faceList) < 1:
     print("No face")
     return 
  
   # get ageGender
-  ret = faceObj.get_ageGender(img, faceList[0])
-  age = ret["age"]
-  gender = ret["gender"]
+  result= o_face.get_ageGender(img, faceList[0])
+  age = result["age"]
+  gender = result["gender"]
 
   # draw rectangle
   x,y,w,h = faceList[0]  
-  cam.rectangle(disp, (x,y), (x+w, y+h))
+  o_cam.rectangle(disp, (x,y), (x+w, y+h))
 
   # recognize using facedb(동일인이라 판정되면 이름, 아니면 Guest)
-  ret = faceObj.recognize(img, faceList[0])
-  name = "Guest" if ret == False else ret["name"]
+  result = o_face.recognize(img, faceList[0])
+  name = "Guest" if result == False else ret["name"]
 
-  cam.putText(disp, "{}/ {} {}".format(name,gender,age), (x-10, y-10), size=0.5)
+  print(f'{name}/ {gender} {age}')
+  o_cam.putText(disp, f'{name}/ {gender} {age}', (x-10, y-10), size=0.5)
 
-  # display (only GUI): 모니터에서 3초간 VIEW라는 제목으로 이미지 확인
-  cam.imshow(disp, "VIEW")
-  cam.waitKey(3000)
+  if gui:
+    # display (only GUI): 모니터에서 3초간 VIEW라는 제목으로 이미지 확인
+    o_cam.imshow(disp, "VIEW")
+    o_cam.waitKey(3000)
 
   # Write: test.jpg로 이미지 저장
-  cam.imwrite("test.jpg", disp)
+  o_cam.imwrite("test.jpg", disp)
 
 if __name__ == "__main__":
-  test_f()
+  run(gui=False)
 ```
 
 **face_recognize_test.py 실행**
@@ -192,56 +194,56 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 face_recognize_test.py
 
 ## face_train_test.py
 
-이미지에서 얼굴을 찾아 학습하여 데이터베이스에 저장하고 로드한  뒤 다시 삭제합니다.
+이미지에서 얼굴을 찾아 학습하여 데이터베이스에 저장하고 로드한 뒤 다시 삭제합니다.
 
 ```python
 from openpibo.vision import Camera
 from openpibo.vision import Face
 
-def test_func():
+def run(gui=False):
   # instance
-  cam = Camera()
-  faceObj = Face()
+  o_cam = Camera()
+  o_face = Face()
 
-  print("Start DB:", faceObj.get_db()[0])
+  print("Start DB:", o_face.get_db()[0])
   
   # Capture / Read file
-  img = cam.read()
-  #img = cam.imread("/home/pi/test.jpg")
+  img = o_cam.read()
+  #img = o_cam.imread("/home/pi/test.jpg")
 
   # Train face
-  faces = faceObj.detect(img)
+  faces = o_face.detect(img)
   if len(faces) < 1:
     print(" No face")
   else:
     # 얼굴 학습(학습할  이미지 데이터, 얼굴 1개 위치, 학습할 얼굴 이름)
-    print(" Train:", faceObj.train_face(img, faces[0], "yjlee"))
-  print("After Train, DB:", faceObj.get_db()[0])
+    print(" Train:", o_face.train_face(img, faces[0], "yjlee"))
+  print("After Train, DB:", o_face.get_db()[0])
 
-  img = cam.read()
-  faces = faceObj.detect(img)
+  img = o_cam.read()
+  faces = o_face.detect(img)
   if len(faces) < 1:
     print(" No face")
   else:
-    print(" Recognize:", faceObj.recognize(img, faces[0]))
+    print(" Recognize:", o_face.recognize(img, faces[0]))
 
   # Save DB
-  faceObj.save_db("./facedb")
+  o_face.save_db("./facedb")
 
   # Reset DB
-  faceObj.init_db()
-  print("After reset db, DB:", faceObj.get_db()[0])
+  o_face.init_db()
+  print("After reset db, DB:", o_face.get_db()[0])
   
   # Load DB
-  faceObj.load_db("facedb")
-  print("After Load db, DB:", faceObj.get_db()[0])
+  o_face.load_db("facedb")
+  print("After Load db, DB:", o_face.get_db()[0])
 
   # delete Face
-  faceObj.delete_face("yjlee")
-  print("After Delete face:", faceObj.get_db()[0])
+  o_face.delete_face("yjlee")
+  print("After Delete face:", o_face.get_db()[0])
 
 if __name__ == "__main__":
-  test_func()
+  run(gui=False)
 ```
 
 **face_train_test.py 실행**
@@ -270,15 +272,17 @@ After Delete face: []
 from openpibo.vision import Camera
 
 # 모니터에 3초간 이미지 스트리밍
-def test_func():
-  # instance
-  cam = Camera()
+def run(gui=False):
+  o = Camera()
 
-  # For streaming (only GUI)
-  cam.streaming(timeout=3)
+  if gui:
+    # For streaming (only GUI)
+    o.streaming(timeout=3)
+  else:
+    print("No GUI")
 
 if __name__ == "__main__":
-  test_func()
+  run(gui=False)
 ```
 
 **streaming_test.py 실행**

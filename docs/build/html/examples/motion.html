@@ -119,12 +119,15 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
 
 <span class="c1"># wave3 모션 10번 반복</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;wave3&quot;</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;wave3&quot;</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>아래는 motion_db.json의 일부입니다. motion_db는 <code class="docutils literal notranslate"><span class="pre">Motion.get_motion</span></code> 메소드로 확인할 수 있습니다.</p>
+<p>아래는 motion_db.json의 일부입니다. motion_db는 <code class="docutils literal notranslate"><span class="pre">Motion</span> <span class="pre">Class의</span> <span class="pre">get_motion</span></code> 메소드로 확인할 수 있습니다.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="o">...</span>
   <span class="s2">&quot;wave3&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -155,30 +158,30 @@
 </section>
 <section id="motor-test-py">
 <h2>motor_test.py<a class="headerlink" href="#motor-test-py" title="제목 주소"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
 
-<span class="n">m</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">spd</span><span class="p">,</span> <span class="n">accl</span><span class="p">):</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">spd</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 spd로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">accl</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 accl로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>        <span class="c1"># n번 모터의 위치를 pos로 이동</span>
 
-<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">accel</span><span class="p">):</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">speed</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 speed로 변경</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">accel</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 accel로 변경</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>        <span class="c1"># n번 모터의 위치를 degree로 이동</span>
-
-<span class="c1"># &#39;move() 실행 -&gt; 1초 휴식 -&gt; move() 실행 -&gt; 1초 휴식&#39;을 무한 반복</span>
-<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="c1"># &#39;move() 실행 -&gt; 3초 휴식 -&gt; move() 실행 -&gt; 3초 휴식&#39;을 무한 반복</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">move</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>               <span class="c1"># 단위: 초(sec)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>               <span class="c1"># 단위: 초(sec)</span>
 
     <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">move</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">test</span><span class="p">()</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
+
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>motor_test.py 실행</strong></p>
@@ -190,22 +193,22 @@
 </section>
 <section id="multi-motor-test-py">
 <h2>multi_motor_test.py<a class="headerlink" href="#multi-motor-test-py" title="제목 주소"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
 
 <span class="c1"># &#39;set_motors() 실행 -&gt; 1.1초 휴식 -&gt; set_motors() 실행 -&gt; 1.1초 휴식&#39;을 무한 반복</span>
-<span class="k">def</span> <span class="nf">move_test</span><span class="p">():</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
 
   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">set_motors</span><span class="p">(</span><span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="n">movetime</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">set_motors</span><span class="p">(</span><span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="n">movetime</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.1</span><span class="p">)</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">set_motors</span><span class="p">(</span><span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">],</span> <span class="n">movetime</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">set_motors</span><span class="p">(</span><span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">],</span> <span class="n">movetime</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.1</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">move_test</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>multi_motor_test.py 실행</strong></p>
@@ -217,34 +220,30 @@
 </section>
 <section id="pymotor-test-py">
 <h2>pymotor_test.py<a class="headerlink" href="#pymotor-test-py" title="제목 주소"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">PyMotion</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">PyMotion</span>
 
-<span class="n">m</span> <span class="o">=</span> <span class="n">PyMotion</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">accel</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">speed</span><span class="p">)</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">accel</span><span class="p">)</span>
-  <span class="n">m</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">spd</span><span class="p">,</span> <span class="n">accl</span><span class="p">):</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">spd</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 spd로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">accl</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 accl로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>        <span class="c1"># n번 모터의 위치를 pos로 이동</span>
 
 <span class="c1"># 2초 간격으로 move() 실행 무한 반복</span>
-<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>  <span class="mi">0</span><span class="p">)</span>
+    <span class="n">move</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
   
-    <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>  <span class="mi">0</span><span class="p">)</span>
+    <span class="n">move</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="c1"># Init 출력 -&gt; move() -&gt; 1초  휴식 -&gt; Start 출력 -&gt; test()</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Init&quot;</span><span class="p">)</span>
-  <span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">PyMotion</span><span class="p">()</span>
 
-  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start&quot;</span><span class="p">)</span>
-  <span class="n">test</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>pymotor_test.py 실행</strong></p>
@@ -252,11 +251,7 @@
 </pre></div>
 </div>
 <p><strong>pymotor_test.py 결과</strong></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Init
-Start
-</pre></div>
-</div>
-<p>위와 같이 출력되며, 오른쪽 팔을 무한히 움직입니다.</p>
+<p>파이보가 양팔을 무한히 움직입니다.</p>
 </section>
 </section>
 

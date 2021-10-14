@@ -79,19 +79,19 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" not found.') 
+      raise Exception(f'"{filename}" does not exist') 
 
     if not filename.split('.')[-1] in ['mp3', 'wav']:
-      raise Exception(f'"{filename}" is not "mp3" or "wav".')
+      raise Exception(f'"{filename}" must be (mp3|wav)')
 
     if not out in ['local', 'hdmi', 'both']:
-      raise Exception(f'"{out}" not include in "local", "hdmi", "both".')
+      raise Exception(f'"{out}" must be (local|hdmi|both)')
 
     if not isNumber(volume):
-      raise Exception(f'"{volume}" is not Number.')
+      raise Exception(f'"{volume}" is not Number')
 
     if type(background) != bool:
-      raise Exception(f'"{background}" is not bool.')
+      raise Exception(f'"{background}" is not bool')
 
     opt = '&' if background else ''
     os.system(f'omxplayer -o {out} --vol {volume} {filename} {opt}')
@@ -122,7 +122,7 @@ Functions:
       * ``False``: 무음모드 해제."""
 
     if type(value) != bool:
-      raise Exception(f'"{value}" is not a bool.')
+      raise Exception(f'"{value}" is not a bool')
 
     opt = LOW if value else HIGH
     os.system(f'gpio write 7 {opt}')

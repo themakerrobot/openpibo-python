@@ -121,7 +121,7 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" not found.')
+      raise Exception(f'"{filename}" does not exist')
 
     with open(filename, 'r') as f:
       self.profile = json.load(f)
@@ -146,13 +146,13 @@ Functions:
     """
 
     if type(n) is not int:
-      raise Exception (f'"{n}" is not Integer')
+      raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
-      raise Exception (f'"{n}" is not 0 ~ 9')
+      raise Exception (f'"{n}" must be 0~9')
     
     if type(pos) is not int:
-      raise Exception(f'"{pos}" is not Integer')
+      raise Exception(f'"{pos}" must be integer type')
 
     os.system(f"servo write {n} {pos*10}")
 
@@ -177,7 +177,7 @@ Functions:
     """
 
     if len(pos_list) != 10:
-      raise Exception (f'"{pos_list}"\'s length is not 10.')
+      raise Exception (f'len({pos_list}) must be 10')
 
     mpos = [pos_list[i]*10 for i in range(len(pos_list))]
 
@@ -203,16 +203,16 @@ Functions:
     """
     
     if type(n) is not int:
-      raise Exception (f'"{n}" is not Integer')
+      raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
-      raise Exception (f'"{n}" is not 0 ~ 9')
+      raise Exception (f'"{n}" must be 0~9')
     
     if type(spd) is not int:
-      raise Exception (f'"{spd}" is not Integer')
+      raise Exception (f'"{spd}" must be integer type')
     
     if abs(spd) > 255:
-      raise Exception (f'"{spd}" is not 0 ~ 255')
+      raise Exception (f'"{spd}" must be 0~255')
 
     os.system(f'servo speed {n} {spd}')
 
@@ -230,7 +230,7 @@ Functions:
     """
     
     if len(spd_list) != 10:
-      raise Exception (f'"{spd_list}"\'s length is not 10.')
+      raise Exception (f'len({spd_list}) must be 10')
 
     os.system(f'servo speed all {" ".join(map(str, spd_list))}')
 
@@ -254,16 +254,16 @@ Functions:
     """
     
     if type(n) is not int:
-      raise Exception (f'"{n}" is not Integer')
+      raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
-      raise Exception (f'"{n}" is not 0 ~ 9')
+      raise Exception (f'"{n}" must be 0~9')
     
     if type(accl) is not int:
-      raise Exception (f'"{accl}" is not Integer')
+      raise Exception (f'"{accl}" must be integer type')
     
     if abs(accl) > 255:
-      raise Exception (f'"{accl}" is not 0 ~ 255')
+      raise Exception (f'"{accl}" must be 0~255')
 
     os.system(f'servo accelerate {n} {accl}')
 
@@ -281,7 +281,7 @@ Functions:
     """
 
     if len(accl_list) != 10:
-      raise Exception (f'"{accl_list}"\'s length is not 10.')
+      raise Exception (f'len({accl_list}) must be 10')
 
     os.system(f'servo accelerate all {" ".join(map(str, accl_list))}')
 
@@ -360,10 +360,10 @@ Functions:
     """
 
     if exe == None:
-      raise Exception(f'"{exe}" is not motion data.')
+      raise Exception(f'"{exe}" is not motion data')
 
     if type(cycle) is not int or cycle < 1:
-      raise Exception(f'"{cycle} is not Integer or <= 0.')
+      raise Exception(f'"{cycle} must be integer type and positive number')
 
     seq,cnt,cycle_cnt = 0,0,0
     self.stopped = False
@@ -411,7 +411,11 @@ Functions:
 
       동작 반복 횟수
     """
-    return self.set_motion_raw(self.profile.get(name), cycle)
+    
+    result = self.profile.get(name)
+    if result == None:
+      raise Exception(f'"{name}" does not exist in motion profile')
+    return self.set_motion_raw(result, cycle)
 
   def stop(self):
     """
@@ -475,16 +479,16 @@ Functions:
     """
 
     if type(n) is not int:
-      raise Exception(f'"{n}" is not Integer')
+      raise Exception(f'"{n}" must be integer type')
 
     if n < 0 or n > 9:
-      raise Exception(f'"{n}" is not 0 ~ 9')
+      raise Exception(f'"{n}" must be 0~9')
 
     if type(pos) is not int:
-      raise Exception(f'"{pos}" is not Integer')
+      raise Exception(f'"{pos}" must be integer type')
 
     if abs(pos) > PyMotion.motor_range[n]:
-      raise Exception(f'range error ch:{n} range:-{PyMotion.motor_range[n]} ~ {PyMotion.motor_range[n]}')
+      raise Exception(f'Motor{n}\'s position must be -{PyMotion.motor_range[n]}~{PyMotion.motor_range[n]}')
 
     pos_val = (pos*10 + 1500)*4
     lsb = pos_val & 0x7f #7 bits for least significant byte
@@ -507,7 +511,7 @@ Functions:
 
     for n in range(len(pos_list)):
       if abs(pos_list[n]) > PyMotion.motor_range[n]:
-        raise Exception(f'range error ch:{n} range:-{PyMotion.motor_range[n]} ~ {PyMotion.motor_range[n]}')
+        raise Exception(f'Motion{n}\'s position must be -{PyMotion.motor_range[n]}~{PyMotion.motor_range[n]}')
 
     pos_list_val = [(pos_list[i]*10+1500)*4 for i in range(len(d_lst))]
     cmd = chr(0x9F) + chr(10) + chr(0)
@@ -531,17 +535,16 @@ Functions:
     """
 
     if type(n) is not int:
-      raise Exception (f'"{n}" is not Integer')
+      raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
-      raise Exception (f'"{n}" is not 0 ~ 9')
+      raise Exception (f'"{n}" must be 0~9')
 
     if type(spd) is not int:
-      raise Exception (f'"{spd}" is not Integer')
+      raise Exception (f'"{spd}" must be integer type')
     
     if abs(spd) > 255:
-      raise Exception (f'"{spd}" is not 0 ~ 255')
-
+      raise Exception (f'"{spd}" must be 0~255')
 
     lsb = spd & 0x7f #7 bits for least significant byte
     msb = (spd >> 7) & 0x7f #shift 7 and take next 7 bits for msb
@@ -565,16 +568,16 @@ Functions:
     """
 
     if type(n) is not int:
-      raise Exception (f'"{n}" is not Integer')
+      raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
-      raise Exception (f'"{n}" is not 0 ~ 9')
+      raise Exception (f'"{n}" must be 0~9')
 
     if type(accl) is not int:
-      raise Exception (f'"{accl}" is not Integer')
+      raise Exception (f'"{accl}" must be integer type')
     
     if abs(accl) > 255:
-      raise Exception (f'"{accl}" is not 0 ~ 255')
+      raise Exception (f'"{accl}" must be 0~255')
 
     lsb = accl & 0x7f #7 bits for least significant byte
     msb = (accl >> 7) & 0x7f #shift 7 and take next 7 bits for msb

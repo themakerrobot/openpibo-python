@@ -119,16 +119,16 @@
 <p>OLED display에 도형과 선을 출력합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.oled</span> <span class="kn">import</span> <span class="n">Oled</span>
 
-<span class="k">def</span> <span class="nf">oled_f</span><span class="p">():</span>
-  <span class="n">oObj</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>                              <span class="c1"># 화면 지우기</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">draw_rectangle</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span> <span class="p">,</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 길이가 20인 채워진 사각형 그리기</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">draw_ellipse</span><span class="p">((</span><span class="mi">70</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span> <span class="p">,</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># 지름이 20인 빈 원 그리기</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">draw_line</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>             <span class="c1"># 선 그리기</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                               <span class="c1"># 화면에 표시</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>                              <span class="c1"># 화면 지우기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">draw_rectangle</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># 길이가 20인 채워진 사각형 그리기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">draw_ellipse</span><span class="p">((</span><span class="mi">70</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">60</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>   <span class="c1"># 지름이 20인 빈 원 그리기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">draw_line</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>             <span class="c1"># 선 그리기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                               <span class="c1"># 화면에 표시</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">oled_f</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>figure_test.py 실행</strong></p>
@@ -141,22 +141,22 @@
 <section id="image-test-py">
 <h2>image_test.py<a class="headerlink" href="#image-test-py" title="제목 주소"></a></h2>
 <p>OLED display에 이미지를 출력합니다. (128X64만 가능합니다.)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openpibo</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">openpibo</span>
 <span class="kn">from</span> <span class="nn">openpibo.oled</span> <span class="kn">import</span> <span class="n">Oled</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
-
 <span class="c1"># 화면에 clear.png 이미지 5초간 표시</span>
-<span class="k">def</span> <span class="nf">oled_f</span><span class="p">():</span>
-  <span class="n">oObj</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">draw_image</span><span class="p">(</span><span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/images/clear.png&quot;</span><span class="p">)</span>  <span class="c1"># clear.png 그리기</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>   <span class="c1"># 화면에 표시</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">draw_image</span><span class="p">(</span><span class="n">openpibo</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DATA_PATH&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;/image/clear.png&quot;</span><span class="p">)</span>  <span class="c1"># clear.png 그리기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>   <span class="c1"># 화면에 표시</span>
   <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 5초동안 프로세스 정지</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># 화면 지우기</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># 화면 지우기</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">oled_f</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>image_test.py 실행</strong></p>
@@ -171,12 +171,16 @@
 <p>직접 실습해보세요.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.oled</span> <span class="kn">import</span> <span class="n">Oled</span>
 
-<span class="k">def</span> <span class="nf">oled_f</span><span class="p">():</span>
-  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;my oled design&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  make your own code</span>
+<span class="sd">  &quot;&quot;&quot;</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">oled_f</span><span class="p">()</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
+
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>self_test.py 실행</strong></p>
@@ -190,15 +194,14 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.oled</span> <span class="kn">import</span> <span class="n">Oled</span>
 
 <span class="c1"># (0,0), (0,20)에 15 크기의 text 표시</span>
-<span class="k">def</span> <span class="nf">oled_f</span><span class="p">():</span>
-  <span class="n">oObj</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-  
-<span class="n">oObj</span><span class="o">.</span><span class="n">draw_text</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;안녕? 난 파이보야 &quot;</span><span class="p">)</span>  <span class="c1"># (0,0)에 문자열 출력</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">draw_text</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> <span class="s2">&quot;☆  ★ &quot;</span><span class="p">)</span> <span class="c1"># (0,20)에 문자열 출력</span>
-  <span class="n">oObj</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># 화면에 표시</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Oled</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">draw_text</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;안녕? 난 파이보야 &quot;</span><span class="p">)</span>  <span class="c1"># (0,0)에 문자열 출력</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">draw_text</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> <span class="s2">&quot;☆  ★ &quot;</span><span class="p">)</span> <span class="c1"># (0,20)에 문자열 출력</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># 화면에 표시</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  for count in range(5):</span>
 <span class="sd">    oObj.clear()</span>
 <span class="sd">    oObj.draw_text((10,10), &quot;Hello World:{}&quot;.format(count))</span>
@@ -206,10 +209,10 @@
 <span class="sd">    time.sleep(1)</span>
 
 <span class="sd">  oObj.clear()</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-  <span class="n">oled_f</span><span class="p">()</span>
+  <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>text_test.py 실행</strong></p>
