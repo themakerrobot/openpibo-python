@@ -245,7 +245,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_motors">
-<span class="sig-name descname"><span class="pre">set_motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movetime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motors" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movetime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motors" title="정의 주소"></a></dt>
 <dd><p>전체 모터를 특정 위치로 이동합니다.</p>
 <p>movetime이 짧을수록 모션을 취하는 속도가 빨라집니다.
 만약 <code class="docutils literal notranslate"><span class="pre">movetime</span></code> 이 <code class="docutils literal notranslate"><span class="pre">None</span></code> 이라면, 속도는 이전 설정값으로 유지됩니다.</p>
@@ -256,7 +256,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pos_list</strong> (<em>list</em>) – 0-9번 모터 각도 배열</p></li>
+<li><p><strong>positions</strong> (<em>list</em>) – 0-9번 모터 각도 배열</p></li>
 <li><p><strong>movetime</strong> (<em>int</em>) – <p>모터 이동 시간(ms)</p>
 <p>50ms 단위, 모터가 정해진 위치까지 이동하는 시간</p>
 <p>(모터 컨트롤러와의 overhead문제로 정밀하지는 않음)</p>
@@ -268,7 +268,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_speed">
-<span class="sig-name descname"><span class="pre">set_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_speed" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_speed" title="정의 주소"></a></dt>
 <dd><p>모터 1개의 속도를 설정합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
@@ -278,7 +278,7 @@
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – 모터 번호</p></li>
-<li><p><strong>spd</strong> (<em>int</em>) – <p>모터 속도</p>
+<li><p><strong>speed</strong> (<em>int</em>) – <p>모터 속도</p>
 <p>0~255 사이 값입니다.
 숫자가 클수록 속도가 빨라집니다.</p>
 </p></li>
@@ -289,7 +289,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_speeds">
-<span class="sig-name descname"><span class="pre">set_speeds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spd_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_speeds" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_speeds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speeds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_speeds" title="정의 주소"></a></dt>
 <dd><p>전체 모터의 속도를 설정합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_speeds</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
@@ -297,7 +297,7 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>spd_list</strong> (<em>list</em>) – <p>0-9번 모터 속도 배열</p>
+<dd class="field-odd"><p><strong>speeds</strong> (<em>list</em>) – <p>0-9번 모터 속도 배열</p>
 <p>배열 안의 각 가속도는 0~255 사이 정수입니다.</p>
 </p>
 </dd>
@@ -306,7 +306,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_acceleration">
-<span class="sig-name descname"><span class="pre">set_acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_acceleration" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_acceleration" title="정의 주소"></a></dt>
 <dd><p>모터 1개의 가속도를 설정합니다.</p>
 <p>가속도를 설정하게 되면, 속도가 0에서 시작하여 설정된 속도까지 점점 빨라집니다.
 그리고 점점 느려지다가 종료 지점에서 속도가 0이 됩니다.</p>
@@ -318,7 +318,7 @@
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – 모터 번호</p></li>
-<li><p><strong>accl</strong> (<em>int</em>) – <p>모터 속도</p>
+<li><p><strong>accel</strong> (<em>int</em>) – <p>모터 속도</p>
 <p>0~255 사이 값입니다.
 숫자가 클수록 가속도가 커집니다.</p>
 </p></li>
@@ -329,7 +329,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_accelerations">
-<span class="sig-name descname"><span class="pre">set_accelerations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accl_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_accelerations" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_accelerations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_accelerations" title="정의 주소"></a></dt>
 <dd><p>전체 모터의 가속도를 설정합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_accelerations</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
@@ -337,7 +337,7 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>accl_list</strong> (<em>list</em>) – <p>0-9번 모터 가속도 배열</p>
+<dd class="field-odd"><p><strong>accels</strong> (<em>list</em>) – <p>0-9번 모터 가속도 배열</p>
 <p>배열 안의 각 가속도는 0~255 사이 정수입니다.</p>
 </p>
 </dd>
@@ -513,7 +513,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_motors">
-<span class="sig-name descname"><span class="pre">set_motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_motors" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_motors" title="정의 주소"></a></dt>
 <dd><p>전체 모터를 특정 위치로 이동합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_motors</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
@@ -521,8 +521,8 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>pos_list</strong> (<em>list</em>) – <p>0~9번 모터각도.</p>
-<p><strong>pos_list</strong> 에 들어가는 범위는 상단의 <code class="docutils literal notranslate"><span class="pre">모터</span> <span class="pre">제한</span> <span class="pre">각도</span></code> 와 같습니다.</p>
+<dd class="field-odd"><p><strong>positions</strong> (<em>list</em>) – <p>0~9번 모터각도.</p>
+<p><strong>positions</strong> 에 들어가는 범위는 상단의 <code class="docutils literal notranslate"><span class="pre">모터</span> <span class="pre">제한</span> <span class="pre">각도</span></code> 와 같습니다.</p>
 </p>
 </dd>
 </dl>
@@ -530,7 +530,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_speed">
-<span class="sig-name descname"><span class="pre">set_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_speed" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_speed" title="정의 주소"></a></dt>
 <dd><p>모터 1개의 속도를 설정합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
@@ -540,7 +540,7 @@
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – 모터 번호. 0~9 정수입니다.</p></li>
-<li><p><strong>spd</strong> (<em>int</em>) – 모터 속도. 0~255 정수입니다.</p></li>
+<li><p><strong>speed</strong> (<em>int</em>) – 모터 속도. 0~255 정수입니다.</p></li>
 </ul>
 </dd>
 </dl>
@@ -548,7 +548,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_acceleration">
-<span class="sig-name descname"><span class="pre">set_acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_acceleration" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_acceleration" title="정의 주소"></a></dt>
 <dd><p>모터 1개의 가속도를 설정합니다.</p>
 <p>가속도를 설정하게 되면, 속도가 0에서 시작하여 설정된 속도까지 점점 빨라집니다.
 그리고 점점 느려지다가 종료 지점에서 속도가 0이 됩니다.</p>
@@ -560,7 +560,7 @@
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – 모터 번호. 0~9 정수입니다.</p></li>
-<li><p><strong>accl</strong> (<em>int</em>) – 모터 가속도. 0~255 정수입니다.</p></li>
+<li><p><strong>accel</strong> (<em>int</em>) – 모터 가속도. 0~255 정수입니다.</p></li>
 </ul>
 </dd>
 </dl>

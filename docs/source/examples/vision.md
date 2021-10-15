@@ -217,7 +217,7 @@ def run(gui=False):
     print(" No face")
   else:
     # 얼굴 학습(학습할  이미지 데이터, 얼굴 1개 위치, 학습할 얼굴 이름)
-    print(" Train:", o_face.train_face(img, faces[0], "yjlee"))
+    print(" Train:", o_face.train_face(img, faces[0], "pibo"))
   print("After Train, DB:", o_face.get_db()[0])
 
   img = o_cam.read()
@@ -239,7 +239,7 @@ def run(gui=False):
   print("After Load db, DB:", o_face.get_db()[0])
 
   # delete Face
-  o_face.delete_face("yjlee")
+  o_face.delete_face("pibo")
   print("After Delete face:", o_face.get_db()[0])
 
 if __name__ == "__main__":
@@ -257,10 +257,10 @@ pi@raspberrypi:~/openpibo-examples/vision $ sudo python3 face_train_test.py
 ```python
 Start DB: []
  Train: None
-After Train, DB: ['yjlee']
- Recognize: {'name': 'yjlee', 'score': 0.02}
+After Train, DB: ['pibo']
+ Recognize: {'name': 'pibo', 'score': 0.02}
 After reset db, DB: []
-After Load db, DB: ['yjlee']
+After Load db, DB: ['pibo']
 After Delete face: []
 ```
 

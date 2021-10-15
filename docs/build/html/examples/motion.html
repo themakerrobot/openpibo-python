@@ -162,10 +162,10 @@
 
 <span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
 
-<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">spd</span><span class="p">,</span> <span class="n">accl</span><span class="p">):</span>
-  <span class="n">o</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">spd</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 spd로 변경</span>
-  <span class="n">o</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">accl</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 accl로 변경</span>
-  <span class="n">o</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>        <span class="c1"># n번 모터의 위치를 pos로 이동</span>
+<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 s로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 a로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>         <span class="c1"># n번 모터의 위치를 p로 이동</span>
 
 <span class="c1"># &#39;move() 실행 -&gt; 3초 휴식 -&gt; move() 실행 -&gt; 3초 휴식&#39;을 무한 반복</span>
 <span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
@@ -224,10 +224,10 @@
 
 <span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">PyMotion</span>
 
-<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">spd</span><span class="p">,</span> <span class="n">accl</span><span class="p">):</span>
-  <span class="n">o</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">spd</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 spd로 변경</span>
-  <span class="n">o</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">accl</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 accl로 변경</span>
-  <span class="n">o</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>        <span class="c1"># n번 모터의 위치를 pos로 이동</span>
+<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>         <span class="c1"># n번 모터의 속도를 s로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>  <span class="c1"># n번 모터의 가속도를 a로 변경</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>         <span class="c1"># n번 모터의 위치를 p로 이동</span>
 
 <span class="c1"># 2초 간격으로 move() 실행 무한 반복</span>
 <span class="k">def</span> <span class="nf">run</span><span class="p">():</span>

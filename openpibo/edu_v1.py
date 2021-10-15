@@ -12,16 +12,12 @@
 
     *  ``0`` : 메소드 실행 성공
     * ``-1`` : Argument error - 메소드 실행에 필요한 필수 인자 값 오류
-    * ``-2`` : Extension error - filename에 확장자 미기입 또는 잘못된 확장자 형식 입력
-    * ``-3`` : NotFound error - 존재하지 않는 파일 입력
-    * ``-4`` : Exist error - 이미 존재하는 데이터의 중복 생성
-    * ``-5`` : Range error - 지정된 범위를 벗어난 값 입력
-    * ``-6`` : Runtime error - 동작 중 오류 발생
-    * ``-7`` : Syntax error - 잘못된 형식의 인자 값 입력
-    * ``-8`` : Exception error - 위 error 이외의 다른 이유로 메소드 실행에 실패한 경우
+    * ``-2`` : NotFound error - 존재하지 않는 파일 입력
+    * ``-3`` : Runtime error - 동작 중 오류 발생
+    * ``-4`` : Exception error - 위 error 이외의 다른 이유로 메소드 실행에 실패한 경우
 """
 
-import sys, time, pickle
+import os, sys, time, pickle
 
 from .audio import Audio
 from .oled import Oled
@@ -33,7 +29,6 @@ from .modules.vision.stream import VideoStream
 
 from threading import Thread, Lock
 from queue import Queue
-from pathlib import Path
 
 
 class Pibo:
@@ -62,13 +57,9 @@ class Pibo:
   return_msg_list = {
     "Success": 0,
     "Argument error": -1,
-    #"Extension error": -2,
-    "NotFound error": -3,
-    #"Exist error": -4,
-    #"Range error": -5,
-    "Runtime error": -6,
-    #"Syntax error": -7,
-    "Exception error": -8,
+    "NotFound error": -2,
+    "Runtime error": -3,
+    "Exception error": -4,
   }
   """
   반환되는 ``errmsg`` 에 대한 ``errcode`` 입니다.
@@ -76,7 +67,7 @@ class Pibo:
 
   def __init__(self):
     self.camera_loop = False
-    self.img = ""
+    self.img = None
     self.device_loop = False
     self.flash = False
     self.device = Device()
@@ -131,7 +122,7 @@ class Pibo:
         return self.return_msg(False, "Argument error", "filename is required", None)   
       if filename.split('.')[-1] not in ('mp3', 'wav'):
         return self.return_msg(False, "Argument error", f"{filename} must be (mp3|wav) file", None)
-      if Path(filename).isfile() == False:
+      if not os.path.isfile(filename):
         return self.return_msg(False, "NotFound error", f"{filename} does not exist", None)
     
       if out not in ('local', 'hdmi', 'both'):
@@ -253,9 +244,9 @@ class Pibo:
     """
 
     try:
-      result = self.device.send_cmd('#15:!')
+      result = self.device.send_raw('#15:!')
       bat = result.split(':')[1]
-      result = self.device.send_cmd('#40:!')
+      result = self.device.send_raw('#40:!')
       result = result.split(':')[1].split('-')
       ans = {"BATTERY":bat, "PIR": result[0], "TOUCH": result[1], "DC_CONN": result[2], "BUTTON": result[3]}
       return self.return_msg(True, "Success", "Success", ans)
@@ -285,11 +276,11 @@ class Pibo:
         self.device.send_raw(self.que.get())
 
       if time.time() - self.system_check_time > 1:
-        FUNC(self.device.send_raw('#40:!'))
+        func(self.device.send_raw('#40:!'))
         self.system_check_time = time.time()
 
       if time.time() - self.battery_check_time > 10:
-        FUNC(self.device.send_raw('#15:!'))
+        func(self.device.send_raw('#15:!'))
         self.battery_check_time = time.time()
       time.sleep(0.01)
 
@@ -330,13 +321,13 @@ class Pibo:
 
 
   # [Device] - Stop thread_device
-  def stop_devices(self):
+  def stop_thread_device(self):
     """
     디바이스의 상태 확인을 종료합니다.
 
     example::
 
-      pibo_edu_v1.stop_devices()
+      pibo_edu_v1.stop_thread_device()
 
     :returns:
 
@@ -678,9 +669,9 @@ class Pibo:
     try:
       if filename == None:
         return self.return_msg(False, "Argument error", "filename is required", None)
-      if filename.split('.')[-1] not in ('mp3', 'wav'):
+      if filename.split('.')[-1] != 'png':
         return self.return_msg(False, "Argument error", f"{filename} must be png file", None)
-      if Path(filename).isfile() == False:
+      if not os.path.isfile(filename):
         return self.return_msg(False, "NotFound error", f"{filename} does not exist", None)
 
       h, w = self.camera.imread(filename).shape[:2]
@@ -864,9 +855,11 @@ class Pibo:
           return self.return_msg(False, "Argument error", f"{break_time} must be integer type", None)
         if break_time < 0:
           return self.return_msg(False, "Argument error", f"{break_time} must be positive number", None)
+        string = f'<speak><voice name="{voice_type}">{string}<break time="{break_time}ms"/></voice></speak>' 
+      else:
+        string = f'<speak><voice name="{voice_type}">{string}</voice></speak>'
 
-      string = f'{d["string"]}<break time="{d["break"]}"ms />' if "break" in d else d["string"]
-      string = f'<speak><voice name="{d["voice"]}">{string}</voice></speak>' 
+      print(string)
       self.speech.tts(string, filename)
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
@@ -987,13 +980,13 @@ class Pibo:
 
 
   # [Vision] - Camera OFF
-  def stop_camera(self):
+  def stop_thread_camera(self):
     """
     카메라를 종료합니다.
 
     example::
 
-      pibo_edu_v1.stop_camera()
+      pibo_edu_v1.stop_thread_camera()
     
     :returns:
 
@@ -1443,26 +1436,3 @@ class Pibo:
 
     return {"result": status, "errcode": Pibo.return_msg_list[errcode], "errmsg": errmsg, "data": data}
 
-
-  # Getting the meaning of error code
-  def decode_return_msg(self, errcode):
-    """
-    err 숫자코드의 의미를 조회합니다.
-
-    example::
-
-      pibo_edu_v1.get_codeMean(-3)
-
-    :param int errcode: 조회하고자 하는 errcode 숫자
-    
-    :returns:
-
-      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": errcode 의미}``
-      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
-    """
-
-    n_list = {value:key for key, value in Pibo.return_msg_list.items()}
-
-    if errcode in n_list.keys():
-      return self.return_msg(True, "Success", "Success", n_list[errcode])
-    return self.return_msg(False, "NotFound error", f"Error code {errcode} does not exist", None)

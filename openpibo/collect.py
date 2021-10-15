@@ -33,7 +33,7 @@ Functions:
 
         example::
 
-            result = pibo_wiki.search('사과')
+            result = pibo_wiki.search('강아지')
 
         :param str search_text: 위키백과에서의 검색어
 

@@ -313,7 +313,7 @@ Fs
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; No face&quot;</span><span class="p">)</span>
   <span class="k">else</span><span class="p">:</span>
     <span class="c1"># 얼굴 학습(학습할  이미지 데이터, 얼굴 1개 위치, 학습할 얼굴 이름)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Train:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">train_face</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;yjlee&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Train:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">train_face</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;pibo&quot;</span><span class="p">))</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Train, DB:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
   <span class="n">img</span> <span class="o">=</span> <span class="n">o_cam</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -335,7 +335,7 @@ Fs
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Load db, DB:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
   <span class="c1"># delete Face</span>
-  <span class="n">o_face</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="s2">&quot;yjlee&quot;</span><span class="p">)</span>
+  <span class="n">o_face</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="s2">&quot;pibo&quot;</span><span class="p">)</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After Delete face:&quot;</span><span class="p">,</span> <span class="n">o_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -349,10 +349,10 @@ Fs
 <p><strong>face_train_test.py 결과</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="n">DB</span><span class="p">:</span> <span class="p">[]</span>
  <span class="n">Train</span><span class="p">:</span> <span class="kc">None</span>
-<span class="n">After</span> <span class="n">Train</span><span class="p">,</span> <span class="n">DB</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;yjlee&#39;</span><span class="p">]</span>
- <span class="n">Recognize</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;yjlee&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">}</span>
+<span class="n">After</span> <span class="n">Train</span><span class="p">,</span> <span class="n">DB</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pibo&#39;</span><span class="p">]</span>
+ <span class="n">Recognize</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;pibo&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">}</span>
 <span class="n">After</span> <span class="n">reset</span> <span class="n">db</span><span class="p">,</span> <span class="n">DB</span><span class="p">:</span> <span class="p">[]</span>
-<span class="n">After</span> <span class="n">Load</span> <span class="n">db</span><span class="p">,</span> <span class="n">DB</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;yjlee&#39;</span><span class="p">]</span>
+<span class="n">After</span> <span class="n">Load</span> <span class="n">db</span><span class="p">,</span> <span class="n">DB</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pibo&#39;</span><span class="p">]</span>
 <span class="n">After</span> <span class="n">Delete</span> <span class="n">face</span><span class="p">:</span> <span class="p">[]</span>
 </pre></div>
 </div>

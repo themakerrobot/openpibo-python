@@ -3,7 +3,6 @@
 """
 import os, sys, json
 
-#__version__ = '0.9.1'
 __version__ = '0.9.2'
 
 if os.path.isfile('/home/pi/config.json') == False:

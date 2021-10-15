@@ -354,7 +354,7 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
-    return cv2.cvtColor(cv2.resize(img, (w, h)), cv2.COLR_BGR2GRAY)
+    return cv2.cvtColor(cv2.resize(img, (w, h)), cv2.COLOR_BGR2GRAY)
 
   def rotate(self, img, degree, ratio=1.0):
     """
