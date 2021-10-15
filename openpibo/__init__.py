@@ -3,7 +3,7 @@ openpibo-python
 """
 import os, sys, json
 
-__version__ = '0.9.2.6'
+__version__ = '0.9.2.7'
 
 if os.path.isfile('/home/pi/config.json') == False:
   config = {"DATA_PATH":"/home/pi/openpibo-files", "KAKAO_ACCOUNT":"", "robotId":""}

@@ -31,15 +31,68 @@ from .modules.vision.stream import VideoStream
 from threading import Thread, Lock
 from queue import Queue
 
+"""
+Class:
+:obj:`~openpibo.edu_v1.Pibo`
+"""
 
 class Pibo:
   """
+Functions:
+:meth:`~openpibo.edu_v1.Pibo.play_audio`
+:meth:`~openpibo.edu_v1.Pibo.stop_audio`
+:meth:`~openpibo.edu_v1.Pibo.search_wikipedia`
+:meth:`~openpibo.edu_v1.Pibo.search_weather`
+:meth:`~openpibo.edu_v1.Pibo.search_news`
+:meth:`~openpibo.edu_v1.Pibo.eye_on`
+:meth:`~openpibo.edu_v1.Pibo.eye_off`
+:meth:`~openpibo.edu_v1.Pibo.check_device`
+:meth:`~openpibo.edu_v1.Pibo.thread_device`
+:meth:`~openpibo.edu_v1.Pibo.start_thread_device`
+:meth:`~openpibo.edu_v1.Pibo.stop_thread_device`
+:meth:`~openpibo.edu_v1.Pibo.motor`
+:meth:`~openpibo.edu_v1.Pibo.motors`
+:meth:`~openpibo.edu_v1.Pibo.motors_movetime`
+:meth:`~openpibo.edu_v1.Pibo.get_motion`
+:meth:`~openpibo.edu_v1.Pibo.set_motion`
+:meth:`~openpibo.edu_v1.Pibo.show_display`
+:meth:`~openpibo.edu_v1.Pibo.draw_text`
+:meth:`~openpibo.edu_v1.Pibo.draw_image`
+:meth:`~openpibo.edu_v1.Pibo.draw_figure`
+:meth:`~openpibo.edu_v1.Pibo.invert`
+:meth:`~openpibo.edu_v1.Pibo.clear_display`
+:meth:`~openpibo.edu_v1.Pibo.translate`
+:meth:`~openpibo.edu_v1.Pibo.tts`
+:meth:`~openpibo.edu_v1.Pibo.stt`
+:meth:`~openpibo.edu_v1.Pibo.conversation`
+:meth:`~openpibo.edu_v1.Pibo.thread_camera`
+:meth:`~openpibo.edu_v1.Pibo.start_thread_camera`
+:meth:`~openpibo.edu_v1.Pibo.stop_thread_camera`
+:meth:`~openpibo.edu_v1.Pibo.capture`
+:meth:`~openpibo.edu_v1.Pibo.search_object`
+:meth:`~openpibo.edu_v1.Pibo.search_qr`
+:meth:`~openpibo.edu_v1.Pibo.search_text`
+:meth:`~openpibo.edu_v1.Pibo.search_color`
+:meth:`~openpibo.edu_v1.Pibo.detect_face`
+:meth:`~openpibo.edu_v1.Pibo.search_face`
+:meth:`~openpibo.edu_v1.Pibo.train_face`
+:meth:`~openpibo.edu_v1.Pibo.delete_face`
+:meth:`~openpibo.edu_v1.Pibo.get_facedb`
+:meth:`~openpibo.edu_v1.Pibo.save_facedb`
+:meth:`~openpibo.edu_v1.Pibo.init_facedb`
+:meth:`~openpibo.edu_v1.Pibo.load_facedb`
+:meth:`~openpibo.edu_v1.Pibo.get_image`
+:meth:`~openpibo.edu_v1.Pibo.return_msg`
+
   ``openpibo`` 의 다양한 기능들을 한번에 사용할 수 있는 클래스 입니다.
 
   다음 클래스의 기능을 모두 사용할 수 있습니다.
 
   * Device
   * Audio
+  * Wikipedia
+  * Weather
+  * News
   * Oled
   * Speech
   * Dialog
