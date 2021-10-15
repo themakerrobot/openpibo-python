@@ -126,7 +126,7 @@ Functions:
     self.flash = False
     self.device = Device()
     self.audio = Audio()
-    self.wiki = Wikipedia()
+    self.wikipedia = Wikipedia()
     self.weather = Weather()
     self.news = News()
     self.oled = Oled()
@@ -340,9 +340,9 @@ Functions:
     """
 
     try:
-      if region == None:
-        return self.return_msg(False, "Argument error", "region is required", None)
-      result = self.weather.search(region)
+      if topic == None:
+        return self.return_msg(False, "Argument error", "topic is required", None)
+      result = self.news.search(topic)
       return self.return_msg(True, "Success", "Success", result)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
