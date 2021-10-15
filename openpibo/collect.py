@@ -149,7 +149,7 @@ Functions:
                     'today':
                     {
                         'weather': '전국 대체로 흐림',
-                        'minimum_temp': '15.3 ~ 21.6', 
+                        'minimum_temp': '15.3 ~ 21.6',
                         'highst_temp': '23.1 ~ 27.6'
                     }
                     'tomorrow':
@@ -161,7 +161,7 @@ Functions:
                     'after_tomorrow':
                     {
                         'weather': '전국 대체로 흐림',
-                        'minimum_temp': '15.3 ~ 21.6', 
+                        'minimum_temp': '15.3 ~ 21.6',
                         'highst_temp': '23.1 ~ 27.6'
                     }
                 }
@@ -199,7 +199,7 @@ Functions:
         all_temps = list(map(lambda x: x.text, temp_table.select('td')[:10]))
         _today['minimum_temp'], _tomorrow['minimum_temp'], _after_tomorrow['minimum_temp'] = all_temps[2:5]
         _today['highst_temp'], _tomorrow['highst_temp'], _after_tomorrow['highst_temp'] = all_temps[7:10]
-        
+
         return {'forecast':_forecast, 'today':_today, 'tomorrow':_tomorrow, 'after_tomorrow':_after_tomorrow}
 
 class News:
@@ -243,7 +243,7 @@ Functions:
         example::
 
             result = pibo_news.search('속보')
-        
+
         :param str topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
 
             검색할 수 있는 주제는 다음과 같습니다::

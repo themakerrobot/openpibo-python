@@ -79,7 +79,7 @@ Functions:
     """
 
     if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" does not exist') 
+      raise Exception(f'"{filename}" does not exist')
 
     if not filename.split('.')[-1] in ['mp3', 'wav']:
       raise Exception(f'"{filename}" must be (mp3|wav)')

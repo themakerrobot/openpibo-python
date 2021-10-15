@@ -20,6 +20,7 @@
 import os, sys, time, pickle
 
 from .audio import Audio
+from .collect import Wikipedia, Weather, News
 from .oled import Oled
 from .speech import Speech, Dialog
 from .device import Device
@@ -72,6 +73,9 @@ class Pibo:
     self.flash = False
     self.device = Device()
     self.audio = Audio()
+    self.wiki = Wikipedia()
+    self.weather = Weather()
+    self.news = News()
     self.oled = Oled()
     self.speech = Speech()
     self.dialog = Dialog()
@@ -91,21 +95,21 @@ class Pibo:
     example::
 
       pibo_edu_v1.play_audio('/home/pi/openpibo-files/data/audio/opening.mp3')
-      
+
     :param str filename: 재생할 파일의 경로.
-    
+
       ``mp3`` 와 ``wav`` 형식을 지원합니다.
 
     :param str out: 어느 포트에서 재생할지 선택합니다.
-    
+
       ``local``, ``hdmi``, ``both`` 만 입력할 수 있습니다.
-    
+
       (default: ``local``)
 
     :param str or int volume: 음량을 설정합니다.
-    
+
       단위는 mdB 이고, 값이 커질수록 음량이 커집니다.
-    
+
       음량이 매우 크므로 -2000 정도로 사용하는 것을 권장합니다.
 
       (default: ``-2000``)
@@ -116,18 +120,18 @@ class Pibo:
       * ``False``: 오디오 파일이 종료될 때 까지 다른 명령어를 실행할 수 없습니다.
 
     """
-    
+
     try:
       if filename == None:
-        return self.return_msg(False, "Argument error", "filename is required", None)   
+        return self.return_msg(False, "Argument error", "filename is required", None)
       if filename.split('.')[-1] not in ('mp3', 'wav'):
         return self.return_msg(False, "Argument error", f"{filename} must be (mp3|wav) file", None)
       if not os.path.isfile(filename):
         return self.return_msg(False, "NotFound error", f"{filename} does not exist", None)
-    
+
       if out not in ('local', 'hdmi', 'both'):
         return self.return_msg(False, "Argument error", f"{out} must be (local|hdmi|both)", None)
-    
+
       self.audio.play(filename, out, volume, background)
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
@@ -138,11 +142,11 @@ class Pibo:
   def stop_audio(self):
     """
     background에서 재생중인 오디오를 정지합니다.
-  
+
     example::
 
       pibo_edu_v1.stop_audio()
-    
+
     :returns:
 
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
@@ -156,6 +160,141 @@ class Pibo:
       return self.return_msg(False, "Exception error", e, None)
 
 
+  # [Collect] - Wikipedia
+  def search_wikipedia(self, topic=None):
+    """
+    위키백과에서 ``topic`` 를 검색합니다.
+
+    example::
+
+      pibo_edu_v1.search_wikipedia('강아지')
+
+    :returns:
+
+      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": list 형태의 data}``
+      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
+
+        대부분의 경우 '0'번 항목에 개요를 표시하고, 검색된 내용이 없을 경우 None을 반환합니다.
+
+          example::
+
+            ['0':{
+              'title': '명칭', 
+               'content': "한국어 ‘강아지’는 ‘개’에 어린 짐승을 뜻하는 ‘아지’가 붙은 말이다..."
+            }, ... ]
+            or
+            None
+    """
+
+    try:
+      if topic == None:
+        return self.return_msg(False, "Argument error", "topic is required", None)
+      result = self.wikipedia.search(topic)
+      return self.return_msg(True, "Success", "Success", result)
+    except Exception as e:
+      return self.return_msg(False, "Exception error", e, None)
+
+
+  # [Collect] - Weather
+  def search_weather(self, region=None):
+    """
+    해당 지역(```region```)의 날씨 정보(종합예보, 오늘/내일/모레 날씨)를 가져옵니다.
+
+    example::
+
+      pibo_edu_v1.search_weather('전국')
+
+    :param str search_region: 검색 가능한 지역 (default: 전국)
+
+      검색할 수 있는 지역은 다음과 같습니다::
+
+        '전국', '서울', '인천', '경기', '부산', '울산', '경남', '대구', '경북',
+        '광주', '전남', '전북', '대전', '세종', '충남', '충북', '강원', '제주'
+
+    :returns:
+
+      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": dict 형태의 data}``
+      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
+
+      example::
+
+        종합예보와 오늘/내일/모레의 날씨 및 최저/최고기온을 반환합니다.
+        {
+          'forecast': '내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼'
+          'today':
+          {
+            'weather': '전국 대체로 흐림',
+            'minimum_temp': '15.3 ~ 21.6',
+            'highst_temp': '23.1 ~ 27.6'
+          }
+          'tomorrow':
+          {
+            'weather': '전국 대체로 흐림',
+            'minimum_temp': '15.3 ~ 21.6', 
+            'highst_temp': '23.1 ~ 27.6'
+          }
+          'after_tomorrow':
+          {
+            'weather': '전국 대체로 흐림',
+            'minimum_temp': '15.3 ~ 21.6',
+            'highst_temp': '23.1 ~ 27.6'
+          }
+        }
+        or None
+    """
+
+    try:
+      if region == None:
+        return self.return_msg(False, "Argument error", "region is required", None)
+      result = self.weather.search(region)
+      return self.return_msg(True, "Success", "Success", result)
+    except Exception as e:
+      return self.return_msg(False, "Exception error", e, None)
+
+
+  # [Collect] - News
+  def search_news(self, topic=None):
+    """
+    해당 주제(```topic```)에 맞는 뉴스를 가져옵니다.
+
+    example::
+
+      pibo_edu_v1.search_weather('전국')
+
+    :param str topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
+
+      검색할 수 있는 주제는 다음과 같습니다::
+
+        '속보', '정치', '경제', '사회', '국제', '문화', '연예', '스포츠',
+        '풀영상', '뉴스랭킹', '뉴스룸', '아침&', '썰전 라이브', '정치부회의'
+
+    :returns:
+
+      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": list 형태의 data}``
+      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
+
+      example::
+
+        [
+          {
+            'title': '또 소방차 막은 불법주차, 이번엔 가차없이 밀어버렸다', 
+            'link': 'https://news.jtbc.joins.com/article/article.aspx?...',
+            'description': '2019년 4월 소방당국의 불법주정차 강경대응 훈련 모습...,
+            'pubDate': '2021.09.03'
+          },  
+        ]
+        or None
+    """
+
+    try:
+      if region == None:
+        return self.return_msg(False, "Argument error", "region is required", None)
+      result = self.weather.search(region)
+      return self.return_msg(True, "Success", "Success", result)
+    except Exception as e:
+      return self.return_msg(False, "Exception error", e, None)
+
+
   # [Neopixel] - LED ON
   def eye_on(self, *color):
     """
@@ -165,23 +304,23 @@ class Pibo:
 
       pibo_edu_v1.eye_on(255,0,0)	# 양쪽 눈 제어
       pibo_edu_v1.eye_on(0,255,0,0,0,255) # 양쪽 눈 각각 제어
-    
+
     :param color:
-    
+
       * RGB (0~255 숫자)
       * (R, G, B) -> 양쪽 눈 함께 제어
       * (R,G,B,R,G,B) -> 양쪽 눈 각각 제어
-    
+
     :returns:
 
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
-    
+
     try:
       if len(color) == 0:
         return self.return_msg(False, "Argument error", "color is required", None)
-      
+
       if len(color) not in (3, 6):
         return self.return_msg(False, "Argument error", f"len({color}) must be 3 or 6", None)
 
@@ -191,7 +330,7 @@ class Pibo:
 
       code = '20' if len(color) == 3 else '23'
       cmd = f'#{code}:{",".join(str(p) for p in color)}!'
-      
+
       if self.device_loop:
         self.que.put(cmd)
       else:
@@ -225,7 +364,7 @@ class Pibo:
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
 
-  
+
   # [Device] - Check device
   def check_device(self):
     """
@@ -236,7 +375,7 @@ class Pibo:
       pibo_edu_v1.check_device()
 
       BATTERY, PIR, TOUCH, DC_CONN, BUTTON의 상태를 조회할 수 있습니다.
-    
+
     :returns:
 
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": Device로부터 응답}``
@@ -294,7 +433,7 @@ class Pibo:
 
       def decode(msg):
         print(msg)
-      
+
       pibo_edu_v1.start_thread_device(decode)
 
     :param func: thread_device 함수를 시작합니다.
@@ -357,16 +496,16 @@ class Pibo:
     :param int position: 모터 각도
 
       모터별 허용 각도 범위 절대값::
-        
+
         [25,35,80,30,50,25,25,35,80,30]
         # 0번 모터는 -25 ~ 25 범위의 모터 각도를 가집니다.
-    
+
     :param int speed: 모터 속도 (0~255)
-    
+
       default: None - 사용자가 이전에 설정한 값으로 제어
 
     :param int accel: 모터 가속도 (0~255)
-    
+
       default: None- 사용자가 이전에 설정한 값으로 제어
 
     :returns:
@@ -418,16 +557,16 @@ class Pibo:
     :param list positions: 0-9번 모터 각도 배열
 
       모터별 허용 각도 범위 절대값::
-      
+
         [25,35,80,30,50,25,25,35,80,30]
         # 0번 모터는 -25 ~ 25 범위의 모터 각도를 가집니다.
 
     :param list speed: 0-9번 모터 속도 (0~255)
-    
+
       default: None - 사용자가 이전에 설정한 값으로 제어
 
     :param list accel: 0-9번 모터 가속도 (0~255)
-    
+
       default: None - 사용자가 이전에 설정한 값으로 제어
 
     :returns:
@@ -475,12 +614,12 @@ class Pibo:
     :param list positions: 0-9번 모터 각도 배열
 
       모터별 허용 각도 범위 절대값::
-      
+
         [25,35,80,30,50,25,25,35,80,30]
         # 0번 모터는 -25 ~ 25 범위의 모터 각도를 가집니다.
 
     :param int movetime: 모터 이동 시간(ms)
-    
+
       모터가 정해진 위치까지 이동하는 시간
 
       * ``movetime`` 이 있으면 해당 시간까지 모터를 이동시키기 위한 속도, 가속도 값을 계산하여 모터를 제어합니다.
@@ -499,7 +638,7 @@ class Pibo:
         if abs(positions[n]) > self.motor_range[n]:
           return self.return_msg(False, "Argument error", 
                   f"Motor{n}'s position must be -{self.motor_range[n]}~{self.motor_range[n]}", None)
-      
+
       if movetime and movetime < 0:
         return self.return_msg(False, "Argument error", f"{movetime} must be positive number", None)
 
@@ -532,7 +671,7 @@ class Pibo:
 
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": profile로부터 응답}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
-    
+
     [전체 모션 리스트]::
 
       stop, stop_body, sleep, lookup, left, left_half, right, right_half, foward1-2, backward1-2, 
@@ -551,7 +690,7 @@ class Pibo:
 
 
   # [Motion] - Set motion
-  def set_motion(self, name=None, cycle=1):
+  def set_motion(self, name=None, cycle=1, profile_path=None):
     """
     모션의 동작을 실행합니다.
 
@@ -563,17 +702,21 @@ class Pibo:
 
     :param int cycle: 모션 반복 횟수
 
+    :param str profile_path:
+
+      커스텀 동작 프로파일 경로입니다. 입력하지 않으면 기본 프로파일을 불러옵니다.
+
     :returns:
 
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
-    
+
     try:
       if name == None:
         return self.return_msg(False, "Argument error", "name is required", None)
- 
-      self.motion.set_motion(name, cycle)
+
+      self.motion.set_motion(name, cycle, profile_path)
       return self.return_msg(ret, "Success", "Success", None)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
@@ -612,10 +755,10 @@ class Pibo:
     `show_display` 메소드와 함께 사용하여 oled에 표시할 수 있습니다.
 
     example::
-    
+
       pibo_edu_v1.draw_text((10, 10), '안녕하세요.', 15)
       pibo_edu_v1.show_display()
-    
+
     :param tuple(int, int) points: 문자열의 좌측상단 좌표 튜플(x,y)
 
     :param str text: 문자열 내용
@@ -627,11 +770,11 @@ class Pibo:
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
-    
+
     try:
       if points == None or type(points) is not tuple or len(points) != 2:
         return self.return_msg(False, "Argument error", f"{points} must be (x, y)", None)
-      
+
       if text == None or type(text) != str:
         return self.return_msg(False, "Argument error", "text is required", None)
 
@@ -648,7 +791,7 @@ class Pibo:
   def draw_image(self, filename=None):
     """
     이미지를 그립니다. (128X64 png 파일)
-    
+
     128X64 png 파일 외에는 지원하지 않습니다.
 
     `show_display` 메소드와 함께 사용하여 oled에 표시할 수 있습니다.
@@ -659,13 +802,13 @@ class Pibo:
       pibo_edu_v1.show_display()
 
     :param str filename: 이미지 파일의 경로
-    
+
     :returns:
 
     * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
     * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
-    
+
     try:
       if filename == None:
         return self.return_msg(False, "Argument error", "filename is required", None)
@@ -699,7 +842,7 @@ class Pibo:
       pibo_edu_v1.show_display()
 
     :param tuple(int, int, int, int) points: 선 - 시작 좌표, 끝 좌표(x1,y1,x2,y2)
-    
+
       사각형, 원 - 좌측상단, 우측하단 좌표 튜플(x1,y1,x2,y2)
 
     :param str shape: 도형 종류 - ``rectangle`` / ``circle`` / ``line``
@@ -711,11 +854,11 @@ class Pibo:
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
-    
+
     try:
       if points == None or type(points) is not tuple or len(points) != 4:
         return self.return_msg(False, "Argument error", f"{points} must be (x1,y1,x2,y2)", None)
-    
+
       if shape == None or type(shape) is not str:
         return self.return_msg(False, "Argument error", "shape is required", None)
 
@@ -727,7 +870,7 @@ class Pibo:
         self.oled.draw_line(points)
       else:
         return self.return_msg(False, "Argument error", f"{shape} must be (rectangle|circle|line)", None)
-      
+
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
@@ -822,7 +965,7 @@ class Pibo:
       pibo_edu_v1.tts("안녕하세요. 반갑습니다.", "WOMAN_READ_CALM", 500, "/home/pi/tts.mp3")
 
     :param str string: 변환할 문장
-    
+
     :param str voice_type: 목소리 종류
 
       * WOMAN_READ_CALM: 여성 차분한 낭독체 (default)
@@ -987,7 +1130,7 @@ class Pibo:
     example::
 
       pibo_edu_v1.stop_thread_camera()
-    
+
     :returns:
 
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
@@ -1078,7 +1221,7 @@ class Pibo:
       pibo_edu_v1.search_qr()
 
     :returns:
-    
+
       * 성공:``{"result": True, "errcode": 0, "errmsg": "Success", "data": {"data": 내용, "type": 바코드/QR코드}}``
       * 실패:``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
@@ -1100,7 +1243,7 @@ class Pibo:
       pibo_edu_v1.search_text()
 
     :returns:
-    
+
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": 인식된 문자열}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
@@ -1110,7 +1253,7 @@ class Pibo:
       return self.return_msg(True, "Success", "Success", result)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
-    
+
 
   # [Vision] - Detect color
   def search_color(self):
@@ -1140,7 +1283,7 @@ class Pibo:
         for j in range(50, height-50, 20):
           sum_hue += (img_hls[j, i, 0]*2)
           cnt += 1
-      
+
       hue = round(sum_hue/cnt)
 
       if ( 0 <= hue <= 30) or (330 <=  hue <= 360):
@@ -1192,7 +1335,7 @@ class Pibo:
     카메라 이미지 안의 얼굴을 인식하여 성별과 나이를 추측하고, facedb를 바탕으로 인식한 얼굴의 이름과 정확도를 제공합니다.
 
     얼굴 인식에 성공하면, 사진을 캡쳐 후 얼굴 위치와 이름, 나이, 성별을 기입 후 `filename` 에 저장합니다.
-    
+
     (인식한 얼굴 중 가장 크게 인식한 얼굴에 적용됩니다.)
 
     example::
@@ -1216,13 +1359,13 @@ class Pibo:
     try:
       if filename.split('.')[-1] not in ("png", "jpg", "jpeg", "bmp"):
         return self.return_msg(False, "Argument error", f"{filename} must be (png|jpg|jpeg|bmp)", None)
-      
+
       max_w = -1
       selected_face = []
 
       img = self.get_image()
       faceList = self.face.detect(img)
-      
+
       if len(faceList) < 1:
         return self.return_msg(True, "Success", "Success", "No Face")
       for i, (x,y,w,h) in enumerate(faceList):
@@ -1325,7 +1468,7 @@ class Pibo:
       pibo_edu_v1.get_facedb()
 
     :returns:
-    
+
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": 현재 사용 중인 facedb}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
@@ -1396,9 +1539,9 @@ class Pibo:
       pibo_edu_v1.load_facedb("/home/pi/facedb")
 
     :param str filename: 불러올 데이터베이스 파일 경로
-    
+
     :returns:
-    
+
       * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": None}``
       * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
     """
@@ -1425,7 +1568,7 @@ class Pibo:
 
     return self.img if self.camera_loop else self.camera.read() 
 
-  
+
   # Return msg form
   def return_msg(self, status, errcode, errmsg, data):
     """

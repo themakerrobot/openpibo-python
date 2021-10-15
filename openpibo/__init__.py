@@ -1,9 +1,9 @@
 """
-교육용 파이보 패키지
+openpibo-python
 """
 import os, sys, json
 
-__version__ = '0.9.2.5'
+__version__ = '0.9.2.6'
 
 if os.path.isfile('/home/pi/config.json') == False:
   config = {"DATA_PATH":"/home/pi/openpibo-files", "KAKAO_ACCOUNT":"", "robotId":""}

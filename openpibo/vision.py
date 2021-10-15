@@ -332,7 +332,7 @@ Functions:
     # with color image
     img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2RGB)
     return cv2.bitwise_and(img_color, img_edge)
- 
+
   def convert_img(self, img, w=128, h=64):
     """
     이미지의 크기를 변환합니다.
