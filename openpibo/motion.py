@@ -129,18 +129,18 @@ Functions:
   def set_motor(self, n, pos):
     """
     모터 1개를 특정 위치로 이동합니다.
-    
+
     example::
-    
+
       pibo_motion.set_motor(2, 30)
-    
+
     :param int n: 모터 번호
-    
+
       0~9의 숫자가 들어갑니다.
       해당 번호의 위치는 상단의 ``모터 번호당 위치`` 를 참고해주세요.
-    
+
     :param int pos: 모터 각도
-    
+
       -80~80의 숫자가 들어갑니다.
       자세한 범위는 상단의 ``모터 제한 각도`` 를 참고해주세요.
     """
@@ -150,7 +150,7 @@ Functions:
 
     if abs(n) > 9:
       raise Exception (f'"{n}" must be 0~9')
-    
+
     if type(pos) is not int:
       raise Exception(f'"{pos}" must be integer type')
 
@@ -201,16 +201,16 @@ Functions:
       0~255 사이 값입니다.
       숫자가 클수록 속도가 빨라집니다.
     """
-    
+
     if type(n) is not int:
       raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
       raise Exception (f'"{n}" must be 0~9')
-    
+
     if type(speed) is not int:
       raise Exception (f'"{speed}" must be integer type')
-    
+
     if abs(speed) > 255:
       raise Exception (f'"{speed}" must be 0~255')
 
@@ -228,7 +228,7 @@ Functions:
 
       배열 안의 각 가속도는 0~255 사이 정수입니다.
     """
-    
+
     if len(speeds) != 10:
       raise Exception (f'len({speeds}) must be 10')
 
@@ -252,16 +252,16 @@ Functions:
       0~255 사이 값입니다.
       숫자가 클수록 가속도가 커집니다.
     """
-    
+
     if type(n) is not int:
       raise Exception (f'"{n}" must be integer type')
 
     if abs(n) > 9:
       raise Exception (f'"{n}" must be 0~9')
-    
+
     if type(accel) is not int:
       raise Exception (f'"{accel}" must be integer type')
-    
+
     if abs(accel) > 255:
       raise Exception (f'"{accel}" must be 0~255')
 
@@ -392,7 +392,7 @@ Functions:
           continue
         break
 
-  def set_motion(self, name, cycle=1):
+  def set_motion(self, name, cycle=1, profile_path=None):
     """
     모션 프로파일의 동작을 실행하는 ``set_motion_raw`` 메소드를 실행합니다.
     ``motion_db`` 에서 ``name`` 에 해당하는 **JSON** 형식의 데이터를 불러와 ``set_motion_raw`` 메소드에게 넘겨줍니다.
@@ -410,9 +410,20 @@ Functions:
     :param int cycle:
 
       동작 반복 횟수
+
+    :param str profile_path:
+
+      커스텀 동작 프로파일 경로입니다. 입력하지 않으면 기본 프로파일을 불러옵니다.
     """
-    
-    result = self.profile.get(name)
+
+    if profile_path == None:
+      result = self.profile.get(name)
+    elif os.path.isfile(profile_path):
+      with open(profile_path, 'r') as f:
+        result = json.load(f).get(name)
+    else:
+      raise Exception(f'"{profile_path}" does not exist')
+
     if result == None:
       raise Exception(f'"{name}" does not exist in motion profile')
     return self.set_motion_raw(result, cycle)
@@ -422,7 +433,7 @@ Functions:
     수행 중인 동작을 정지합니다.
 
     example::
-      
+
       # 동작을 수행 중일 때,
       pibo_motion.stop()
     """
@@ -437,7 +448,7 @@ Functions:
 :meth:`~openpibo.motion.PyMotion.set_speed`
 :meth:`~openpibo.motion.PyMotion.set_acceleration`
 :meth:`~openpibo.motion.PyMotion.set_init`
-  
+
   파이보의 움직임을 제어하는 클래스.
 
   ``Motion`` 클래스와의 차이점은, 모터 컨트롤러와 직접 통신한다는 점입니다.
@@ -542,7 +553,7 @@ Functions:
 
     if type(speed) is not int:
       raise Exception (f'"{speed}" must be integer type')
-    
+
     if abs(speed) > 255:
       raise Exception (f'"{speed}" must be 0~255')
 
@@ -575,7 +586,7 @@ Functions:
 
     if type(accel) is not int:
       raise Exception (f'"{accel}" must be integer type')
-    
+
     if abs(accel) > 255:
       raise Exception (f'"{accel}" must be 0~255')
 
