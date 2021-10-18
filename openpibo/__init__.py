@@ -1,9 +1,9 @@
 """
 openpibo-python
 """
-import os, sys, json
+import os, sys, json, shutil
 
-__version__ = '0.9.2.7'
+__version__ = '0.9.2.8'
 
 if os.path.isfile('/home/pi/config.json') == False:
   config = {"DATA_PATH":"/home/pi/openpibo-files", "KAKAO_ACCOUNT":"", "robotId":""}
@@ -13,6 +13,7 @@ else:
   with open('/home/pi/config.json', 'r') as f:
     config = json.load(f)
 
+shutil.chown('/home/pi/config.json', 'pi', 'pi')
 current_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_path)
 from .modules import *
