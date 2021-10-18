@@ -28,7 +28,7 @@ from .motion import Motion
 from .vision import Camera, Face, Detect
 from .modules.vision.stream import VideoStream
 
-from threading import Thread, Lock
+from threading import Thread
 from queue import Queue
 
 """
@@ -41,9 +41,6 @@ class Pibo:
 Functions:
 :meth:`~openpibo.edu_v1.Pibo.play_audio`
 :meth:`~openpibo.edu_v1.Pibo.stop_audio`
-:meth:`~openpibo.edu_v1.Pibo.search_wikipedia`
-:meth:`~openpibo.edu_v1.Pibo.search_weather`
-:meth:`~openpibo.edu_v1.Pibo.search_news`
 :meth:`~openpibo.edu_v1.Pibo.eye_on`
 :meth:`~openpibo.edu_v1.Pibo.eye_off`
 :meth:`~openpibo.edu_v1.Pibo.check_device`
@@ -90,9 +87,6 @@ Functions:
 
   * Device
   * Audio
-  * Wikipedia
-  * Weather
-  * News
   * Oled
   * Speech
   * Dialog
@@ -126,9 +120,6 @@ Functions:
     self.flash = False
     self.device = Device()
     self.audio = Audio()
-    self.wikipedia = Wikipedia()
-    self.weather = Weather()
-    self.news = News()
     self.oled = Oled()
     self.speech = Speech()
     self.dialog = Dialog()
@@ -209,141 +200,6 @@ Functions:
     try:
       self.audio.stop()
       return self.return_msg(True, "Success", "Success", None)
-    except Exception as e:
-      return self.return_msg(False, "Exception error", e, None)
-
-
-  # [Collect] - Wikipedia
-  def search_wikipedia(self, topic=None):
-    """
-    위키백과에서 ``topic`` 를 검색합니다.
-
-    example::
-
-      pibo_edu_v1.search_wikipedia('강아지')
-
-    :returns:
-
-      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": list 형태의 data}``
-      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
-
-        대부분의 경우 '0'번 항목에 개요를 표시하고, 검색된 내용이 없을 경우 None을 반환합니다.
-
-          example::
-
-            ['0':{
-              'title': '명칭', 
-               'content': "한국어 ‘강아지’는 ‘개’에 어린 짐승을 뜻하는 ‘아지’가 붙은 말이다..."
-            }, ... ]
-            or
-            None
-    """
-
-    try:
-      if topic == None:
-        return self.return_msg(False, "Argument error", "topic is required", None)
-      result = self.wikipedia.search(topic)
-      return self.return_msg(True, "Success", "Success", result)
-    except Exception as e:
-      return self.return_msg(False, "Exception error", e, None)
-
-
-  # [Collect] - Weather
-  def search_weather(self, region=None):
-    """
-    해당 지역(```region```)의 날씨 정보(종합예보, 오늘/내일/모레 날씨)를 가져옵니다.
-
-    example::
-
-      pibo_edu_v1.search_weather('전국')
-
-    :param str search_region: 검색 가능한 지역 (default: 전국)
-
-      검색할 수 있는 지역은 다음과 같습니다::
-
-        '전국', '서울', '인천', '경기', '부산', '울산', '경남', '대구', '경북',
-        '광주', '전남', '전북', '대전', '세종', '충남', '충북', '강원', '제주'
-
-    :returns:
-
-      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": dict 형태의 data}``
-      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
-
-      example::
-
-        종합예보와 오늘/내일/모레의 날씨 및 최저/최고기온을 반환합니다.
-        {
-          'forecast': '내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼'
-          'today':
-          {
-            'weather': '전국 대체로 흐림',
-            'minimum_temp': '15.3 ~ 21.6',
-            'highst_temp': '23.1 ~ 27.6'
-          }
-          'tomorrow':
-          {
-            'weather': '전국 대체로 흐림',
-            'minimum_temp': '15.3 ~ 21.6', 
-            'highst_temp': '23.1 ~ 27.6'
-          }
-          'after_tomorrow':
-          {
-            'weather': '전국 대체로 흐림',
-            'minimum_temp': '15.3 ~ 21.6',
-            'highst_temp': '23.1 ~ 27.6'
-          }
-        }
-        or None
-    """
-
-    try:
-      if region == None:
-        return self.return_msg(False, "Argument error", "region is required", None)
-      result = self.weather.search(region)
-      return self.return_msg(True, "Success", "Success", result)
-    except Exception as e:
-      return self.return_msg(False, "Exception error", e, None)
-
-
-  # [Collect] - News
-  def search_news(self, topic=None):
-    """
-    해당 주제(```topic```)에 맞는 뉴스를 가져옵니다.
-
-    example::
-
-      pibo_edu_v1.search_weather('전국')
-
-    :param str topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
-
-      검색할 수 있는 주제는 다음과 같습니다::
-
-        '속보', '정치', '경제', '사회', '국제', '문화', '연예', '스포츠',
-        '풀영상', '뉴스랭킹', '뉴스룸', '아침&', '썰전 라이브', '정치부회의'
-
-    :returns:
-
-      * 성공: ``{"result": True, "errcode": 0, "errmsg": "Success", "data": list 형태의 data}``
-      * 실패: ``{"result": False, "errcode": errcode, "errmsg": "errmsg", "data": None}``
-
-      example::
-
-        [
-          {
-            'title': '또 소방차 막은 불법주차, 이번엔 가차없이 밀어버렸다', 
-            'link': 'https://news.jtbc.joins.com/article/article.aspx?...',
-            'description': '2019년 4월 소방당국의 불법주정차 강경대응 훈련 모습...,
-            'pubDate': '2021.09.03'
-          },  
-        ]
-        or None
-    """
-
-    try:
-      if topic == None:
-        return self.return_msg(False, "Argument error", "topic is required", None)
-      result = self.news.search(topic)
-      return self.return_msg(True, "Success", "Success", result)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
 

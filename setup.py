@@ -5,9 +5,8 @@ with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 requirements = [
-        'opencv-python==4.1.0.25',
-        'opencv-contrib-python==4.1.0.25',
-        'dlib==19.19.0',
+        'opencv-contrib-python>=4.1.0.25',
+        'dlib>=19.19.0',
         'pyzbar==0.1.8',
         'pytesseract==0.3.4',
         'beautifulsoup4==4.6.0',
