@@ -20,7 +20,6 @@
 import os, sys, time, pickle
 
 from .audio import Audio
-from .collect import Wikipedia, Weather, News
 from .oled import Oled
 from .speech import Speech, Dialog
 from .device import Device
@@ -626,7 +625,7 @@ Functions:
         return self.return_msg(False, "Argument error", "name is required", None)
 
       self.motion.set_motion(name, cycle, profile_path)
-      return self.return_msg(ret, "Success", "Success", None)
+      return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
 
@@ -911,7 +910,6 @@ Functions:
       else:
         string = f'<speak><voice name="{voice_type}">{string}</voice></speak>'
 
-      print(string)
       self.speech.tts(string, filename)
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
