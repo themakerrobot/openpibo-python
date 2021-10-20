@@ -369,12 +369,12 @@ Functions:
     self.stopped = False
 
     if exe["init_def"] == 1:
-      self.set_motors(exe["init"], seq)
+      self.set_motors(exe["init"], 1000)
 
     if "pos" not in exe:
       return
 
-    time.sleep(0.5)
+    time.sleep(1)
     while True:
       if self.stopped:
         break
