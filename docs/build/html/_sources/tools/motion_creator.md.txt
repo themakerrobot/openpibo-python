@@ -80,9 +80,9 @@ $ sudo python3 main.py --port 8888
   >>> from openpibo.motion import Motion
   
   >>> pibo_motion = Motion()
-  >>> ret = pibo_motion.get_motion("hello", profile_path="/home/pi/mymotion.json")
+  >>> ret = pibo_motion.get_motion("hello", path="/home/pi/mymotion.json")
   >>> print(ret)
-  >>> pibo_motion.set_motion('hello', profile_path="/home/pi/mymotion.json")		# 동작 실행
+  >>> pibo_motion.set_motion('hello', path="/home/pi/mymotion.json")		# 동작 실행
   ```
 
   또는 생성한 파일에서 코드를 복사해서 사용할 수 있습니다.

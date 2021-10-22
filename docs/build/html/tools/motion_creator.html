@@ -161,9 +161,9 @@ $ sudo python3 main.py --port <span class="m">8888</span>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pibo_motion</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ret</span> <span class="o">=</span> <span class="n">pibo_motion</span><span class="o">.</span><span class="n">get_motion</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">profile_path</span><span class="o">=</span><span class="s2">&quot;/home/pi/mymotion.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ret</span> <span class="o">=</span> <span class="n">pibo_motion</span><span class="o">.</span><span class="n">get_motion</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/home/pi/mymotion.json&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">profile_path</span><span class="o">=</span><span class="s2">&quot;/home/pi/mymotion.json&quot;</span><span class="p">)</span>		<span class="c1"># 동작 실행</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/home/pi/mymotion.json&quot;</span><span class="p">)</span>		<span class="c1"># 동작 실행</span>
 </pre></div>
 </div>
 <p>또는 생성한 파일에서 코드를 복사해서 사용할 수 있습니다.</p>
