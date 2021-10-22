@@ -557,7 +557,7 @@ Functions:
 
 
   # [Motion] - Get motion type or motion details
-  def get_motion(self, name=None):
+  def get_motion(self, name=None, path=None):
     """
     모션 종류 및 정보를 조회합니다.
 
@@ -574,6 +574,8 @@ Functions:
       # {'comment': 'sleep', 'init': [0,0,-70,-25,0,15,0,0,70,25], 'init_def': 0, ...}
 
     :param str name: 모션 이름
+    
+    :param str path: 모션 파일 경로, 입력하지 않으면 기본 모션 파일을 불러옵니다.
 
     :returns:
 
@@ -591,14 +593,14 @@ Functions:
     """
 
     try:
-      ret = self.motion.get_motion(name)
+      ret = self.motion.get_motion(name, path)
       return self.return_msg(True, "Success", "Success", ret)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
 
 
   # [Motion] - Set motion
-  def set_motion(self, name=None, cycle=1, profile_path=None):
+  def set_motion(self, name=None, cycle=1, path=None):
     """
     모션의 동작을 실행합니다.
 
@@ -610,9 +612,7 @@ Functions:
 
     :param int cycle: 모션 반복 횟수
 
-    :param str profile_path:
-
-      커스텀 동작 프로파일 경로입니다. 입력하지 않으면 기본 프로파일을 불러옵니다.
+    :param str path: 모션 파일 경로, 입력하지 않으면 기본 모션 파일을 불러옵니다.
 
     :returns:
 
@@ -624,7 +624,7 @@ Functions:
       if name == None:
         return self.return_msg(False, "Argument error", "name is required", None)
 
-      self.motion.set_motion(name, cycle, profile_path)
+      self.motion.set_motion(name, cycle, path)
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)

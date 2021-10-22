@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>motion &mdash; openpibo 0.9.2.12 documentation</title>
+  <title>motion &mdash; openpibo 0.9.2.13 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/motion.html" />
@@ -346,9 +346,9 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.get_motion">
-<span class="sig-name descname"><span class="pre">get_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.get_motion" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">get_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.get_motion" title="정의 주소"></a></dt>
 <dd><p>모션 프로파일을 조회합니다.</p>
-<p><code class="docutils literal notranslate"><span class="pre">name</span></code> 매개변수가 <code class="docutils literal notranslate"><span class="pre">None</span></code> 이면, 현재 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> 매개변수가 <code class="docutils literal notranslate"><span class="pre">None</span></code> 이면, 해당 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,
 <code class="docutils literal notranslate"><span class="pre">None</span></code> 이 아니면, 해당 이름의 모션에 대한 데이터를 출력합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">get_motion</span><span class="p">(</span><span class="s1">&#39;forward1&#39;</span><span class="p">)</span>
@@ -356,15 +356,20 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
 <p>profile에 저장되어있는 동작의 이름입니다.</p>
-<p>초기화 시 forward1(전진1), forward2(전진2), sleep(잠자기), dance1(춤추기1) 등을 조회할 수 있습니다.</p>
-</p>
+</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – <p>사용할 모션 파일 경로</p>
+<p>모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</p>
+</p></li>
+</ul>
 </dd>
 <dt class="field-even">반환</dt>
 <dd class="field-even"><p><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">==</span> <span class="pre">None</span></code> 인 경우:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pibo_motion.get_motion()</span>
+<span class="c1"># pibo_motion.get_motion(path=&#39;/home/pi/mymotion.json&#39;)</span>
 
 <span class="p">[</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="s1">&#39;stop_body&#39;</span><span class="p">,</span> <span class="s1">&#39;sleep&#39;</span><span class="p">,</span> <span class="s1">&#39;lookup&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;left_half&#39;</span><span class="p">,</span>
 <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;right_half&#39;</span><span class="p">,</span> <span class="s1">&#39;forward1&#39;</span><span class="p">,</span> <span class="s1">&#39;forward2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
@@ -373,6 +378,7 @@
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">!=</span> <span class="pre">None</span></code> 인 경우:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pibo_motion.get_motion(&#39;stop&#39;)</span>
+<span class="c1"># pibo_motion.get_motion(&#39;stop&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
 
 <span class="p">{</span>
   <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;stop&#39;</span><span class="p">,</span>
@@ -430,11 +436,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_motion">
-<span class="sig-name descname"><span class="pre">set_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motion" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">set_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motion" title="정의 주소"></a></dt>
 <dd><p>모션 프로파일의 동작을 실행하는 <code class="docutils literal notranslate"><span class="pre">set_motion_raw</span></code> 메소드를 실행합니다.
 <code class="docutils literal notranslate"><span class="pre">motion_db</span></code> 에서 <code class="docutils literal notranslate"><span class="pre">name</span></code> 에 해당하는 <strong>JSON</strong> 형식의 데이터를 불러와 <code class="docutils literal notranslate"><span class="pre">set_motion_raw</span></code> 메소드에게 넘겨줍니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="s1">&#39;dance1&#39;</span><span class="p">)</span>
+<span class="c1">#pibo_motion.set_motion(&#39;dance1&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -442,10 +449,9 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
 <p>모션 프로파일에 저장되어있는 동작의 이름입니다.</p>
-<p>초기화 시 기본 모션 프로파일에 있는 동작(forward1, forward2, sleep, dance1 등)을 실행할 수 있습니다.</p>
 </p></li>
 <li><p><strong>cycle</strong> (<em>int</em>) – 동작 반복 횟수</p></li>
-<li><p><strong>profile_path</strong> (<em>str</em>) – 커스텀 동작 프로파일 경로입니다. 입력하지 않으면 기본 프로파일을 불러옵니다.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – 모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</p></li>
 </ul>
 </dd>
 </dl>
@@ -592,7 +598,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.2.12.</p>
+    <p>&#169; Copyright 2021, Circulus Education, openpibo-python-0.9.2.13.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

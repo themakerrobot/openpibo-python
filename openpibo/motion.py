@@ -285,11 +285,11 @@ Functions:
 
     os.system(f'servo accelerate all {" ".join(map(str, accels))}')
 
-  def get_motion(self, name=None):
+  def get_motion(self, name=None, path=None):
     """
     모션 프로파일을 조회합니다.
 
-    ``name`` 매개변수가 ``None`` 이면, 현재 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,
+    ``name`` 매개변수가 ``None`` 이면, 해당 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,
     ``None`` 이 아니면, 해당 이름의 모션에 대한 데이터를 출력합니다.
 
     example::
@@ -300,13 +300,16 @@ Functions:
 
       profile에 저장되어있는 동작의 이름입니다.
 
-      초기화 시 forward1(전진1), forward2(전진2), sleep(잠자기), dance1(춤추기1) 등을 조회할 수 있습니다.
+    :param str path: 사용할 모션 파일 경로
+
+      모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.
 
     :returns:
 
       * ``name == None`` 인 경우::
 
           # pibo_motion.get_motion()
+          # pibo_motion.get_motion(path='/home/pi/mymotion.json')
 
           ['stop', 'stop_body', 'sleep', 'lookup', 'left', 'left_half',
           'right', 'right_half', 'forward1', 'forward2', ...]
@@ -314,6 +317,7 @@ Functions:
       * ``name != None`` 인 경우::
 
           # pibo_motion.get_motion('stop')
+          # pibo_motion.get_motion('stop', path='/home/pi/mymotion.json')
 
           {
             'comment': 'stop',
@@ -321,9 +325,16 @@ Functions:
             'init': [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]
           }
     """
-
-    return list(self.profile.keys()) if name == None else self.profile.get(name)
-
+    if path == None:
+      return list(self.profile.keys()) if name == None else self.profile.get(name)
+    elif os.path.isfile(path):
+      with open(path, 'r') as f:
+        result = json.load(f)
+      return list(result.keys()) if name == None else result.get(name)
+    else:
+      raise Exception(f'"{path}" does not exist')
+    
+ 
   def set_motion_raw(self, exe, cycle=1):
     """
     모션 프로파일의 동작을 실행합니다.
@@ -392,7 +403,7 @@ Functions:
           continue
         break
 
-  def set_motion(self, name, cycle=1, profile_path=None):
+  def set_motion(self, name, cycle=1, path=None):
     """
     모션 프로파일의 동작을 실행하는 ``set_motion_raw`` 메소드를 실행합니다.
     ``motion_db`` 에서 ``name`` 에 해당하는 **JSON** 형식의 데이터를 불러와 ``set_motion_raw`` 메소드에게 넘겨줍니다.
@@ -400,29 +411,28 @@ Functions:
     example::
 
       pibo_motion.set_motion('dance1')
+      #pibo_motion.set_motion('dance1', path='/home/pi/mymotion.json')
 
     :param str name: 동작 이름
 
       모션 프로파일에 저장되어있는 동작의 이름입니다.
 
-      초기화 시 기본 모션 프로파일에 있는 동작(forward1, forward2, sleep, dance1 등)을 실행할 수 있습니다.
-
     :param int cycle:
 
       동작 반복 횟수
 
-    :param str profile_path:
+    :param str path:
 
-      커스텀 동작 프로파일 경로입니다. 입력하지 않으면 기본 프로파일을 불러옵니다.
+      모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.
     """
 
-    if profile_path == None:
+    if path == None:
       result = self.profile.get(name)
-    elif os.path.isfile(profile_path):
-      with open(profile_path, 'r') as f:
+    elif os.path.isfile(path):
+      with open(path, 'r') as f:
         result = json.load(f).get(name)
     else:
-      raise Exception(f'"{profile_path}" does not exist')
+      raise Exception(f'"{path}" does not exist')
 
     if result == None:
       raise Exception(f'"{name}" does not exist in motion profile')
