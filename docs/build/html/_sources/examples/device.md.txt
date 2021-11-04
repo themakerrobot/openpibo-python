@@ -24,17 +24,17 @@ if __name__ == "__main__":
 
 **device_once_test.py 실행**
 
-아래는 PIBO의 양쪽 눈 색깔을 변경(24)하는 명령어 입력 코드입니다.
+아래는 PIBO의 양쪽 눈 색깔을 변경(23)하는 명령어 입력 코드입니다.
 
 ```shell
-pi@raspberrypi:~/openpibo-examples/device$ sudo python3 device_once_test.py --command "#24:255,0,0,0,0,255:!"
+pi@raspberrypi:~/openpibo-examples/device$ sudo python3 device_once_test.py --command "#23:255,0,0,0,0,255:!"
 ```
 
 **device_once_test.py 결과**
 
 ```shell
-Send: #24:255,0,0,0,0,255:!
-Receive: 24:oK
+Send: #23:255,0,0,0,0,255:!
+Receive: 23:oK
 ```
 
 ![](images/device_once_test.jpg)
