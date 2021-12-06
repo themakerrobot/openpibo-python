@@ -13,15 +13,16 @@ $ sudo python3 main.py --port 8888
 
 - 프로그램을 실행합니다.
 
-  `--port` : 연결할 포트를 입력합니다. 만약 설정하지 않으면, 기본 포트는 `8888`입니다.
+  `--port` : 연결할 포트를 입력합니다. 만약 설정하지 않으면, 기본 포트는 `80`입니다.
 
-  이후 인터넷 브라우저에서 `http://<PIBO IP>:<PORT>`에 접속합니다.
+  이후 인터넷 브라우저에서 `http://<PIBO IP>:<PORT>`에 접속합니다. (80은 생략 가능)
 
-    * 예: http://192.168.2.144:8888
+    * Ex1) PIBO IP: 192.168.1.10 / PORT: 8888 > http://192.168.1.10:8888 
+    * Ex2) PIBO IP: 192.168.1.20 / PORT: 80 > http://192.168.1.20:80 or http://192.168.1.20
 
   ![image-20210820112314329](images/device_simulator/devicesimulator.png)
 
-  
+
 
 - 좌측 입력 바를 조작하여 **Neopixel** 을 제어할 수 있습니다.
 
@@ -29,7 +30,7 @@ $ sudo python3 main.py --port 8888
 
   ![image-20210907162233280](images/device_simulator/image-20210907162233280.png)
 
-  
+
 
 - 우측 테이블에서는 디바이스 상태 정보를 확인할 수 있습니다.
 

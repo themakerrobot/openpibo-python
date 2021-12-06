@@ -11,6 +11,7 @@ requirements = [
         'pytesseract==0.3.4',
         'beautifulsoup4==4.6.0',
         'konlpy==0.5.2',
+        'tweepy==3.10.0',
         'future==0.18.2',
         'pillow==7.2.0',
         'RPi.gpio==0.7.0',
