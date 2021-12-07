@@ -63,7 +63,7 @@ Functions:
     Camera 클래스를 초기화합니다.
     """
     os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
-    self.cap = cv2.VideoStream(cam)
+    self.cap = cv2.VideoCapture(cam)
 
   def imread(self, filename):
     """
