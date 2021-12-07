@@ -25,7 +25,6 @@ from .speech import Speech, Dialog
 from .device import Device
 from .motion import Motion
 from .vision import Camera, Face, Detect
-from .modules.vision.stream import VideoStream
 
 from threading import Thread
 from queue import Queue
@@ -980,13 +979,11 @@ Functions:
     카메라로 짧은 주기로 사진을 찍어 128x64 크기로 변환한 후 OLED에 보여줍니다.
     """
 
-    vs = VideoStream().start()
 
     while True:
       if self.camera_loop == False:
-        vs.stop()
         break
-      self.img = vs.read()
+      self.img = self.camera.read()
       img = self.img
       img = self.camera.convert_img(img, 128, 64)
       #_, img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)

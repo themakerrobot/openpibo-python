@@ -15,7 +15,6 @@ import numpy as np
 import pytesseract
 from pyzbar import pyzbar
 import pickle,os,time
-from .modules.vision.stream import VideoStream
 import os
 
 import openpibo_models
@@ -59,11 +58,12 @@ Functions:
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
-  def __init__(self):
+  def __init__(self, cam=0):
     """
     Camera 클래스를 초기화합니다.
     """
     os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
+    self.cap = cv2.VideoStream(cam)
 
   def imread(self, filename):
     """
@@ -123,9 +123,9 @@ Functions:
     :returns: ``numpy.ndarray`` 타입 이미지 객체
     """
 
-    vs = VideoStream(width=w, height=h).start()
-    img = vs.read()
-    vs.stop()
+    self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, w)
+    self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, h)
+    _, img = self.cap.read()
     return img
 
   def imwrite(self, filename, img):
@@ -188,16 +188,16 @@ Functions:
     :param int timeout: 스트리밍 시간
     """
 
-    vs = VideoStream(width=w, height=h).start()
+    self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, w)
+    self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, h)
     t = time.time()
 
     while True:
-      img = vs.read()
+      _, img = self.cap.read()
       cv2.imshow("show", img)
-      cv2.waitKey(1)
+      cv2.waitKey(33)
       if time.time() - t > timeout:
         break
-    vs.stop()
     return True
 
   def rectangle(self, img, p1, p2, colors=(255,255,255), tickness=1):
