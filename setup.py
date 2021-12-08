@@ -23,7 +23,7 @@ requirements = [
         'flask-socketio==5.1.1',
         'openpibo_models>=0.4.1',
         'openpibo_face_models>=0.4.1',
-        'openpibo_detect_models>=0.4.1',
+        'openpibo_detect_models>=0.4.2',
         'openpibo_dlib_models>=0.4.1',
 ]
 

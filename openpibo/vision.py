@@ -725,7 +725,7 @@ Functions:
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
-  * 20개 class 안에서의 객체 인식 (MobileNetSSD)
+  * 90개 class 안에서의 객체 인식 (MobileNet V2)
   * QR/바코드 인식 (pyzbar)
   * 문자 인식(OCR, Tesseract)
 
@@ -738,23 +738,44 @@ Functions:
   """
 
   def __init__(self):
-    self.object20_class = ["background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus",
-                    "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike",
-                    "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
-    self.mobilenet = cv2.dnn.readNetFromCaffe(
-                        openpibo_detect_models.filepath("MobileNetSSD_deploy.prototxt.txt"),
-                        openpibo_detect_models.filepath("MobileNetSSD_deploy.caffemodel")
+    self.object_class = ['background', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
+                         'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 
+                         'None', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 
+                         'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'None',
+                         'backpack', 'umbrella', 'None', 'None', 'handbag', 'tie', 'suitcase', 'frisbee',
+                         'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove',
+                         'skateboard', 'surfboard', 'tennis racket', 'bottle', 'None', 'wine glass', 'cup',
+                         'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 
+                         'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 
+                         'potted plant', 'bed', 'None', 'dining table', 'None', 'None', 'toilet', 'None', 'tv',
+                         'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
+                         'toaster', 'sink', 'refrigerator', 'None', 'book', 'clock', 'vase', 'scissors',
+                         'teddy bear', 'hair drier'] 
+    
+    self.mobilenet = cv2.dnn.readNet(
+                        openpibo_detect_models.filepath("frozen_inference_graph.pb"),
+                        openpibo_detect_models.filepath("ssd_mobilenet_v2_coco_2018_03_29.pbtxt")
                     )
 
   def detect_object(self, img):
     """
-    이미지 안의 객체를 인식합니다. (20개 class의 사물 인식 가능)
+    이미지 안의 객체를 인식합니다. (90개 class의 사물 인식 가능)
 
     인식 가능한 사물은 다음과 같습니다::
 
-      "background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", 
-      "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike",
-      "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"
+      'background', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
+      'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 
+      'None', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 
+      'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'None',
+      'backpack', 'umbrella', 'None', 'None', 'handbag', 'tie', 'suitcase', 'frisbee',
+      'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove',
+      'skateboard', 'surfboard', 'tennis racket', 'bottle', 'None', 'wine glass', 'cup',
+      'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 
+      'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch', 
+      'potted plant', 'bed', 'None', 'dining table', 'None', 'None', 'toilet', 'None', 'tv',
+      'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
+      'toaster', 'sink', 'refrigerator', 'None', 'book', 'clock', 'vase', 'scissors',
+      'teddy bear', 'hair drier'] 
 
     example::
 
@@ -772,23 +793,22 @@ Functions:
       raise Exception('"img" must be image data from opencv')
 
     data = []
-    (h, w) = img.shape[:2]
-    blob = cv2.dnn.blobFromImage(cv2.resize(img, (300, 300)), 0.007843, (300, 300), 127.5)
-    self.mobilenet.setInput(blob)
-    detections = self.mobilenet.forward()
+    img_h, img_w = img.shape[:2]
+    self.mobilenet.setInput(cv2.dnn.blobFromImage(img, size=(300,300), swapRB=True))
+    output = self.mobilenet.forward()
 
-    for i in np.arange(0, detections.shape[2]):
-      confidence = detections[0, 0, i, 2]
-      if confidence > 0.2:
-        idx = int(detections[0, 0, i, 1])
-        box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-        (startX, startY, endX, endY) = box.astype("int")
-        data.append({"name":self.object20_class[idx], "score":confidence * 100, "position":(startX,startY,endX,endY)})
-        # draw the prediction on the frame
-        #label = "{}: {:.2f}%".format(self.object20_class[idx], confidence * 100)
-        #cv2.rectangle(img, (startX, startY), (endX, endY), (128,0,128), 2)
-        #y = startY - 15 if startY - 15 > 15 else startY + 15
-        #cv2.putText(img, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128,128), 2)
+    for detection in output[0, 0, :, :]:
+      confidence = detection[2]
+      if confidence > .5:
+        idx = int(detection[1])
+        name = self.object_class[idx]
+        score = int(detection[2]*100)
+
+        x1 = int(detection[3] * img_w)
+        y1 = int(detection[4] * img_h)
+        x2 = int(detection[5] * img_w)
+        y2 = int(detection[6] * img_h)
+        data.append({"name":name, "score":score, "position":(x1,y1,x2,y2)})
     return data
 
   def detect_qr(self, img):
