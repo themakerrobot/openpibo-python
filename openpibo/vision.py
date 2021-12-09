@@ -759,7 +759,7 @@ Functions:
 
   def detect_object(self, img):
     """
-    이미지 안의 객체를 인식합니다. (90개 class의 사물 인식 가능)
+    이미지 안의 객체를 인식합니다. (아래 class의 사물 인식 가능)
 
     인식 가능한 사물은 다음과 같습니다::
 
@@ -775,7 +775,7 @@ Functions:
       'potted plant', 'bed', 'None', 'dining table', 'None', 'None', 'toilet', 'None', 'tv',
       'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
       'toaster', 'sink', 'refrigerator', 'None', 'book', 'clock', 'vase', 'scissors',
-      'teddy bear', 'hair drier'] 
+      'teddy bear', 'hair drier' 
 
     example::
 
