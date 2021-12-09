@@ -36,19 +36,7 @@ Welcome to OPENPIBO's documentation!
    tools/process_test
    tools/motion_creator
    tools/device_simulator
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Examples
-
-   examples/audio
-   examples/collect
-   examples/device
-   examples/motion
-   examples/oled
-   examples/speech
-   examples/vision
-   examples/edu_v1
+   tools/vision_simulator
 
 .. toctree::
    :maxdepth: 1

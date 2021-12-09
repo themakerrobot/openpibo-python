@@ -4,10 +4,10 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KAKAO API &mdash; openpibo 0.9.2.20 documentation</title>
+  <title>Vision Simulator &mdash; openpibo 0.9.2.20 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/notes/kakao_api.html" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/tools/vision_simulator.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="색인" href="../genindex.html" />
     <link rel="search" title="검색" href="../search.html" />
-    <link rel="next" title="audio" href="../libraries/audio.html" />
-    <link rel="prev" title="PIBO Device" href="pibo_device.html" /> 
+    <link rel="next" title="Audio" href="../files/audio.html" />
+    <link rel="prev" title="Device Simulator" href="device_simulator.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,12 +40,12 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="setting.html">설정</a></li>
-<li class="toctree-l1"><a class="reference internal" href="structure.html">라이브러리 구조</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">사용법</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pibo_device.html">PIBO Device</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">KAKAO API</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notes/setting.html">설정</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/structure.html">라이브러리 구조</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/usage.html">사용법</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/pibo_device.html">PIBO Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/kakao_api.html">KAKAO API</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
 <ul>
@@ -57,6 +57,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/speech.html">speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/vision.html">vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/edu_v1.html">edu_v1</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tools</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="process_test.html">Process Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion_creator.html">Motion Creator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device_simulator.html">Device Simulator</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Simulator</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Files</span></p>
 <ul>
@@ -79,9 +86,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>KAKAO API</li>
+      <li>Vision Simulator</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/notes/kakao_api.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tools/vision_simulator.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -89,54 +96,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="kakao-api">
-<h1>KAKAO API<a class="headerlink" href="#kakao-api" title="제목 주소"></a></h1>
-<p>본 문서는 <code class="docutils literal notranslate"><span class="pre">KAKAO</span> <span class="pre">REST</span> <span class="pre">API</span> <span class="pre">KEY</span></code> 를 발급받는 방법에 대해 안내합니다.</p>
-<p><strong>Speech</strong> 라이브러리의 음성인식(<strong>STT</strong>), 음성합성(<strong>TTS</strong>) 기능은 KAKAO API를 사용하기 때문에 <code class="docutils literal notranslate"><span class="pre">KAKAO</span> <span class="pre">REST</span> <span class="pre">API</span> <span class="pre">KEY</span></code> 가 필요합니다.
-키 발급 방법은 <a class="reference external" href="https://developers.kakao.com/">kakao developers</a>에 회원가입 후 다음 과정으로 진행합니다.</p>
-<ol>
-<li><p>로그인 후 [내 애플리케이션] 클릭</p>
-<p><img alt="api1" src="../_images/api1.png" /></p>
-</li>
-<li><p>[애플리케이션 추가하기] 클릭</p>
-<p><img alt="api2" src="../_images/api2.png" /></p>
-</li>
-<li><p>앱 이름 및 사업자명 입력 후 저장</p>
-<p><img alt="api3" src="../_images/api3.png" /></p>
-</li>
-<li><p>새로 생성한 애플리케이션 클릭</p>
-<p><img alt="api4" src="../_images/api4.png" /></p>
-</li>
-<li><p>config.py에 발급받은 REST API 키 입력 후, 왼쪽의 [음성] 클릭</p>
-<p><img alt="api5" src="../_images/api5.png" /></p>
-</li>
-<li><p>이후 <code class="docutils literal notranslate"><span class="pre">/home/pi/config.json</span></code>의 <code class="docutils literal notranslate"><span class="pre">KAKAO_ACCOUNT</span></code>에 발급받은 <code class="docutils literal notranslate"><span class="pre">REST</span> <span class="pre">API</span> <span class="pre">키</span></code> 입력</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;DATA_PATH&quot;</span><span class="p">:</span><span class="s2">&quot;/home/pi/openpibo-files/data&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;KAKAO_ACCOUNT&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;여기에 발급받은 REST API 키를 입력해주세요&gt;&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;robotId&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
-<span class="p">}</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="vision-simulator">
+<h1>Vision Simulator<a class="headerlink" href="#vision-simulator" title="제목 주소"></a></h1>
+<p>파이보의 Camera를 제어하고 컴퓨터 비전/인공지능을 이용한 기능을 확인할 수 있는 툴 입니다.</p>
+<p>인터넷 브라우저가 필요합니다. (<code class="docutils literal notranslate"><span class="pre">Chrome</span></code> 브라우저 사용 권장)</p>
+<p><strong>사용 방법</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~/openpibo-tools/vision-simulator
+$ sudo python3 main.py --port <span class="m">8888</span>
 </pre></div>
 </div>
+<ul>
+<li><p>프로그램을 실행합니다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--port</span></code> : 연결할 포트를 입력합니다. 만약 설정하지 않으면, 기본 포트는 <code class="docutils literal notranslate"><span class="pre">80</span></code>입니다.</p>
+<p>이후 인터넷 브라우저에서 <code class="docutils literal notranslate"><span class="pre">http://&lt;PIBO</span> <span class="pre">IP&gt;:&lt;PORT&gt;</span></code>에 접속합니다. (80은 생략 가능)</p>
+<ul class="simple">
+<li><p>Ex1) PIBO IP: 192.168.1.10 / PORT: 8888 &gt; http://192.168.1.10:8888</p></li>
+<li><p>Ex2) PIBO IP: 192.168.1.20 / PORT: 80 &gt; http://192.168.1.20:80 or http://192.168.1.20</p></li>
+</ul>
+<p>프로그램이 실행되면, 카메라 영역에 영상이 표시됩니다.
+<img alt="vision001" src="../_images/vision001.png" /></p>
 </li>
-<li><p>활성화 설정의 [OFF] 버튼 클릭</p>
-<p><img alt="api6" src="../_images/api6.png" /></p>
+<li><p><strong>만화사진으로 바꾸기</strong> 버튼을 클릭하면 결과 영역에 만화화 된 이미지가 표시됩니다.
+<img alt="vision002" src="../_images/vision002.png" /></p></li>
+<li><p><strong>얼굴/사물/QR코드 인식하기</strong> 버튼을 클릭하면 결과 영역에 인식된 결과 이미지와 값이 표시됩니다.
+<img alt="vision003" src="../_images/vision003.png" /></p>
+<p><img alt="vision004" src="../_images/vision004.png" /></p>
 </li>
-<li><p>사용 목적 입력 후 저장</p>
-<p><img alt="api7" src="../_images/api7.png" /></p>
-</li>
-<li><p>활성화 설정의 상태가 [ON]으로 바뀌면 완료</p>
-<p><img alt="api8" src="../_images/api8.png" /></p>
-</li>
-</ol>
+</ul>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pibo_device.html" class="btn btn-neutral float-left" title="PIBO Device" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../libraries/audio.html" class="btn btn-neutral float-right" title="audio" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="device_simulator.html" class="btn btn-neutral float-left" title="Device Simulator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../files/audio.html" class="btn btn-neutral float-right" title="Audio" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

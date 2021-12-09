@@ -822,14 +822,19 @@ Functions:
 
     :param numpy.ndarray img: 이미지 객체
 
-    :returns: ``{"data": 내용, "type": 바코드 / QR코드}``
+    :returns: ``{"data": 내용, "type": 바코드 / QR코드, "position":(startX,startY,endX,endY)}``
     """
 
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
     barcodes = pyzbar.decode(img)
-    return {"data":barcodes[0].data.decode("utf-8"), "type":barcodes[0].type} if len(barcodes) > 0  else {"data":"", "type":""}
+
+    if len(barcodes) > 0:
+      x,y,w,h = barcodes[0].rect
+      return {"data":barcodes[0].data.decode("utf-8"), "type":barcodes[0].type, "position":(x,y,x+w,y+h)}
+    else:
+      return {"data":"", "type":"", "position":None}
 
   def detect_text(self, img):
     """
