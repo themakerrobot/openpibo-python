@@ -113,6 +113,7 @@ openpibo 및 관련 패키지는 OS에 설치되어 있지만, 필요에 따라 
    - [Process Test](https://themakerrobot.github.io/openpibo-python/build/html/tools/process_test.html)
    - [Motion Creator](https://themakerrobot.github.io/openpibo-python/build/html/tools/motion_creator.html)
    - [Device Simulator](https://themakerrobot.github.io/openpibo-python/build/html/tools/device_simulator.html)
+   - [Video Simulator](https://themakerrobot.github.io/openpibo-python/build/html/tools/video_simulator.html)
 
 - openpibo-files 설치
 
