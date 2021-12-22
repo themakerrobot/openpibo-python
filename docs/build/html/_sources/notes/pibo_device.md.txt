@@ -4,18 +4,6 @@
 
 ![PIBO_Device](images/pibo_device/pibo_device.png)
 
-## Audio
-
-omxplayer를 이용해 mp3, wav 파일을 재생 및 정지합니다.
-
-- omxplayer
-   - 라즈베리파이에서 공식적으로 지원하는 미디어 프로그램입니다. (오디오 및 비디오 파일 형식 재생)
-   - 기본적인 명령행: `omxplayer <미디어 파일명>`
-
-## Device
-
-메인컨트롤러(Atmega328p)를 제어합니다.
-
 - Atmega328p
 
    ![](images/pibo_device/atmega328p.jpg)
