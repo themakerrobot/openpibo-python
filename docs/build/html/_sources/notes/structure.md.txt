@@ -164,3 +164,58 @@ openpibo-models/
    - **shape_predictor_5_face_landmarks.dat** # predictor
 
       얼굴에 5개의 특징점을 추출하여 표정을 예측하는 인공지능 모델입니다.
+
+## 참고 라이브러리 소개
+- **NLP(자연어처리)**
+
+   - **MeCab**
+
+     일본에서 만든 형태소 분석 엔진
+
+     언어, 사전 코퍼스에 의존하지 않는 범용적인 설계
+
+     품사 독립적 설계
+
+     각종 스크립트 언어 바인딩 (perl / ruby / python / java / C#)
+
+
+- **Computer Vision(영상처리)**
+
+   - **OpenCV (Open source Computer Vision)**
+
+     영상 처리 및 컴퓨터 비전 관련 오픈소스
+
+     이미지, 영상처리, Object Detection, Motion Detection 등의 기능을 제공합니다.
+
+   - **Tensorflow**
+
+      머신러닝/딥러닝 프레임워크
+
+      구글 내 연구와 제품개발을 위한 목적으로 구글 브레인팀이 만들었고, 오픈 소스로 공개하였습니다.
+
+      pytorch와 함께 가장 많이 쓰는 프레임워크입니다.
+
+   - **Dlib**
+
+      이미지 처리 및 기계 학습, 얼굴 인식 등을 할 수 있는 C++로 개발된 고성능의 라이브러리
+      
+      facial landmarks를 통해 얼굴을 검출하는 기능이 많이 사용됩니다. (파이보에서는 5개의 face_landmarks를 찾습니다.)
+
+   - **Tesseract**
+
+      다양한 운영체제를 지원하기 위한 OCR(Optical Character Recognition) 엔진
+
+      OCR 이미지로부터 텍스트를 인식하고, 추출합니다.
+   
+      오프라인 문자인식 기법으로 입력된 input 이미지의 특징점을 추출하고 그 특징점을 사용하여 문자를 인식합니다.
+
+   - **Pyzbar**
+
+     비디오 스트림, 이미지 파일 및 이미지와 같은 다양한 소스에서 바코드를 판독할 수 있는 오픈소스 라이브러리
+
+   - **Numpy**
+
+     벡터, 행렬 등 수치 연산을 수행하는 선형대수 라이브러리
+     
+     array(행렬) 단위로 데이터를 관리하며 이에 대해 연산을 수행합니다.
+
