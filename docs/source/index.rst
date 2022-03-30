@@ -10,9 +10,8 @@ Welcome to openpibo's documentation!
    :maxdepth: 1
    :caption: Notes
 
-   notes/setting
-   notes/structure
    notes/usage
+   notes/structure
    notes/pibo_device
 
 .. toctree::
