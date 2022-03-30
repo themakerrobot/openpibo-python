@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="색인" href="../genindex.html" />
     <link rel="search" title="검색" href="../search.html" />
-    <link rel="next" title="PIBO Device" href="pibo_device.html" />
-    <link rel="prev" title="라이브러리 구조" href="structure.html" /> 
+    <link rel="next" title="라이브러리 구조" href="structure.html" />
+    <link rel="prev" title="Welcome to openpibo’s documentation!" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,13 +41,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="setting.html">설정</a></li>
-<li class="toctree-l1"><a class="reference internal" href="structure.html">라이브러리 구조</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">사용법</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id2">클래스 호출 및 인스턴스 생성</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">데이터 경로 설정</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">사전 설정</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">라이브러리 사용</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">데이터 경로 설정</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">라이브러리 구조</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pibo_device.html">PIBO Device</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
@@ -94,12 +94,33 @@
              
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>사용법<a class="headerlink" href="#id1" title="제목 주소"></a></h1>
-<p>openpibo 패키지를 사용하여 파이보를 제어하는 방법과 데이터 경로를 입력하는 방법에 관해 설명합니다.</p>
-<p>파이보의 기능을 사용하는 방법은 <strong>클래스 호출 -&gt; 인스턴스 생성 -&gt; 메소드 사용</strong> 순으로 이루어집니다.</p>
+<p>서큘러스가 제공하는 OS와 openpibo API를 사용하는 방법을 제공합니다.</p>
 <section id="id2">
-<h2>클래스 호출 및 인스턴스 생성<a class="headerlink" href="#id2" title="제목 주소"></a></h2>
-<p>클래스란, 정해진 기능을 사용할 수 있는 인스턴스를 생성하는 도구입니다.</p>
-<p>클래스를 호출하여 인스턴스를 생성하는 방법은 다음과 같습니다.</p>
+<h2>사전 설정<a class="headerlink" href="#id2" title="제목 주소"></a></h2>
+<p>OS는 파이보 DIY 키트에 포함되어 있으며, 이후 <a class="reference external" href="https://github.com/themakerrobot">여기</a>를 통해 다운로드 받을 수 있습니다. openpibo API는 <a class="reference external" href="https://github.com/themakerrobot/openpibo-python">깃허브</a>에 업로드 하였으며, 누구나 다운로드 받아 활용할 수 있습니다.</p>
+<ol class="arabic">
+<li><p>기본 네트워크 정보
+초기에 ssid:’pibo’, password:’!pibo0314’으로 설정되어 있습니다.
+추후, ‘/boot/wpa_supplicant.conf’ 파일을 통해 수정할 수 있습니다. (‘/boot/wpa_supplicant.conf’ 없다면, ‘/boot/wpa_supplicant.conf.example’ 파일을 ‘/boot/wpa_supplicant.conf’로 복사하신 후, 작업을 이어가시면 됩니다.)</p></li>
+<li><p>AP-STA모드 지원
+부팅 시, pibo-[라즈베리파이 시리얼번호]를 ssid로 AP모드가 동작합니다.
+192.168.34.0/24 대역으로 AP모드가 동작되며, 로봇(게이트웨이 주소는 192.168.34.1 입니다.)</p></li>
+<li><p>KAKAO Developer Key 발급
+openpibo에서 음성인식(STT)과 음성합성(TTS)을 위해 KAKAO를 사용합니다. KAKAO Developers에서 회원가입 및 Key 발급이 필요합니다.</p>
+<p>발급받은 Key는 파이보의 /home/pi/에 있는 config.json 파일에 다음과 같이 저장합니다.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;data_path&quot;</span><span class="p">:</span><span class="s2">&quot;/home/pi/openpibo-files&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;kakao_account&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;여기에 발급받은 REST API 키를 입력해주세요&gt;&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;robotid&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="id3">
+<h2>라이브러리 사용<a class="headerlink" href="#id3" title="제목 주소"></a></h2>
+<p>openpibo 패키지를 사용하는 방법 audio 라이브러리를 통해 설명합니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.</span><span class="o">&lt;</span><span class="n">라이브러리</span> <span class="n">명</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="o">&lt;</span><span class="n">클래스</span> <span class="n">명</span><span class="o">&gt;</span>
 
 <span class="o">&lt;</span><span class="n">인스턴스</span> <span class="n">명</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">클래스</span> <span class="n">명</span><span class="o">&gt;</span><span class="p">()</span>
@@ -125,8 +146,8 @@
 </div>
 <p>Libraries 탭을 참고하시기 바랍니다.</p>
 </section>
-<section id="id3">
-<h2>데이터 경로 설정<a class="headerlink" href="#id3" title="제목 주소"></a></h2>
+<section id="id4">
+<h2>데이터 경로 설정<a class="headerlink" href="#id4" title="제목 주소"></a></h2>
 <p>어떤 메소드는 인자로 파일 경로를 입력해야 합니다.</p>
 <p>파일 경로를 입력하는 방법에 관해 설명하며,<br />
 추가로 /home/pi/openpibo_files/audio/ 경로에 있는 test.mp3 파일 재생 방법을 예시로 활용합니다.</p>
@@ -206,8 +227,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="structure.html" class="btn btn-neutral float-left" title="라이브러리 구조" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pibo_device.html" class="btn btn-neutral float-right" title="PIBO Device" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to openpibo’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="structure.html" class="btn btn-neutral float-right" title="라이브러리 구조" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

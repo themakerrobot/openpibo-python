@@ -1,14 +1,35 @@
 # 사용법
 
-openpibo 패키지를 사용하여 파이보를 제어하는 방법과 데이터 경로를 입력하는 방법에 관해 설명합니다.
+서큘러스가 제공하는 OS와 openpibo API를 사용하는 방법을 제공합니다.
 
-파이보의 기능을 사용하는 방법은 **클래스 호출 -> 인스턴스 생성 -> 메소드 사용** 순으로 이루어집니다.
+## 사전 설정
 
-## 클래스 호출 및 인스턴스 생성
+OS는 파이보 DIY 키트에 포함되어 있으며, 이후 [여기](https://github.com/themakerrobot)를 통해 다운로드 받을 수 있습니다. openpibo API는 [깃허브](https://github.com/themakerrobot/openpibo-python)에 업로드 하였으며, 누구나 다운로드 받아 활용할 수 있습니다.
 
-클래스란, 정해진 기능을 사용할 수 있는 인스턴스를 생성하는 도구입니다.
+1. 기본 네트워크 정보
+   초기에 ssid:'pibo', password:'!pibo0314'으로 설정되어 있습니다.
+   추후, '/boot/wpa_supplicant.conf' 파일을 통해 수정할 수 있습니다. ('/boot/wpa_supplicant.conf' 없다면, '/boot/wpa_supplicant.conf.example' 파일을 '/boot/wpa_supplicant.conf'로 복사하신 후, 작업을 이어가시면 됩니다.)
 
-클래스를 호출하여 인스턴스를 생성하는 방법은 다음과 같습니다.
+2. AP-STA모드 지원
+   부팅 시, pibo-[라즈베리파이 시리얼번호]를 ssid로 AP모드가 동작합니다.
+   192.168.34.0/24 대역으로 AP모드가 동작되며, 로봇(게이트웨이 주소는 192.168.34.1 입니다.)
+
+3. KAKAO Developer Key 발급
+   openpibo에서 음성인식(STT)과 음성합성(TTS)을 위해 KAKAO를 사용합니다. KAKAO Developers에서 회원가입 및 Key 발급이 필요합니다.
+
+   발급받은 Key는 파이보의 /home/pi/에 있는 config.json 파일에 다음과 같이 저장합니다.
+
+   ```json
+   {
+      "data_path":"/home/pi/openpibo-files",
+      "kakao_account": "<여기에 발급받은 REST API 키를 입력해주세요>",
+      "robotid": ""
+   }
+   ```
+
+## 라이브러리 사용
+
+openpibo 패키지를 사용하는 방법 audio 라이브러리를 통해 설명합니다.
 
 ```python
 from openpibo.<라이브러리 명> import <클래스 명>
