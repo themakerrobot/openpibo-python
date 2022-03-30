@@ -14,7 +14,7 @@ import os
 from konlpy.tag import Mecab
 import requests
 from .modules.speech.google_trans_new import google_translator
-from . import config
+from . import kakaokey
 
 import openpibo_models
 #current_path = os.path.dirname(os.path.realpath(__file__))
@@ -33,7 +33,7 @@ Functions:
   * TTS (Text to Speech)
   * STT (Speech to Text)
 
-  ``config.json`` 의 ``KAKAO_ACCOUNT`` 에 본인의 ``KAKAO REST API KEY`` 를 입력해야 사용할 수 있습니다.
+  ``config.json`` 의 ``kakaokey`` 에 본인의 ``KAKAO REST API KEY`` 를 입력해야 사용할 수 있습니다.
 
   example::
 
@@ -45,7 +45,7 @@ Functions:
 
   def __init__(self):
     self.translator = google_translator()
-    self.kakao_account = config.get('KAKAO_ACCOUNT')
+    self.kakao_account = kakaokey
 
   def translate(self, string, to='ko'):
     """
