@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>사용법 &mdash; openpibo 0.9.2.20 documentation</title>
+  <title>사용법 &mdash; openpibo 0.9.2.22 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/notes/usage.html" />
@@ -45,12 +45,10 @@
 <li class="toctree-l1"><a class="reference internal" href="structure.html">라이브러리 구조</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">사용법</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id2">클래스 호출 및 인스턴스 생성</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">메소드 사용</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">데이터 경로 설정</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">데이터 경로 설정</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pibo_device.html">PIBO Device</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kakao_api.html">KAKAO API</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
 <ul>
@@ -62,13 +60,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/speech.html">speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/vision.html">vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/edu_v1.html">edu_v1</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Tools</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tools/process_test.html">Process Test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tools/motion_creator.html">Motion Creator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tools/device_simulator.html">Device Simulator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tools/vision_simulator.html">Vision Simulator</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Files</span></p>
 <ul>
@@ -112,26 +103,15 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.</span><span class="o">&lt;</span><span class="n">라이브러리</span> <span class="n">명</span><span class="o">&gt;</span> <span class="kn">import</span> <span class="o">&lt;</span><span class="n">클래스</span> <span class="n">명</span><span class="o">&gt;</span>
 
 <span class="o">&lt;</span><span class="n">인스턴스</span> <span class="n">명</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">클래스</span> <span class="n">명</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">인스턴스</span> <span class="n">명</span><span class="o">&gt;.&lt;</span><span class="n">메소드명</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">인자</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>예) audio 라이브러리의 Audio 클래스를 호출하여 인스턴스를 생성하는 방법은 다음과 같습니다.</p>
+<p>예) audio 라이브러리의 Audio 클래스의 함수를 사용하는 방법은 다음과 같습니다.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.audio</span> <span class="kn">import</span> <span class="n">Audio</span>
 
 <span class="n">pibo_audio</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>인스턴스 명은 사용자 임의로 정할 수 있습니다.</p>
-</section>
-<section id="id3">
-<h2>메소드 사용<a class="headerlink" href="#id3" title="제목 주소"></a></h2>
-<p>메소드란, 클래스에 묶여서 인스턴스와 관계되는 일을 하는 기능을 의미합니다.
-예를 들어, Audio 클래스는 음악 재생, 정지 등의 메소드를 사용할 수 있습니다.</p>
-<p>메소드를 사용하는 방법은 다음과 같습니다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">인스턴스</span> <span class="n">명</span><span class="o">&gt;.&lt;</span><span class="n">메소드명</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">인자</span><span class="o">&gt;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>예) audio 라이브러리의 Audio 클래스 메소드를 사용하는 방법은 다음과 같습니다.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># play 메소드: 오디오 파일을 재생합니다.</span>
+
+<span class="c1"># play 메소드: 오디오 파일을 재생합니다.</span>
 <span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo_files/audio/test.mp3&#39;</span><span class="p">)</span>
 
 <span class="c1"># stop 메소드: 재생 중인 오디오 파일을 중지합니다.</span>
@@ -143,10 +123,10 @@
 <span class="c1"># pibo_audio 는 Audio 클래스의 인스턴스</span>
 </pre></div>
 </div>
-<p>클래스마다 사용할 수 있는 메소드는 각기 다르며, 메소드마다 입력되는 인자 또한 각기 다릅니다.</p>
+<p>Libraries 탭을 참고하시기 바랍니다.</p>
 </section>
-<section id="id4">
-<h2>데이터 경로 설정<a class="headerlink" href="#id4" title="제목 주소"></a></h2>
+<section id="id3">
+<h2>데이터 경로 설정<a class="headerlink" href="#id3" title="제목 주소"></a></h2>
 <p>어떤 메소드는 인자로 파일 경로를 입력해야 합니다.</p>
 <p>파일 경로를 입력하는 방법에 관해 설명하며,<br />
 추가로 /home/pi/openpibo_files/audio/ 경로에 있는 test.mp3 파일 재생 방법을 예시로 활용합니다.</p>
@@ -233,7 +213,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.20.</p>
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.22.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

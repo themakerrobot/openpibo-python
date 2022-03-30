@@ -14,7 +14,6 @@ Welcome to openpibo's documentation!
    notes/structure
    notes/usage
    notes/pibo_device
-   notes/kakao_api
 
 .. toctree::
    :maxdepth: 1
@@ -28,15 +27,6 @@ Welcome to openpibo's documentation!
    libraries/speech
    libraries/vision
    libraries/edu_v1
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tools
-
-   tools/process_test
-   tools/motion_creator
-   tools/device_simulator
-   tools/vision_simulator
 
 .. toctree::
    :maxdepth: 1
