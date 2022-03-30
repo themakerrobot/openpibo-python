@@ -21,8 +21,8 @@ OS는 파이보 DIY 키트에 포함되어 있으며, 이후 [여기](https://gi
 
    ```json
    {
-      "data_path":"/home/pi/openpibo-files",
-      "kakao_account": "<여기에 발급받은 REST API 키를 입력해주세요>",
+      "datapath":"/home/pi/openpibo-files",
+      "kakaokey": "<여기에 발급받은 REST API 키를 입력해주세요>",
       "robotid": ""
    }
    ```
@@ -96,7 +96,7 @@ Libraries 탭을 참고하시기 바랍니다.
 
    config.json 파일에 미리 지정해둔 경로를 호출하여 사용할 수 있습니다.
 
-   기본적으로 config.json에는 'DATA_PATH' key의 value로 '/home/pi/openpibo_files' 경로가 설정되어있습니다.
+   기본적으로 config.json에는 'datapath' key의 value로 '/home/pi/openpibo_files' 경로가 설정되어있습니다.
 
    python에서 config.json을 호출하는 방법은 다음과 같습니다.
 
@@ -104,16 +104,16 @@ Libraries 탭을 참고하시기 바랍니다.
    import openpibo
 
    print(openpibo.config)
-   # {'DATA_PATH': '/home/pi/openpibo-files', 'KAKAO_ACCOUNT': '*****', 'robotId': ''}
+   # {'datapath': '/home/pi/openpibo-files', 'kakaokey': '*****', 'robotid': ''}
    ```
 
    이를 활용하여 test.mp3 파일의 경로를 다음과 같이 입력할 수 있습니다.
 
    ```python
-   pibo_audio.play(openpibo.config['DATA_PATH']+'/audio/test.mp3')
+   pibo_audio.play(openpibo.datapath+'/audio/test.mp3')
    ```
 
-   위 예시에서 `test.mp3`의 경로는 `openpibo.config['DATA_PATH']+'/audio/test.mp3'` 입니다.
+   위 예시에서 `test.mp3`의 경로는 `openpibo.datapath+'/audio/test.mp3'` 입니다.
 
    *[참고] config.json 파일을 수정하여 데이터 경로를 커스텀하여 사용할 수도 있습니다.*
 
@@ -146,7 +146,7 @@ Libraries 탭을 참고하시기 바랍니다.
       ```python
       import openpibo
 
-      pibo_audio.play(openpibo.config['MY_DATA_PATH']+'/test.mp3')
+      pibo_audio.play(openpibo.MY_datapath+'/test.mp3')
       ```
 
-      위 예시에서 `test.mp3`의 경로는 `openpibo.config['MY_DATA_PATH']+'/test.mp3'` 입니다.
+      위 예시에서 `test.mp3`의 경로는 `openpibo.MY_datapath+'/test.mp3'` 입니다.

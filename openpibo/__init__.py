@@ -6,7 +6,7 @@ import os, sys, json, shutil
 __version__ = '0.9.2.22'
 
 if os.path.isfile('/home/pi/config.json') == False:
-  config = {"DATA_PATH":"/home/pi/openpibo-files", "KAKAO_ACCOUNT":"", "robotId":""}
+  config = {"datapath":"/home/pi/openpibo-files", "kakaokey":"", "robotid":""}
   with open('/home/pi/config.json', 'w') as f:
     json.dump(config, f)
 else:
