@@ -208,19 +208,11 @@ Functions:
     """
     대화 데이터를 로드합니다.
 
-    exmaple::
+    example::
 
-      pibo_dialog.load(filepath='/home/pi/dialog.csv')
+      pibo_dialog.load('/home/pi/dialog.csv')
 
-    :param str string: 분석할 문장 (한글)
-
-      아래 형태의 ``csv 파일`` 만 사용 가능합니다.
-      파일 내용::
-
-        대답1,답변1
-        대답2,답변2
-        ...
-        대답n,답변n
+    :param str string: 대화 데이터 파일 경로(csv)
     """
 
     self.dialog_path = filepath
