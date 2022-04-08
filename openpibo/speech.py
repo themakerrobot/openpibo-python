@@ -212,10 +212,9 @@ Functions:
 
       pibo_dialog.load(filepath='/home/pi/dialog.csv')
 
-    :param str string: 대화 파일(csv)
+    :param str string: 대화 파일 (csv)
 
       아래 형태의 ``csv 파일`` 만 사용 가능합니다.
-
 
     파일 내용::
 
