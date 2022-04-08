@@ -179,6 +179,7 @@ Functions:
 class Dialog:
   """
 Functions:
+:meth:`~openpibo.speech.Dialog.load`
 :meth:`~openpibo.speech.Dialog.mecab_pos`
 :meth:`~openpibo.speech.Dialog.mecab_morphs`
 :meth:`~openpibo.speech.Dialog.mecab_nouns`
