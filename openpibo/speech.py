@@ -199,10 +199,29 @@ Functions:
   """
 
   def __init__(self):
-    self.dialog_path = openpibo_models.filepath("dialog.csv")
-    #self.dialog_path = current_path+"/data/models/dialog.csv"
-    self.mecab = Mecab()
     self.dialog_db = []
+    self.mecab = Mecab()
+    self.load(filepath=penpibo_models.filepath("dialog.csv"))
+
+  def load(self, filepath):
+    """
+    대화 데이터를 로드합니다.
+
+    exmaple::
+
+      pibo_dialog.load(filepath='/home/pi/dialog.csv')
+
+    :param str string: 사용할 대화 데이터 파일(csv)
+
+      아래 형태의 ``csv 파일`` 만 사용 가능합니다.
+
+      대답1,답변1
+      대답2,답변2
+      ...
+      대답n,답변n
+    """
+
+    self.dialog_path = filepath
     with open(self.dialog_path, 'r', encoding='utf-8') as f:
       rdr = csv.reader(f)
       self.dialog_db = [[self.mecab_morphs(line[0]), line[1], line[2]]for line in rdr]
