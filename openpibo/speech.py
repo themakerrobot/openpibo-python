@@ -215,13 +215,12 @@ Functions:
     :param str string: 대화 파일 (csv)
 
       아래 형태의 ``csv 파일`` 만 사용 가능합니다.
+      파일 내용::
 
-    파일 내용::
-
-      대답1,답변1
-      대답2,답변2
-      ...
-      대답n,답변n
+        대답1,답변1
+        대답2,답변2
+        ...
+        대답n,답변n
     """
 
     self.dialog_path = filepath
