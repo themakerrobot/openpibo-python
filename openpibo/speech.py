@@ -213,6 +213,13 @@ Functions:
       pibo_dialog.load('/home/pi/dialog.csv')
 
     :param str string: 대화 데이터 파일 경로(csv)
+
+    대화 데이터 파일 형식::
+
+      대화1,답변1
+      대화2,답변2
+      ...
+      대화n,답변n
     """
 
     self.dialog_path = filepath
