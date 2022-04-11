@@ -161,7 +161,7 @@ Functions:
     --data-binary @stream.wav '''
     url = 'https://kakaoi-newtone-openapi.kakao.com/v1/recognize'
     headers = {
-      'Content-Type': 'application/octet-stliream',
+      'Content-Type': 'application/octet-stream',
       'Authorization': 'KakaoAK ' + self.kakao_account
     }
 
