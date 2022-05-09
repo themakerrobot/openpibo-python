@@ -793,22 +793,29 @@ Functions:
       raise Exception('"img" must be image data from opencv')
 
     data = []
+    class_ids = []
+    scores = []
+    boxes = []
     img_h, img_w = img.shape[:2]
     self.mobilenet.setInput(cv2.dnn.blobFromImage(img, size=(300,300), swapRB=True))
     output = self.mobilenet.forward()
 
     for detection in output[0, 0, :, :]:
-      confidence = detection[2]
-      if confidence > .5:
-        idx = int(detection[1])
-        name = self.object_class[idx]
-        score = int(detection[2]*100)
-
+      if detection[2] > .5:
         x1 = int(detection[3] * img_w)
         y1 = int(detection[4] * img_h)
         x2 = int(detection[5] * img_w)
         y2 = int(detection[6] * img_h)
-        data.append({"name":name, "score":score, "position":(x1,y1,x2,y2)})
+        class_ids.append(int(detection[1]))
+        scores.append(float(detection[2]))
+        boxes.append([x1, y1, x2, y2])
+ 
+    idxs = cv2.dnn.NMSBoxes(boxes, scores, .5, .4)
+    if len(idxs) > 0:
+      for i in idxs.flatten():
+        box = boxes[i]
+        x1,y1,x2,y2 = box[0],box[1],box[2],box[3]
+        data.append({"name":self.object_class[class_ids[i]], "score":int(scores[i]*100), "position":(x1,y1,x2,y2)})
     return data
 
   def detect_qr(self, img):
