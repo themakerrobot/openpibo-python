@@ -102,7 +102,7 @@ Functions:
 
     return cv2.imread(filename)
 
-  def read(self, w=640, h=480):
+  def read(self):
     """
     카메라를 통해 이미지를 촬영합니다.
 
@@ -110,23 +110,12 @@ Functions:
 
     example::
 
-      pibo_camera.read(640, 480)
-
-    :param int w: 촬영할 이미지의 가로 픽셀 크기 입니다.
-
-      0 ~ 2592 사이 값 입니다. (default 640)
-
-    :param int h: 촬영할 이미지의 세로 픽셀 크기 입니다.
-
-      0 ~ 1944 사이 값 입니다. (default 480)
+      pibo_camera.read()
 
     :returns: ``numpy.ndarray`` 타입 이미지 객체
     """
 
-    self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, w)
-    self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, h)
-    _, img = self.cap.read()
-    return img
+    return self.cap.read()[1]
 
   def imwrite(self, filename, img):
     """
@@ -177,19 +166,13 @@ Functions:
 
     return cv2.waitKey(timeout)
 
-  def streaming(self, w=640, h=480, timeout=5):
+  def streaming(self, timeout=5):
     """
     모니터에서 이미지를 스트리밍합니다. (GUI 환경에서만 동작)
-
-    :param int w: 스트리밍 이미지의 width 값
-    
-    :param int h: 스트리밍 이미지의 height 값
 
     :param int timeout: 스트리밍 시간
     """
 
-    self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, w)
-    self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, h)
     t = time.time()
 
     while True:
