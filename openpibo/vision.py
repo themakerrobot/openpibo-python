@@ -64,6 +64,7 @@ Functions:
     """
     os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
     self.cap = cv2.VideoCapture(cam)
+    self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # for opencv buffering issue
 
   def imread(self, filename):
     """
@@ -115,6 +116,9 @@ Functions:
     :returns: ``numpy.ndarray`` 타입 이미지 객체
     """
 
+    # for opencv buffering issue
+    self.cap.grab()
+    self.cap.grab()
     return self.cap.read()[1]
 
   def imwrite(self, filename, img):
@@ -176,8 +180,7 @@ Functions:
     t = time.time()
 
     while True:
-      _, img = self.cap.read()
-      cv2.imshow("show", img)
+      cv2.imshow("show", self.read())
       cv2.waitKey(33)
       if time.time() - t > timeout:
         break
