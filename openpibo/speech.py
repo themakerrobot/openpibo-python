@@ -225,7 +225,7 @@ Functions:
     self.dialog_path = filepath
     with open(self.dialog_path, 'r', encoding='utf-8') as f:
       rdr = csv.reader(f)
-      self.dialog_db = [[self.mecab_morphs(line[0]), line[1]]for line in rdr]
+      self.dialog_db = [[self.mecab_morphs(line[0]), line[1]] for line in rdr]
 
   def mecab_pos(self, string):
     """

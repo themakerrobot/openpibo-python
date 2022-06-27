@@ -290,10 +290,8 @@ Functions:
     """
 
     try:
-      result = self.device.send_raw('#15:!')
-      bat = result.split(':')[1]
-      result = self.device.send_raw('#40:!')
-      result = result.split(':')[1].split('-')
+      bat = self.device.send_raw('#15:!').split(':')[1]
+      result = self.device.send_raw('#40:!').split(':')[1].split('-')
       ans = {"BATTERY":bat, "PIR": result[0], "TOUCH": result[1], "DC_CONN": result[2], "BUTTON": result[3]}
       return self.return_msg(True, "Success", "Success", ans)
     except Exception as e:
@@ -328,7 +326,7 @@ Functions:
       if time.time() - self.battery_check_time > 10:
         func(self.device.send_raw('#15:!'))
         self.battery_check_time = time.time()
-      time.sleep(0.01)
+      time.sleep(0.05)
 
 
   # [Device] - Start thread_device
@@ -724,11 +722,12 @@ Functions:
       if not os.path.isfile(filename):
         return self.return_msg(False, "NotFound error", f"{filename} does not exist", None)
 
-      h, w = self.camera.imread(filename).shape[:2]
+      img = self.camera.imread(filename)
+      h, w = img.shape[:2]
       if h != 64 or w != 128:
         return self.return_msg(False, "Runtime error", f"{filename}'s size must be 128X64", None)
 
-      self.oled.draw_image(filename)
+      self.oled.draw_data(img)
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)
@@ -978,7 +977,6 @@ Functions:
 
     카메라로 짧은 주기로 사진을 찍어 128x64 크기로 변환한 후 OLED에 보여줍니다.
     """
-
 
     while True:
       if self.camera_loop == False:
@@ -1234,11 +1232,11 @@ Functions:
 
 
   # [Vision] - Recognize face
-  def search_face(self, filename="face.png"):
+  def search_face(self, output="face.png"):
     """
     카메라 이미지 안의 얼굴을 인식하여 성별과 나이를 추측하고, facedb를 바탕으로 인식한 얼굴의 이름과 정확도를 제공합니다.
 
-    얼굴 인식에 성공하면, 사진을 캡쳐 후 얼굴 위치와 이름, 나이, 성별을 기입 후 `filename` 에 저장합니다.
+    얼굴 인식에 성공하면, 사진을 캡쳐 후 얼굴 위치와 이름, 나이, 성별을 기입 후 `output` 에 저장합니다.
 
     (인식한 얼굴 중 가장 크게 인식한 얼굴에 적용됩니다.)
 
@@ -1246,7 +1244,7 @@ Functions:
 
       pibo_edu_v1.search_face("/home/pi/test.png")
 
-    :param str filename: 저장할 파일 경로
+    :param str output: 저장할 파일 경로
 
       (이미지 파일 형식 기입 필수 - jpg, jpeg, png, bmp)
 
@@ -1261,8 +1259,8 @@ Functions:
     """
 
     try:
-      if filename.split('.')[-1] not in ("png", "jpg", "jpeg", "bmp"):
-        return self.return_msg(False, "Argument error", f"{filename} must be (png|jpg|jpeg|bmp)", None)
+      if output.split('.')[-1] not in ("png", "jpg", "jpeg", "bmp"):
+        return self.return_msg(False, "Argument error", f"{output} must be (png|jpg|jpeg|bmp)", None)
 
       max_w = -1
       selected_face = []
@@ -1288,7 +1286,7 @@ Functions:
       name = "Guest" if ret == False else ret["name"]
       score = "-" if ret == False else ret["score"]
       result = self.camera.putText(img, "{} / {} {}".format(name, gender, age), (x-10, y-10), size=0.5)
-      self.camera.imwrite(filename, result)
+      self.camera.imwrite(output, result)
       return self.return_msg(True, "Success", "Success", {"name": name, "score": score, "gender": gender, "age": age})
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)

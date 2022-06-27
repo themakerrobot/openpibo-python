@@ -234,7 +234,6 @@ from threading import Lock
 class Device:
   """
 Functions:
-:meth:`~openpibo.device.Device.locked`
 :meth:`~openpibo.device.Device.send_cmd`
 :meth:`~openpibo.device.Device.send_raw`
 
@@ -277,19 +276,6 @@ Functions:
     self.dev = serial.Serial(port="/dev/ttyS0", baudrate=9600)
     self.lock = Lock()
     self.code_val_list = [i for i in Device.code_list.values()]
-
-  def locked(self):
-    """
-    Device가 사용 중인지 확인합니다. Device가 사용 중일 때 메시지를 보내지 않도록 주의합니다.
-
-    example::
-
-      pibo_device.locked()
-
-    :returns: ``True`` / ``False``
-    """
-
-    return self.lock.locked()
 
   def send_cmd(self, code, data:str=""):
     """
@@ -366,14 +352,14 @@ Functions:
     :returns: Device로부터 받은 응답
     """
 
-    #if self.locked() == True:
+    #if self.lock.locked() == True:
     #  return False
 
     self.lock.acquire()
     self.dev.write(raw.encode('utf-8'))
-    data = ""
     time.sleep(0.05)
 
+    data = ""
     while True:
       ch = self.dev.read().decode()
       if ch == '#' or ch == '\r' or ch == '\n':

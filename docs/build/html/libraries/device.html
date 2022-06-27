@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>device &mdash; openpibo 0.9.2.27 documentation</title>
+  <title>device &mdash; openpibo 0.9.2.28 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/device.html" />
@@ -335,7 +335,6 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.device.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><a class="headerlink" href="#openpibo.device.Device" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
-<a class="reference internal" href="#openpibo.device.Device.locked" title="openpibo.device.Device.locked"><code class="xref py py-meth docutils literal notranslate"><span class="pre">locked()</span></code></a>
 <a class="reference internal" href="#openpibo.device.Device.send_cmd" title="openpibo.device.Device.send_cmd"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_cmd()</span></code></a>
 <a class="reference internal" href="#openpibo.device.Device.send_raw" title="openpibo.device.Device.send_raw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_raw()</span></code></a></p>
 <blockquote>
@@ -352,21 +351,6 @@
 <dt class="sig sig-object py" id="openpibo.device.Device.code_list">
 <span class="sig-name descname"><span class="pre">code_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'BATTERY':</span> <span class="pre">'15',</span> <span class="pre">'DC_CONN':</span> <span class="pre">'14',</span> <span class="pre">'HALT':</span> <span class="pre">'11',</span> <span class="pre">'NEOPIXEL':</span> <span class="pre">'20',</span> <span class="pre">'NEOPIXEL_BRIGHTNESS':</span> <span class="pre">'22',</span> <span class="pre">'NEOPIXEL_EACH':</span> <span class="pre">'23',</span> <span class="pre">'NEOPIXEL_EACH_ORG':</span> <span class="pre">'28',</span> <span class="pre">'NEOPIXEL_FADE':</span> <span class="pre">'21',</span> <span class="pre">'NEOPIXEL_FADE_EACH':</span> <span class="pre">'24',</span> <span class="pre">'NEOPIXEL_LOOP':</span> <span class="pre">'25',</span> <span class="pre">'NEOPIXEL_OFFSET_GET':</span> <span class="pre">'27',</span> <span class="pre">'NEOPIXEL_OFFSET_SET':</span> <span class="pre">'26',</span> <span class="pre">'PIR':</span> <span class="pre">'30',</span> <span class="pre">'REBOOT':</span> <span class="pre">'17',</span> <span class="pre">'SYSTEM':</span> <span class="pre">'40',</span> <span class="pre">'VERSION':</span> <span class="pre">'10'}</span></em><a class="headerlink" href="#openpibo.device.Device.code_list" title="정의 주소"></a></dt>
 <dd><p>Device가 사용하는 <code class="docutils literal notranslate"><span class="pre">code_list</span></code> 정보입니다.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.device.Device.locked">
-<span class="sig-name descname"><span class="pre">locked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.device.Device.locked" title="정의 주소"></a></dt>
-<dd><p>Device가 사용 중인지 확인합니다. Device가 사용 중일 때 메시지를 보내지 않도록 주의합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_device</span><span class="o">.</span><span class="n">locked</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">반환</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> / <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -464,7 +448,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.27.</p>
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.28.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

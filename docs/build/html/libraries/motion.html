@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>motion &mdash; openpibo 0.9.2.27 documentation</title>
+  <title>motion &mdash; openpibo 0.9.2.28 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/motion.html" />
@@ -91,8 +91,7 @@
 <span id="motion"></span><h1>motion<a class="headerlink" href="#module-openpibo.motion" title="제목 주소"></a></h1>
 <p>PIBO의 움직임을 제어합니다.</p>
 <p>Class:
-<a class="reference internal" href="#openpibo.motion.Motion" title="openpibo.motion.Motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Motion</span></code></a>
-<a class="reference internal" href="#openpibo.motion.PyMotion" title="openpibo.motion.PyMotion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyMotion</span></code></a></p>
+<a class="reference internal" href="#openpibo.motion.Motion" title="openpibo.motion.Motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Motion</span></code></a></p>
 <dl class="field-list">
 <dt class="field-odd">모터 번호당 위치</dt>
 <dd class="field-odd"><ul class="simple">
@@ -451,121 +450,6 @@
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.motion.</span></span><span class="sig-name descname"><span class="pre">PyMotion</span></span><a class="headerlink" href="#openpibo.motion.PyMotion" title="정의 주소"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Functions:
-<a class="reference internal" href="#openpibo.motion.PyMotion.set_motor" title="openpibo.motion.PyMotion.set_motor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motor()</span></code></a>
-<a class="reference internal" href="#openpibo.motion.PyMotion.set_motors" title="openpibo.motion.PyMotion.set_motors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motors()</span></code></a>
-<a class="reference internal" href="#openpibo.motion.PyMotion.set_speed" title="openpibo.motion.PyMotion.set_speed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_speed()</span></code></a>
-<a class="reference internal" href="#openpibo.motion.PyMotion.set_acceleration" title="openpibo.motion.PyMotion.set_acceleration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_acceleration()</span></code></a>
-<a class="reference internal" href="#openpibo.motion.PyMotion.set_init" title="openpibo.motion.PyMotion.set_init"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_init()</span></code></a></p>
-<blockquote>
-<div><p>파이보의 움직임을 제어하는 클래스.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Motion</span></code> 클래스와의 차이점은, 모터 컨트롤러와 직접 통신한다는 점입니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">PyMotion</span>
-
-<span class="n">pibo_pymotion</span> <span class="o">=</span> <span class="n">PyMotion</span><span class="p">()</span>
-<span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
-</pre></div>
-</div>
-</div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion.motor_range">
-<span class="sig-name descname"><span class="pre">motor_range</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[25,</span> <span class="pre">35,</span> <span class="pre">80,</span> <span class="pre">30,</span> <span class="pre">50,</span> <span class="pre">25,</span> <span class="pre">25,</span> <span class="pre">35,</span> <span class="pre">80,</span> <span class="pre">30]</span></em><a class="headerlink" href="#openpibo.motion.PyMotion.motor_range" title="정의 주소"></a></dt>
-<dd><p>PyMotion이 사용하는 Motor 별 가능한 범위입니다.
-0 -&gt; 9 번 모터 순서이며, 절대값입니다. (모터0 이동가능범위: -25 ~ 25)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_motor">
-<span class="sig-name descname"><span class="pre">set_motor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_motor" title="정의 주소"></a></dt>
-<dd><p>모터 1개를 특정 위치로 이동합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – 모터 번호. 0~9 사이의 정수입니다.</p></li>
-<li><p><strong>pos</strong> (<em>int</em>) – <p>모터 각도. -80~80 사이의 정수입니다.</p>
-<p>자세한 범위는 상단의 <code class="docutils literal notranslate"><span class="pre">모터</span> <span class="pre">제한</span> <span class="pre">각도</span></code> 를 참고해주세요.</p>
-</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_motors">
-<span class="sig-name descname"><span class="pre">set_motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_motors" title="정의 주소"></a></dt>
-<dd><p>전체 모터를 특정 위치로 이동합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_motors</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>positions</strong> (<em>list</em>) – <p>0~9번 모터각도.</p>
-<p><strong>positions</strong> 에 들어가는 범위는 상단의 <code class="docutils literal notranslate"><span class="pre">모터</span> <span class="pre">제한</span> <span class="pre">각도</span></code> 와 같습니다.</p>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_speed">
-<span class="sig-name descname"><span class="pre">set_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_speed" title="정의 주소"></a></dt>
-<dd><p>모터 1개의 속도를 설정합니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – 모터 번호. 0~9 정수입니다.</p></li>
-<li><p><strong>speed</strong> (<em>int</em>) – 모터 속도. 0~255 정수입니다.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_acceleration">
-<span class="sig-name descname"><span class="pre">set_acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_acceleration" title="정의 주소"></a></dt>
-<dd><p>모터 1개의 가속도를 설정합니다.</p>
-<p>가속도를 설정하게 되면, 속도가 0에서 시작하여 설정된 속도까지 점점 빨라집니다.
-그리고 점점 느려지다가 종료 지점에서 속도가 0이 됩니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – 모터 번호. 0~9 정수입니다.</p></li>
-<li><p><strong>accel</strong> (<em>int</em>) – 모터 가속도. 0~255 정수입니다.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.motion.PyMotion.set_init">
-<span class="sig-name descname"><span class="pre">set_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.PyMotion.set_init" title="정의 주소"></a></dt>
-<dd><p>전체 모터를 초기 상태로 이동시킵니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_pymotion</span><span class="o">.</span><span class="n">set_init</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 
 
@@ -579,7 +463,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.27.</p>
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.28.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

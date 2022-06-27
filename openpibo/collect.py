@@ -285,9 +285,10 @@ Functions:
 
 
 if __name__ == "__main__":
-    # wiki = Wikipedia()
-    # print(wiki.search("강아지"))
-    # weather = Weather('제주')
-    # print(weather)
-    news = News()
-    print(news.get_article(3))
+  wiki = Wikipedia()
+  weather = Weather()
+  news = News()
+
+  print('wiki:', wiki.search('로봇'))
+  print('weather:', weather.search('서울'))
+  print('news:', news.search('속보'))

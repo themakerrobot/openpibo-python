@@ -342,7 +342,7 @@ Functions:
 
     return cv2.cvtColor(cv2.resize(img, (w, h)), cv2.COLOR_BGR2GRAY)
 
-  def rotate(self, img, degree, ratio=1.0):
+  def rotate(self, img, degree=10, ratio=0.9):
     """
     이미지를 회전시킵니다.
 
@@ -370,9 +370,8 @@ Functions:
       raise Exception(f'"{ratio} must be float type and 0~1.0')
 
     rows, cols = img.shape[0:2]
-    m10 = cv2.getRotationMatrix2D((cols/2,rows/2), 10, 0.9)
-    img = cv2.warpAffine(img, m10, (cols,rows))
-    return img
+    op = cv2.getRotationMatrix2D((cols/2,rows/2), degree, ratio)
+    return cv2.warpAffine(img, op, (cols,rows))
 
   def bgr_hls(self, img):
     """
@@ -486,9 +485,7 @@ Functions:
       raise Exception('"img" must be image data from opencv') 
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = self.face_detector.detectMultiScale(gray, 1.1, 5)
-    #(x,y,w,h) = faces[0]
-    return faces
+    return self.face_detector.detectMultiScale(gray, 1.1, 5) # [(x,y,w,h), ...]
 
   def train_face(self, img, face, name):
     """
@@ -788,20 +785,18 @@ Functions:
 
     for detection in output[0, 0, :, :]:
       if detection[2] > .5:
-        x1 = int(detection[3] * img_w)
-        y1 = int(detection[4] * img_h)
-        x2 = int(detection[5] * img_w)
-        y2 = int(detection[6] * img_h)
+        x1 = max(10, int(detection[3] * img_w))
+        y1 = max(10, int(detection[4] * img_h))
+        x2 = min(img_w + 10, int(detection[5] * img_w))
+        y2 = min(img_h + 10, int(detection[6] * img_h))
         class_ids.append(int(detection[1]))
         scores.append(float(detection[2]))
-        boxes.append([x1, y1, x2, y2])
- 
+        boxes.append((x1, y1, x2, y2))
+
     idxs = cv2.dnn.NMSBoxes(boxes, scores, .5, .4)
     if len(idxs) > 0:
       for i in idxs.flatten():
-        box = boxes[i]
-        x1,y1,x2,y2 = box[0],box[1],box[2],box[3]
-        data.append({"name":self.object_class[class_ids[i]], "score":int(scores[i]*100), "position":(x1,y1,x2,y2)})
+        data.append({"name":self.object_class[class_ids[i]], "score":int(scores[i]*100), "position":boxes[i]})
     return data
 
   def detect_qr(self, img):
@@ -822,7 +817,6 @@ Functions:
       raise Exception('"img" must be image data from opencv')
 
     barcodes = pyzbar.decode(img)
-
     if len(barcodes) > 0:
       x,y,w,h = barcodes[0].rect
       return {"data":barcodes[0].data.decode("utf-8"), "type":barcodes[0].type, "position":(x,y,x+w,y+h)}
