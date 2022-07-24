@@ -791,9 +791,10 @@ Functions:
         y2 = min(img_h + 10, int(detection[6] * img_h))
         class_ids.append(int(detection[1]))
         scores.append(float(detection[2]))
+        boxes_nms.append((x1, y1, x2-x1, y2-y1)) // NMSBoxes box: x,y,w,h
         boxes.append((x1, y1, x2, y2))
 
-    idxs = cv2.dnn.NMSBoxes(boxes, scores, .5, .4)
+    idxs = cv2.dnn.NMSBoxes(boxes_nms, scores, .5, .4)
     if len(idxs) > 0:
       for i in idxs.flatten():
         data.append({"name":self.object_class[class_ids[i]], "score":int(scores[i]*100), "position":boxes[i]})
