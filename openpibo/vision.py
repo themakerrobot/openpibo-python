@@ -704,7 +704,6 @@ class Detect:
 Functions:
 :meth:`~openpibo.vision.Detect.detect_object`
 :meth:`~openpibo.vision.Detect.detect_qr`
-:meth:`~openpibo.vision.Detect.detect_text`
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
@@ -824,21 +823,92 @@ Functions:
     else:
       return {"data":"", "type":"", "position":None}
 
-  def detect_text(self, img):
+
+class TeachableMachine:
+  """
+Functions:
+:meth:`~openpibo.vision.TeachableMachine.load`
+:meth:`~openpibo.vision.TeachableMachine.predict`
+
+  파이보의 카메라 Teachable Machine 기능을 사용합니다.
+
+  * ``이미지 프로젝트``의 ``표준 이미지 모델``을 사용합니다.
+  * ``Teachable Machine``에서 학습한 모델을 적용하여 추론할 수 있습니다.
+  * 학습한 모델은 ``Tensorflow Lite``의 ``부동 소수점``로 다운로드 받아주세요.
+
+  example::
+
+    from openpibo.vision import TeachableMachine
+
+    tm = TeachableMachine()
+    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
+  """
+
+  def __init__(self):
+    pass
+
+  def load(self, model_path, label_path):
     """
-    이미지 안의 문자를 인식합니다.
+    Teachable Machine 모델을 초기화 합니다.
 
     example::
 
-      img = pibo_camera.read()
-      pibo_detect.detect_text(img)
+      tm.load('model_unquant.tflite', 'labels.txt')
 
-    :param numpy.ndarray: 이미지 객체
+    :param str model_path: Teachable Machine의 모델파일
 
-    :returns: 인식된 문자열
+    :param str label_path: Teachable Machine의 라벨파일
+    """
+    with open(label_path, 'r') as f:
+      c = f.readlines()
+      class_names = [item.split(maxsplit=1)[1].strip('\n') for item in c]
+
+    # Load TFLite model and allocate tensors
+    self.interpreter = Interpreter(model_path=model_path)
+    self.interpreter.allocate_tensors()
+
+    # Get input and output tensors.
+    self.input_details = self.interpreter.get_input_details()
+    self.output_details = self.interpreter.get_output_details()
+
+    # check the type of the input tensor
+    self.floating_model = self.input_details[0]['dtype'] == np.float32
+
+    self.height = self.input_details[0]['shape'][1]
+    self.width = self.input_details[0]['shape'][2]
+
+    self.class_names = class_names
+
+  def predict(self, img):
+    """
+    적용한 Teachable Machine 모델을 기반으로 추론합니
+
+    example::
+
+      cm = Camera()
+      img = cm.read()
+      tm.predict(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :returns: 가장 높은 확률을 가진 클래스 명, 결과(raw 데이터)
     """
 
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv')
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, (self.width, self.height))
+    image = Image.fromarray(img)
 
-    return pytesseract.image_to_string(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), lang='eng+kor', config=r'--oem 3 --psm 6')
+    # Add a batch dimension
+    input_data = np.expand_dims(image, axis=0)
+
+    if self.floating_model:
+      input_data = (np.float32(input_data) - 127.5) / 127.5
+
+    # feed data to input tensor and run the interpreter
+    self.interpreter.set_tensor(self.input_details[0]['index'], input_data)
+    self.interpreter.invoke()
+
+    # Obtain results and map them to the classes
+    preds = self.interpreter.get_tensor(self.output_details[0]['index'])
+    preds = np.squeeze(preds)
+    return self.class_names[np.argmax(preds)], preds
