@@ -833,9 +833,9 @@ Functions:
 
   파이보의 카메라 Teachable Machine 기능을 사용합니다.
 
-  * 이미지 프로젝트의 표준 이미지 모델을 사용합니다.
-  * Teachable Machine에서 학습한 모델을 적용하여 추론할 수 있습니다.
-  * 학습한 모델은 Tensorflow Lite의 부동 소수점으로 다운로드 받아주세요.
+  * ``이미지 프로젝트`` 의 ``표준 이미지 모델`` 을 사용합니다.
+  * ``Teachable Machine`` 에서 학습한 모델을 적용하여 추론할 수 있습니다.
+  * 학습한 모델은 ``Tensorflow Lite`` 의 ``부동 소수점`` 으로 다운로드 받아주세요.
 
   example::
 

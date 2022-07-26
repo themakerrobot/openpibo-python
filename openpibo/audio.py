@@ -44,14 +44,13 @@ Functions:
 
       mp3와 wav 형식을 지원합니다.
 
-    :param int volume: 음량을 설정합니다.
+    :param int volume: 음량을 설정합니다. (0~100)
 
     :param bool background: 오디오 파일을 백그라운드에서 실행할지 여부를 결정합니다.
 
       백그라운드에서 오디오가 재생되면, 오디오 재생되는 도중에 다른 명령어를 사용할 수 있습니다.
 
       * ``True``: 백그라운드에서 재생합니다. (default)
-
       * ``False``: 백그라운드에서 재생하지 않습니다.
     """
 
