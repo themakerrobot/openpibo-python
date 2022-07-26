@@ -294,7 +294,7 @@ Functions:
     example::
 
       pibo_dialog.get_dialog('나랑 같이 놀자')
-    
+
     :param str string: 질문하는 문장 (한글)
 
     :returns: 답변하는 문장 (한글)
@@ -479,7 +479,7 @@ Functions:
   def __init__(self):
     self.NAPI_HOST = napi_host
 
-  def get_dialog(self, q):
+  def get_dialog(self, string):
     """
     일상대화에 대한 답을 추출합니다.
 
@@ -490,11 +490,8 @@ Functions:
     :param str string: 질문하는 문장 (한글)
 
     :returns: 답변하는 문장 (한글)
-
-      ``string`` 타입 입니다.
     """
-
-    res = requests.get(self.NAPI_HOST + '/dialog', params={'input':q})
+    res = requests.get(self.NAPI_HOST + '/dialog', params={'input':string})
 
     if res.status_code != 200:
       raise Exception(f'response error: {res}')
@@ -513,7 +510,7 @@ Functions:
     """
     문장을 분석합니다.
 
-    문자열로부터 저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.
+    문장을 지정한 모드로 분석합니다.
 
     example::
 
@@ -521,9 +518,9 @@ Functions:
 
     :param str string: 분석할 문장
 
-    :returns: 분석 결과
+    :param str mode: 분석 모드 `` (summary|vector|sentiment|emotion|ner|wellness|hate) ``
 
-      ``string`` 타입 입니다.
+    :returns: 분석 결과
     """
     if type(mode) is not str or mode not in ('summary', 'vector', 'sentiment', 'emotion', 'ner', 'wellness', 'hate'):
       raise Exception(f'"{mode}" must be (summary|vector|sentiment|emotion|ner|wellness|hate)')

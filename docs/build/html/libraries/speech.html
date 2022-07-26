@@ -433,7 +433,7 @@
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.speech.Dialog2.get_dialog">
-<span class="sig-name descname"><span class="pre">get_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Dialog2.get_dialog" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">get_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Dialog2.get_dialog" title="정의 주소"></a></dt>
 <dd><p>일상대화에 대한 답을 추출합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_dialog2</span><span class="o">.</span><span class="n">get_dialog</span><span class="p">(</span><span class="s1">&#39;나랑 같이 놀자&#39;</span><span class="p">)</span>
@@ -444,9 +444,7 @@
 <dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – 질문하는 문장 (한글)</p>
 </dd>
 <dt class="field-even">반환</dt>
-<dd class="field-even"><p><p>답변하는 문장 (한글)</p>
-<p><code class="docutils literal notranslate"><span class="pre">string</span></code> 타입 입니다.</p>
-</p>
+<dd class="field-even"><p>답변하는 문장 (한글)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -455,19 +453,20 @@
 <dt class="sig sig-object py" id="openpibo.speech.Dialog2.nlp">
 <span class="sig-name descname"><span class="pre">nlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Dialog2.nlp" title="정의 주소"></a></dt>
 <dd><p>문장을 분석합니다.</p>
-<p>문자열로부터 저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.</p>
+<p>문장을 지정한 모드로 분석합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_dialog2</span><span class="o">.</span><span class="n">nlp</span><span class="p">(</span><span class="s1">&#39;안녕하세요. 오늘 매우 즐거워요&#39;</span><span class="p">,</span> <span class="s1">&#39;ner&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – 분석할 문장</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – 분석할 문장</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – 분석 모드 `` (summary|vector|sentiment|emotion|ner|wellness|hate) ``</p></li>
+</ul>
 </dd>
 <dt class="field-even">반환</dt>
-<dd class="field-even"><p><p>분석 결과</p>
-<p><code class="docutils literal notranslate"><span class="pre">string</span></code> 타입 입니다.</p>
-</p>
+<dd class="field-even"><p>분석 결과</p>
 </dd>
 </dl>
 </dd></dl>
