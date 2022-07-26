@@ -130,7 +130,7 @@ Functions:
     self.device.send_cmd(Device.code_list['PIR'], "on")
 
   # [Audio] - Play mp3/wav files
-  def play_audio(self, filename=None, out='local', volume='-2000', background=True):
+  def play_audio(self, filename=None, volume=80, background=True):
     """
     입력한 경로의 파일을 재생합니다.
 
@@ -142,19 +142,7 @@ Functions:
 
       ``mp3`` 와 ``wav`` 형식을 지원합니다.
 
-    :param str out: 어느 포트에서 재생할지 선택합니다.
-
-      ``local``, ``hdmi``, ``both`` 만 입력할 수 있습니다.
-
-      (default: ``local``)
-
-    :param str or int volume: 음량을 설정합니다.
-
-      단위는 mdB 이고, 값이 커질수록 음량이 커집니다.
-
-      음량이 매우 크므로 -2000 정도로 사용하는 것을 권장합니다.
-
-      (default: ``-2000``)
+    :param int volume: 음량을 설정합니다. (0~100)
 
     :param bool background: 오디오 파일을 백그라운드에서 실행할지 여부를 결정합니다.
 
@@ -171,10 +159,7 @@ Functions:
       if not os.path.isfile(filename):
         return self.return_msg(False, "NotFound error", f"{filename} does not exist", None)
 
-      if out not in ('local', 'hdmi', 'both'):
-        return self.return_msg(False, "Argument error", f"{out} must be (local|hdmi|both)", None)
-
-      self.audio.play(filename, out, volume, background)
+      self.audio.play(filename, volume, background)
       return self.return_msg(True, "Success", "Success", None)
     except Exception as e:
       return self.return_msg(False, "Exception error", e, None)

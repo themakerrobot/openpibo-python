@@ -14,7 +14,7 @@ import os
 from konlpy.tag import Mecab
 import requests
 from .modules.speech.google_trans_new import google_translator
-from . import kakaokey
+from . import kakaokey,napi_host,sapi_host
 
 import openpibo_models
 #current_path = os.path.dirname(os.path.realpath(__file__))
@@ -299,6 +299,13 @@ Functions:
 
       ``string`` 타입 입니다.
     """
+    def get_distance(aT, bT):
+      cnt = 0
+      for i in aT:
+        for j in bT:
+          if i == j:
+            cnt += 1
+      return cnt / len(aT)
 
     max_acc = 0
     max_ans = []
@@ -315,16 +322,219 @@ Functions:
 
     return random.choice(max_ans)[1]
 
-def get_distance(aT, bT):
-  """
-  (``Dialog`` 클래스의 ``get_dialog`` 메소드의 내부함수)
 
-  사용자의 질문과 유사한 데이터를 찾는 함수입니다.
+class Speech2:
+  """
+Functions:
+:meth:`~openpibo.speech.Speech2.translate`
+:meth:`~openpibo.speech.Speech2.tts`
+:meth:`~openpibo.speech.Speech2.stt`
+
+  * 번역 (한국어 -> 영어)
+  * TTS (Text to Speech)
+  * STT (Speech to Text)
+
+  example::
+
+    from openpibo.speech import Speech2
+
+    pibo_speech2 = Speech2()
+    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
-  cnt = 0
-  for i in aT:
-    for j in bT:
-      if i == j:
-        cnt += 1
-  return cnt / len(aT)
+  def __init__(self):
+    self.SAPI_HOST = sapi_host
+    self.NAPI_HOST = napi_host
+
+  def translate(self, string):
+    """
+    한글을 영어로 번역합니다.
+
+    example::
+
+      pibo_speech2.translate('안녕하세요! 만나서 정말 반가워요!')
+      # "Hi! Nice to meet you!"
+
+    :param str string: 번역할 문장 (한글)
+
+    :returns: 번역 된 문장
+    """
+
+    if type(string) is not str:
+      raise Exception(f'"{string}" must be str type')
+
+    res = requests.post(self.NAPI_HOST + '/translation', params={"sentence":string})
+    if res.status_code != 200:
+      raise Exception(f'response error: {res}')
+
+    if res.json()['result'] == False:
+      raise Exception(f'result error: {res.json()}')
+
+    return res.json()['data']
+
+  def tts(self, string, voice="main", lang="ko", filename="tts.mp3"):
+    """
+    TTS(Text to Speech)
+
+    Text(문자)를 Speech(말)로 변환하여 파일로 저장합니다.
+
+    example::
+
+      pibo_speech2.tts('안녕하세요! 만나서 반가워요!', 'main', 'ko', '/home/pi/tts.mp3')
+
+    :param str string: 변환할 문장구
+
+    :param str voice: 목소리 타입(main | boy | girl | man1 | woman1)
+
+    :param str lang: 사용할 언어(ko | en)
+
+    :param str filename: 변환된 음성파일의 경로
+
+      파일 확장자는 ``mp3``만 가능합니다.
+    """
+
+    if type(string) is not str:
+      raise Exception(f'"{string}" must be str type')
+
+    if type(voice) is not str or voice not in ('main', 'boy', 'girl', 'man1', 'woman1'):
+      raise Exception(f'"{voice}" must be (main|boy|girl|man1|woman1)')
+
+    if type(lang) is not str or lang not in ('en', 'ko'):
+      raise Exception(f'"{lang}" must be (en|ko)')
+
+    headers = {
+      'accept': '*/*',
+      'Content-Type': 'application/json',
+    }
+
+    data = {
+      "text":string,
+      "hash":"",
+      "voice":voice, # ['main', 'boy', 'girl', 'man1', 'woman1']
+      "lang":lang, # ['ko', 'en']
+      "type":"mp3"
+    }
+
+    res = requests.post(self.SAPI_HOST + '/tts', headers=headers, json=data)
+
+    if res.status_code != 200:
+      raise Exception(f'response error: {res}')
+
+    with open(filename, 'wb') as f:
+      f.write(res.content)
+
+
+  def stt(self, filename="stream.wav", timeout=5):
+    """
+    STT(Speech to Text)
+
+    목소리를 녹음한 후 파일로 저장하고, 그 파일의 Speech(말)를 Text(문자)로 변환합니다.
+
+    녹음 파일은 ``timeout`` 초 동안 녹음되며, ``filename`` 의 경로에 저장됩니다.
+
+    example::
+
+      pibo_speech2.stt('/home/pi/stt.wav', 5)
+
+    :param str filename: 녹음한 파일이 저장 될 경로. ``wav`` 확장자를 사용합니다.
+
+    :param int timeout: 녹음 시간(s)
+
+    :returns: 인식된 문자열
+    """
+
+    os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {filename};rm stream.raw')
+
+    res = requests.post(self.SAPI_HOST + '/stt', files={'file':open(filename, 'rb')})
+
+    if res.status_code != 200:
+      raise Exception(f'response error: {res}')
+
+    if res.json()['result'] == False:
+      raise Exception(f'result error: {res.json()}')
+
+    return res.json()['data']
+
+
+class Dialog2:
+  """
+Functions:
+:meth:`~openpibo.speech.Dialog2.load`
+:meth:`~openpibo.speech.Dialog2.get_dialog`
+:meth:`~openpibo.speech.Dialog2.nlp`
+
+  파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.
+
+  * 챗봇 기능
+  * 자연어 분석 기능
+
+  example::
+
+    from openpibo.speech import Dialog2
+
+    pibo_dialog = Dialog2()
+    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
+  """
+
+  def __init__(self):
+    self.NAPI_HOST = napi_host
+
+  def get_dialog(self, q):
+    """
+    일상대화에 대한 답을 추출합니다.
+
+    example::
+
+      pibo_dialog2.get_dialog('나랑 같이 놀자')
+
+    :param str string: 질문하는 문장 (한글)
+
+    :returns: 답변하는 문장 (한글)
+
+      ``string`` 타입 입니다.
+    """
+
+    res = requests.get(self.NAPI_HOST + '/dialog', params={'input':q})
+
+    if res.status_code != 200:
+      raise Exception(f'response error: {res}')
+
+    if res.json()['result'] == False:
+      raise Exception(f'result error: {res.json()}')
+
+    ans, score = [], []
+    for item in res.json()['data']:
+      ans.append(item['answer'])
+      score.append(item['score'])
+
+    return ans[score.index(max(score))]
+
+  def nlp(self, string, mode):
+    """
+    문장을 분석합니다.
+
+    문자열로부터 저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.
+
+    example::
+
+      pibo_dialog2.nlp('안녕하세요. 오늘 매우 즐거워요', 'ner')
+
+    :param str string: 분석할 문장
+
+    :returns: 분석 결과
+
+      ``string`` 타입 입니다.
+    """
+    if type(mode) is not str or mode not in ('summary', 'vector', 'sentiment', 'emotion', 'ner', 'wellness', 'hate'):
+      raise Exception(f'"{mode}" must be (summary|vector|sentiment|emotion|ner|wellness|hate)')
+
+    res = requests.post(self.NAPI_HOST + '/' + mode, params={"sentence":string})
+
+    if res.status_code != 200:
+      raise Exception(f'response error: {res}')
+
+    if res.json()['result'] == False:
+      raise Exception(f'result error: {res.json()}')
+
+    return res.json()['data']
+
