@@ -4,6 +4,8 @@
 Class:
 :obj:`~openpibo.speech.Speech`
 :obj:`~openpibo.speech.Dialog`
+:obj:`~openpibo.speech.Speech2`
+:obj:`~openpibo.speech.Dialog2`
 """
 
 import csv
@@ -372,6 +374,7 @@ Functions:
 
     return res.json()['data']
 
+
   def tts(self, string, voice="main", lang="ko", filename="tts.mp3"):
     """
     TTS(Text to Speech)
@@ -388,9 +391,7 @@ Functions:
 
     :param str lang: 사용할 언어(ko | en)
 
-    :param str filename: 변환된 음성파일의 경로
-
-      파일 확장자는 ``mp3``만 가능합니다.
+    :param str filename: 변환된 음성파일의 경로 (mp3)
     """
 
     if type(string) is not str:
@@ -416,7 +417,6 @@ Functions:
     }
 
     res = requests.post(self.SAPI_HOST + '/tts', headers=headers, json=data)
-
     if res.status_code != 200:
       raise Exception(f'response error: {res}')
 

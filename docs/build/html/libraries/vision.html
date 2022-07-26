@@ -94,7 +94,8 @@
 <p>Class:
 <a class="reference internal" href="#openpibo.vision.Camera" title="openpibo.vision.Camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Camera</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face" title="openpibo.vision.Face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Face</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Detect" title="openpibo.vision.Detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Detect</span></code></a></p>
+<a class="reference internal" href="#openpibo.vision.Detect" title="openpibo.vision.Detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Detect</span></code></a>
+<a class="reference internal" href="#openpibo.vision.TeachableMachine" title="openpibo.vision.TeachableMachine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TeachableMachine</span></code></a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.vision.Camera">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera" title="정의 주소"></a></dt>
@@ -625,8 +626,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <a class="reference internal" href="#openpibo.vision.Detect.detect_object" title="openpibo.vision.Detect.detect_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_object()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Detect.detect_qr" title="openpibo.vision.Detect.detect_qr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_qr()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Detect.detect_text" title="openpibo.vision.Detect.detect_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_text()</span></code></a></p>
+<a class="reference internal" href="#openpibo.vision.Detect.detect_qr" title="openpibo.vision.Detect.detect_qr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_qr()</span></code></a></p>
 <blockquote>
 <div><p>인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.</p>
 <ul class="simple">
@@ -700,21 +700,64 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.vision.Detect.detect_text">
-<span class="sig-name descname"><span class="pre">detect_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.detect_text" title="정의 주소"></a></dt>
-<dd><p>이미지 안의 문자를 인식합니다.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="openpibo.vision.TeachableMachine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">TeachableMachine</span></span><a class="headerlink" href="#openpibo.vision.TeachableMachine" title="정의 주소"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Functions:
+<a class="reference internal" href="#openpibo.vision.TeachableMachine.load" title="openpibo.vision.TeachableMachine.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.TeachableMachine.predict" title="openpibo.vision.TeachableMachine.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a></p>
+<blockquote>
+<div><p>파이보의 카메라 Teachable Machine 기능을 사용합니다.</p>
+<ul class="simple">
+<li><p>이미지 프로젝트의 표준 이미지 모델을 사용합니다.</p></li>
+<li><p>Teachable Machine에서 학습한 모델을 적용하여 추론할 수 있습니다.</p></li>
+<li><p>학습한 모델은 Tensorflow Lite의 부동 소수점으로 다운로드 받아주세요.</p></li>
+</ul>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">TeachableMachine</span>
+
+<span class="n">tm</span> <span class="o">=</span> <span class="n">TeachableMachine</span><span class="p">()</span>
+<span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.vision.TeachableMachine.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.TeachableMachine.load" title="정의 주소"></a></dt>
+<dd><p>Teachable Machine 모델을 초기화 합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tm</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;model_unquant.tflite&#39;</span><span class="p">,</span> <span class="s1">&#39;labels.txt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>numpy.ndarray</strong> – 이미지 객체</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_path</strong> (<em>str</em>) – Teachable Machine의 모델파일</p></li>
+<li><p><strong>label_path</strong> (<em>str</em>) – Teachable Machine의 라벨파일</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.vision.TeachableMachine.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.TeachableMachine.predict" title="정의 주소"></a></dt>
+<dd><p>적용한 Teachable Machine 모델을 기반으로 추론합니</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cm</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">tm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p>
 </dd>
 <dt class="field-even">반환</dt>
-<dd class="field-even"><p>인식된 문자열</p>
+<dd class="field-even"><p>가장 높은 확률을 가진 클래스 명, 결과(raw 데이터)</p>
 </dd>
 </dl>
 </dd></dl>

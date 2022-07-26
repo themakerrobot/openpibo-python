@@ -92,11 +92,6 @@
 <p>mp3, wav 오디오 파일을 재생 및 정지합니다.</p>
 <p>Class:
 <a class="reference internal" href="#openpibo.audio.Audio" title="openpibo.audio.Audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Audio</span></code></a></p>
-<dl class="py function">
-<dt class="sig sig-object py" id="openpibo.audio.isNumber">
-<span class="sig-prename descclassname"><span class="pre">openpibo.audio.</span></span><span class="sig-name descname"><span class="pre">isNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.isNumber" title="정의 주소"></a></dt>
-<dd></dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.audio.Audio">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.audio.</span></span><span class="sig-name descname"><span class="pre">Audio</span></span><a class="headerlink" href="#openpibo.audio.Audio" title="정의 주소"></a></dt>
@@ -117,10 +112,10 @@
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.audio.Audio.play">
-<span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'local'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-2000.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.play" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.play" title="정의 주소"></a></dt>
 <dd><p>mp3 또는 wav 파일을 재생합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo-files/audio/test.mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="s1">&#39;-2000&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo-files/audio/test.mp3&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -129,19 +124,7 @@
 <li><p><strong>filename</strong> (<em>str</em>) – <p>재생할 파일의 경로를 지정합니다.</p>
 <p>mp3와 wav 형식을 지원합니다.</p>
 </p></li>
-<li><p><strong>out</strong> (<em>str</em>) – <p>출력 대상을 설정합니다.</p>
-<p><code class="docutils literal notranslate"><span class="pre">local</span></code>, <code class="docutils literal notranslate"><span class="pre">hdmi</span></code>, <code class="docutils literal notranslate"><span class="pre">both</span></code> 만 입력할 수 있습니다.</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">local</span></code>: 파이보의 머리에 부착되어있는 스피커에서 출력됩니다. (default)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hdmi</span></code>: 파이보 등 부분 라즈베리파이에 있는 <code class="docutils literal notranslate"><span class="pre">micro</span> <span class="pre">HDMI</span></code> 포트에 연결된 스피커에서 출력됩니다.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">both</span></code>: <code class="docutils literal notranslate"><span class="pre">local</span></code> 과 <code class="docutils literal notranslate"><span class="pre">hdmi</span></code> 모두에서 출력됩니다.</p></li>
-</ul>
-</p></li>
-<li><p><strong>volume</strong> (<em>str</em><em> or </em><em>int</em>) – <p>음량을 설정합니다.</p>
-<p>단위는 <code class="docutils literal notranslate"><span class="pre">mB(밀리벨)</span></code> 입니다. 참고로, 100mB(밀리벨) = 1dB(데시벨) 입니다.</p>
-<p>음량이 매우 크므로 <code class="docutils literal notranslate"><span class="pre">-2000</span></code> 정도로 사용하는 것을 권장합니다.</p>
-<p>(default: <code class="docutils literal notranslate"><span class="pre">-2000</span></code>)</p>
-</p></li>
+<li><p><strong>volume</strong> (<em>int</em>) – 음량을 설정합니다.</p></li>
 <li><p><strong>background</strong> (<em>bool</em>) – <p>오디오 파일을 백그라운드에서 실행할지 여부를 결정합니다.</p>
 <p>백그라운드에서 오디오가 재생되면, 오디오 재생되는 도중에 다른 명령어를 사용할 수 있습니다.</p>
 <ul>

@@ -92,7 +92,9 @@
 <p>번역, 형태소 분석, 자연어 인식 및 합성, 챗봇 등 다양한 자연어 처리를 합니다.</p>
 <p>Class:
 <a class="reference internal" href="#openpibo.speech.Speech" title="openpibo.speech.Speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Speech</span></code></a>
-<a class="reference internal" href="#openpibo.speech.Dialog" title="openpibo.speech.Dialog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dialog</span></code></a></p>
+<a class="reference internal" href="#openpibo.speech.Dialog" title="openpibo.speech.Dialog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dialog</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Speech2" title="openpibo.speech.Speech2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Speech2</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Dialog2" title="openpibo.speech.Dialog2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dialog2</span></code></a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.speech.Speech">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.speech.</span></span><span class="sig-name descname"><span class="pre">Speech</span></span><a class="headerlink" href="#openpibo.speech.Speech" title="정의 주소"></a></dt>
@@ -320,11 +322,156 @@
 
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="openpibo.speech.get_distance">
-<span class="sig-prename descclassname"><span class="pre">openpibo.speech.</span></span><span class="sig-name descname"><span class="pre">get_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.get_distance" title="정의 주소"></a></dt>
-<dd><p>(<code class="docutils literal notranslate"><span class="pre">Dialog</span></code> 클래스의 <code class="docutils literal notranslate"><span class="pre">get_dialog</span></code> 메소드의 내부함수)</p>
-<p>사용자의 질문과 유사한 데이터를 찾는 함수입니다.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="openpibo.speech.Speech2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.speech.</span></span><span class="sig-name descname"><span class="pre">Speech2</span></span><a class="headerlink" href="#openpibo.speech.Speech2" title="정의 주소"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Functions:
+<a class="reference internal" href="#openpibo.speech.Speech2.translate" title="openpibo.speech.Speech2.translate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translate()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Speech2.tts" title="openpibo.speech.Speech2.tts"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tts()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Speech2.stt" title="openpibo.speech.Speech2.stt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stt()</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>번역 (한국어 -&gt; 영어)</p></li>
+<li><p>TTS (Text to Speech)</p></li>
+<li><p>STT (Speech to Text)</p></li>
+</ul>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Speech2</span>
+
+<span class="n">pibo_speech2</span> <span class="o">=</span> <span class="n">Speech2</span><span class="p">()</span>
+<span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.speech.Speech2.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Speech2.translate" title="정의 주소"></a></dt>
+<dd><p>한글을 영어로 번역합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_speech2</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;안녕하세요! 만나서 정말 반가워요!&#39;</span><span class="p">)</span>
+<span class="c1"># &quot;Hi! Nice to meet you!&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – 번역할 문장 (한글)</p>
+</dd>
+<dt class="field-even">반환</dt>
+<dd class="field-even"><p>번역 된 문장</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.speech.Speech2.tts">
+<span class="sig-name descname"><span class="pre">tts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voice</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ko'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tts.mp3'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Speech2.tts" title="정의 주소"></a></dt>
+<dd><p>TTS(Text to Speech)</p>
+<p>Text(문자)를 Speech(말)로 변환하여 파일로 저장합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_speech2</span><span class="o">.</span><span class="n">tts</span><span class="p">(</span><span class="s1">&#39;안녕하세요! 만나서 반가워요!&#39;</span><span class="p">,</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="s1">&#39;/home/pi/tts.mp3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – 변환할 문장구</p></li>
+<li><p><strong>voice</strong> (<em>str</em>) – 목소리 타입(main | boy | girl | man1 | woman1)</p></li>
+<li><p><strong>lang</strong> (<em>str</em>) – 사용할 언어(ko | en)</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – 변환된 음성파일의 경로 (mp3)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.speech.Speech2.stt">
+<span class="sig-name descname"><span class="pre">stt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'stream.wav'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Speech2.stt" title="정의 주소"></a></dt>
+<dd><p>STT(Speech to Text)</p>
+<p>목소리를 녹음한 후 파일로 저장하고, 그 파일의 Speech(말)를 Text(문자)로 변환합니다.</p>
+<p>녹음 파일은 <code class="docutils literal notranslate"><span class="pre">timeout</span></code> 초 동안 녹음되며, <code class="docutils literal notranslate"><span class="pre">filename</span></code> 의 경로에 저장됩니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_speech2</span><span class="o">.</span><span class="n">stt</span><span class="p">(</span><span class="s1">&#39;/home/pi/stt.wav&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – 녹음한 파일이 저장 될 경로. <code class="docutils literal notranslate"><span class="pre">wav</span></code> 확장자를 사용합니다.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – 녹음 시간(s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">반환</dt>
+<dd class="field-even"><p>인식된 문자열</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="openpibo.speech.Dialog2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.speech.</span></span><span class="sig-name descname"><span class="pre">Dialog2</span></span><a class="headerlink" href="#openpibo.speech.Dialog2" title="정의 주소"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Functions:
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code>
+<a class="reference internal" href="#openpibo.speech.Dialog2.get_dialog" title="openpibo.speech.Dialog2.get_dialog"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dialog()</span></code></a>
+<a class="reference internal" href="#openpibo.speech.Dialog2.nlp" title="openpibo.speech.Dialog2.nlp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nlp()</span></code></a></p>
+<blockquote>
+<div><p>파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
+<ul class="simple">
+<li><p>챗봇 기능</p></li>
+<li><p>자연어 분석 기능</p></li>
+</ul>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.speech</span> <span class="kn">import</span> <span class="n">Dialog2</span>
+
+<span class="n">pibo_dialog</span> <span class="o">=</span> <span class="n">Dialog2</span><span class="p">()</span>
+<span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.speech.Dialog2.get_dialog">
+<span class="sig-name descname"><span class="pre">get_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Dialog2.get_dialog" title="정의 주소"></a></dt>
+<dd><p>일상대화에 대한 답을 추출합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_dialog2</span><span class="o">.</span><span class="n">get_dialog</span><span class="p">(</span><span class="s1">&#39;나랑 같이 놀자&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – 질문하는 문장 (한글)</p>
+</dd>
+<dt class="field-even">반환</dt>
+<dd class="field-even"><p><p>답변하는 문장 (한글)</p>
+<p><code class="docutils literal notranslate"><span class="pre">string</span></code> 타입 입니다.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.speech.Dialog2.nlp">
+<span class="sig-name descname"><span class="pre">nlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.speech.Dialog2.nlp" title="정의 주소"></a></dt>
+<dd><p>문장을 분석합니다.</p>
+<p>문자열로부터 저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_dialog2</span><span class="o">.</span><span class="n">nlp</span><span class="p">(</span><span class="s1">&#39;안녕하세요. 오늘 매우 즐거워요&#39;</span><span class="p">,</span> <span class="s1">&#39;ner&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – 분석할 문장</p>
+</dd>
+<dt class="field-even">반환</dt>
+<dd class="field-even"><p><p>분석 결과</p>
+<p><code class="docutils literal notranslate"><span class="pre">string</span></code> 타입 입니다.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
