@@ -69,7 +69,7 @@ Functions:
     if type(background) != bool:
       raise Exception(f'"{background}" is not bool')
 
-    volume = int(volume/2) + 50
+    volume = int(volume/2) + 50 # 실제 50 - 100%로 설정, 0-50%는 소리가 너무 작음
     cmd = f'amixer -q -c Headphones sset Headphone {volume}%;'
     cmd += f'play -q -V1 {filename}'
 
@@ -78,13 +78,13 @@ Functions:
     else:
       os.system(cmd)
 
-
   def stop(self):
     """백그라운드에서 재생중인 오디오를 정지합니다.
 
     example::
 
-      pibo_audio.stop()"""
+      pibo_audio.stop()
+    """
 
     os.system('sudo pkill play')
 
@@ -102,7 +102,8 @@ Functions:
     :param bool value:
 
       * ``True``: 무음모드 설정.
-      * ``False``: 무음모드 해제."""
+      * ``False``: 무음모드 해제.
+    """
 
     if type(value) != bool:
       raise Exception(f'"{value}" is not a bool')

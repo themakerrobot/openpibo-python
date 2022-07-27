@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>motion &mdash; openpibo 0.9.2.28 documentation</title>
+  <title>motion &mdash; openpibo 0.9.2.29 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/motion.html" />
@@ -160,7 +160,6 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.motion.</span></span><span class="sig-name descname"><span class="pre">Motion</span></span><a class="headerlink" href="#openpibo.motion.Motion" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
-<a class="reference internal" href="#openpibo.motion.Motion.set_profile" title="openpibo.motion.Motion.set_profile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_profile()</span></code></a>
 <a class="reference internal" href="#openpibo.motion.Motion.set_motor" title="openpibo.motion.Motion.set_motor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motor()</span></code></a>
 <a class="reference internal" href="#openpibo.motion.Motion.set_motors" title="openpibo.motion.Motion.set_motors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motors()</span></code></a>
 <a class="reference internal" href="#openpibo.motion.Motion.set_speed" title="openpibo.motion.Motion.set_speed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_speed()</span></code></a>
@@ -170,6 +169,7 @@
 <a class="reference internal" href="#openpibo.motion.Motion.get_motion" title="openpibo.motion.Motion.get_motion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_motion()</span></code></a>
 <a class="reference internal" href="#openpibo.motion.Motion.set_motion_raw" title="openpibo.motion.Motion.set_motion_raw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motion_raw()</span></code></a>
 <a class="reference internal" href="#openpibo.motion.Motion.set_motion" title="openpibo.motion.Motion.set_motion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motion()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_mymotion" title="openpibo.motion.Motion.set_mymotion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_mymotion()</span></code></a>
 <a class="reference internal" href="#openpibo.motion.Motion.stop" title="openpibo.motion.Motion.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p>
 <blockquote>
 <div><p>파이보의 움직임을 제어합니다.</p>
@@ -181,24 +181,6 @@
 </pre></div>
 </div>
 </div></blockquote>
-<dl class="py method">
-<dt class="sig sig-object py" id="openpibo.motion.Motion.set_profile">
-<span class="sig-name descname"><span class="pre">set_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_profile" title="정의 주소"></a></dt>
-<dd><p>만들어둔 모션 데이터베이스를 불러와 모션 프로파일에 저장합니다.</p>
-<p>모션은 <strong>openpibo-tools</strong> 의 <a class="reference external" href="https://themakerrobot.github.io/x-openpibo/build/html/tools/motion_creator.html">motion_creator</a> 를 이용해 생성할 수 있습니다.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 불러올 모션 데이터베이스의 경로가 /home/pi/mydata/motion.json 라면,</span>
-
-<span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_profile</span><span class="p">(</span><span class="s1">&#39;/home/pi/mydata/motion.json&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – 모터 프로파일 경로</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_motor">
 <span class="sig-name descname"><span class="pre">set_motor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motor" title="정의 주소"></a></dt>
@@ -417,8 +399,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.motion.Motion.set_motion">
 <span class="sig-name descname"><span class="pre">set_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motion" title="정의 주소"></a></dt>
-<dd><p>모션 프로파일의 동작을 실행하는 <code class="docutils literal notranslate"><span class="pre">set_motion_raw</span></code> 메소드를 실행합니다.
-<code class="docutils literal notranslate"><span class="pre">motion_db</span></code> 에서 <code class="docutils literal notranslate"><span class="pre">name</span></code> 에 해당하는 <strong>JSON</strong> 형식의 데이터를 불러와 <code class="docutils literal notranslate"><span class="pre">set_motion_raw</span></code> 메소드에게 넘겨줍니다.</p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">path</span></code> 파일에 저장된 모션 프로파일의 모션을 실행합니다.
+<code class="docutils literal notranslate"><span class="pre">path</span></code> 를 설정하지 않으면, 기본 모션 프로파일이 적용됩니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="s1">&#39;dance1&#39;</span><span class="p">)</span>
 <span class="c1">#pibo_motion.set_motion(&#39;dance1&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
@@ -432,6 +414,26 @@
 </p></li>
 <li><p><strong>cycle</strong> (<em>int</em>) – 동작 반복 횟수</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – 모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_mymotion">
+<span class="sig-name descname"><span class="pre">set_mymotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_mymotion" title="정의 주소"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">/home/pi/mymotion.json</span></code> 파일에 저장된 모션 프로파일의 모션을 실행합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_mymotion</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
+<p>모션 프로파일에 저장되어있는 동작의 이름입니다.</p>
+</p></li>
+<li><p><strong>cycle</strong> (<em>int</em>) – 동작 반복 횟수</p></li>
 </ul>
 </dd>
 </dl>
@@ -463,7 +465,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.28.</p>
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.29.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

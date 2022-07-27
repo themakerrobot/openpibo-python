@@ -74,7 +74,6 @@ import openpibo_models
 class Motion:
   """
 Functions:
-:meth:`~openpibo.motion.Motion.set_profile`
 :meth:`~openpibo.motion.Motion.set_motor`
 :meth:`~openpibo.motion.Motion.set_motors`
 :meth:`~openpibo.motion.Motion.set_speed`
@@ -84,6 +83,7 @@ Functions:
 :meth:`~openpibo.motion.Motion.get_motion`
 :meth:`~openpibo.motion.Motion.set_motion_raw`
 :meth:`~openpibo.motion.Motion.set_motion`
+:meth:`~openpibo.motion.Motion.set_mymotion`
 :meth:`~openpibo.motion.Motion.stop`
 
   파이보의 움직임을 제어합니다.
@@ -102,27 +102,6 @@ Functions:
     self.profile_path=openpibo_models.filepath("motion_db.json")
     #self.profile_path=current_path+"/data/models/motion_db.json"
     with open(self.profile_path, 'r') as f:
-      self.profile = json.load(f)
-
-  def set_profile(self, filename):
-    """
-    만들어둔 모션 데이터베이스를 불러와 모션 프로파일에 저장합니다.
-
-    모션은 **openpibo-tools** 의 `motion_creator <https://themakerrobot.github.io/x-openpibo/build/html/tools/motion_creator.html>`_ 를 이용해 생성할 수 있습니다.
-
-    example::
-
-      # 불러올 모션 데이터베이스의 경로가 /home/pi/mydata/motion.json 라면,
-
-      pibo_motion.set_profile('/home/pi/mydata/motion.json')
-
-    :param str filename: 모터 프로파일 경로
-    """
-
-    if not os.path.isfile(filename):
-      raise Exception(f'"{filename}" does not exist')
-
-    with open(filename, 'r') as f:
       self.profile = json.load(f)
 
   def set_motor(self, n, pos):
@@ -404,8 +383,8 @@ Functions:
 
   def set_motion(self, name, cycle=1, path=None):
     """
-    모션 프로파일의 동작을 실행하는 ``set_motion_raw`` 메소드를 실행합니다.
-    ``motion_db`` 에서 ``name`` 에 해당하는 **JSON** 형식의 데이터를 불러와 ``set_motion_raw`` 메소드에게 넘겨줍니다.
+    ``path`` 파일에 저장된 모션 프로파일의 모션을 실행합니다.
+    ``path`` 를 설정하지 않으면, 기본 모션 프로파일이 적용됩니다.
 
     example::
 
@@ -436,6 +415,25 @@ Functions:
     if result == None:
       raise Exception(f'"{name}" does not exist in motion profile')
     return self.set_motion_raw(result, cycle)
+
+  def set_mymotion(self, name, cycle=1):
+    """
+    ``/home/pi/mymotion.json`` 파일에 저장된 모션 프로파일의 모션을 실행합니다.
+
+    example::
+
+      pibo_motion.set_mymotion('test')
+
+    :param str name: 동작 이름
+
+      모션 프로파일에 저장되어있는 동작의 이름입니다.
+
+    :param int cycle:
+
+      동작 반복 횟수
+    """
+
+    return self.set_motion(name, cycle, path='/home/pi/mymotion.json')
 
   def stop(self):
     """

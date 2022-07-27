@@ -449,19 +449,6 @@ Functions:
     self.predictor = dlib.shape_predictor(openpibo_dlib_models.filepath("shape_predictor_5_face_landmarks.dat"))
     self.face_encoder = dlib.face_recognition_model_v1(openpibo_dlib_models.filepath("dlib_face_recognition_resnet_model_v1.dat"))
 
-  def init_db(self):
-    """
-    얼굴 데이터베이스를 초기화합니다.
-
-    초기화된 데이터베이스는 빈 이중 list ``[[], []]`` 입니다.
-
-    example::
-
-      pibo_face.init_db()
-    """
-
-    self.facedb = [[], []]
-
   def detect(self, img):
     """
     얼굴을 탐색합니다.
@@ -487,85 +474,6 @@ Functions:
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     return self.face_detector.detectMultiScale(gray, 1.1, 5) # [(x,y,w,h), ...]
-
-  def train_face(self, img, face, name):
-    """
-    얼굴을 학습하여 얼굴 데이터베이스에 저장합니다.
-
-    example::
-
-      img = pibo_camera.read()
-      faces = pibo_face.detect(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.train_face(img, face, 'honggildong')
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :param numpy.ndarray face: 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)
-
-    :param str name: 디텍팅한 얼굴에 붙일 이름
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv') 
-
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
-
-    x,y,w,h = face
-    rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    shape = self.predictor(gray, rect)
-    face_encoding = np.array(self.face_encoder.compute_face_descriptor(img, shape, 1))
-
-    self.facedb[0].append(name)
-    self.facedb[1].append(face_encoding)
-    #cv2.imwrite(self.data_path+"/{}.jpg".format(name), img[y+3:y+h-3, x+3:x+w-3]);
-
-  def recognize(self, img, face):
-    """
-    등록된 얼굴을 인식합니다.
-
-    example::
-
-      img = pibo_camera.read()
-      faces = pibo_face.detect(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.recognize(img, face)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
-
-    :returns: ``{"name": 이름, "score": 오차도}``
-
-      얼굴이 비슷할수록 오차도가 낮게 측정됩니다.
-
-      오차도가 0.4 이하일 때 동일인으로 판정합니다.
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv') 
-
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
-
-    if len(self.facedb[0]) < 1:
-      return False
-
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    data={"name":"Guest", "score":0}
-    (x,y,w,h) = face
-    rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
-    shape = self.predictor(gray, rect)
-    face_encoding = np.array(self.face_encoder.compute_face_descriptor(img, shape, 1))
-    matches = []
-    matches = list(np.linalg.norm(self.facedb[1] - face_encoding, axis=1))
-    data["score"] = round(min(matches), 2)
-
-    if min(matches) < self.threshold:
-      data["name"] = self.facedb[0][matches.index(min(matches))]
-    return data
 
   def get_ageGender(self, img, face):
     """
@@ -620,6 +528,120 @@ Functions:
     #cv2.putText(img, "{} {}".format(gender, age), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128,128), 2)
     return {"age":age, "gender":gender}
 
+  def init_db(self):
+    """
+    얼굴 데이터베이스를 초기화합니다.
+
+    초기화된 데이터베이스는 빈 이중 list ``[[], []]`` 입니다.
+
+    example::
+
+      pibo_face.init_db()
+    """
+
+    self.facedb = [[], []]
+
+  def train_face(self, img, face, name):
+    """
+    얼굴을 학습하여 얼굴 데이터베이스에 저장합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      faces = pibo_face.detect(img)
+      face = faces[0] # face는 faces중 하나
+      pibo_face.train_face(img, face, 'honggildong')
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param numpy.ndarray face: 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)
+
+    :param str name: 디텍팅한 얼굴에 붙일 이름
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv') 
+
+    if len(face) != 4:
+      raise Exception('"face" must be [x,y,w,h]')
+
+    x,y,w,h = face
+    rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    shape = self.predictor(gray, rect)
+    face_encoding = np.array(self.face_encoder.compute_face_descriptor(img, shape, 1))
+
+    self.facedb[0].append(name)
+    self.facedb[1].append(face_encoding)
+    #cv2.imwrite(self.data_path+"/{}.jpg".format(name), img[y+3:y+h-3, x+3:x+w-3]);
+
+  def delete_face(self, name):
+    """
+    등록된 얼굴을 삭제합니다.
+
+    example::
+
+      pibo_face.delete_face('honggildong')
+
+    :param str name: 삭제할 얼굴의 이름
+
+    :returns: ``True`` / ``False``
+    """
+
+    ret = name in self.facedb[0]
+    if ret == True:
+      idx = self.facedb[0].index(name)
+      #os.remove(self.data_path +"/" + name + ".jpg")
+      for item in self.facedb:
+        del item[idx]
+
+    return ret
+
+  def recognize(self, img, face):
+    """
+    등록된 얼굴을 인식합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      faces = pibo_face.detect(img)
+      face = faces[0] # face는 faces중 하나
+      pibo_face.recognize(img, face)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
+
+    :returns: ``{"name": 이름, "score": 오차도}``
+
+      얼굴이 비슷할수록 오차도가 낮게 측정됩니다.
+
+      오차도가 0.4 이하일 때 동일인으로 판정합니다.
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv') 
+
+    if len(face) != 4:
+      raise Exception('"face" must be [x,y,w,h]')
+
+    if len(self.facedb[0]) < 1:
+      return False
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    data={"name":"Guest", "score":0}
+    (x,y,w,h) = face
+    rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
+    shape = self.predictor(gray, rect)
+    face_encoding = np.array(self.face_encoder.compute_face_descriptor(img, shape, 1))
+    matches = []
+    matches = list(np.linalg.norm(self.facedb[1] - face_encoding, axis=1))
+    data["score"] = round(min(matches), 2)
+
+    if min(matches) < self.threshold:
+      data["name"] = self.facedb[0][matches.index(min(matches))]
+    return data
+
   def get_db(self):
     """
     사용 중인 얼굴 데이터베이스를 확인합니다.
@@ -659,28 +681,6 @@ Functions:
 
     with open(filename, "w+b") as f:
       pickle.dump(self.facedb, f)
-
-  def delete_face(self, name):
-    """
-    등록된 얼굴을 삭제합니다.
-
-    example::
-
-      pibo_face.delete_face('honggildong')
-
-    :param str name: 삭제할 얼굴의 이름
-
-    :returns: ``True`` / ``False``
-    """
-
-    ret = name in self.facedb[0]
-    if ret == True:
-      idx = self.facedb[0].index(name)
-      #os.remove(self.data_path +"/" + name + ".jpg")
-      for item in self.facedb:
-        del item[idx]
-
-    return ret
 
   def load_db(self, filename):
     """

@@ -16,7 +16,7 @@ import os
 from konlpy.tag import Mecab
 import requests
 from .modules.speech.google_trans_new import google_translator
-from . import kakaokey,napi_host,sapi_host
+from . import kakaokey, napi_host, sapi_host
 
 import openpibo_models
 #current_path = os.path.dirname(os.path.realpath(__file__))

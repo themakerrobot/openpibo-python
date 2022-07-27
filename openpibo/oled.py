@@ -6,14 +6,11 @@ Class:
 """
 
 from .modules.oled import ssd1306, board, busio, digitalio
-from PIL import Image, ImageDraw, ImageFont
-import PIL.ImageOps
-import cv2
-import numpy
-import os
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import cv2, os
+import numpy as np
 
 import openpibo_models
-#current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Oled:
   """
@@ -55,7 +52,6 @@ Functions:
     self.width = 128
     self.height = 64
     self.font_path = openpibo_models.filepath("KDL.ttf") # KoPub Dotum Light
-    #self.font_path = current_path+"/data/models/KDL.ttf" # KoPub Dotum Light
     self.font_size = 10
 
     spi = busio.SPI(11, 10, 9)
@@ -147,8 +143,7 @@ Functions:
     if len(points) != 2:
       raise Exception(f'len({points}) must be 2')
 
-    draw = ImageDraw.Draw(self.image)
-    draw.text(points, text, font=self.font, fill=255)
+    ImageDraw.Draw(self.image).text(points, text, font=self.font, fill=255)
 
   def draw_image(self, filename):
     """
@@ -187,7 +182,7 @@ Functions:
     :param numpy.ndarray img: 이미지 객체
     """
 
-    if type(img) is not numpy.ndarray:
+    if type(img) is not np.ndarray:
       raise Exception('"img" must be image data from opencv.')
 
     self.image = Image.fromarray(img).convert('1')
@@ -217,8 +212,7 @@ Functions:
     if not fill in [None, True, False]:
       raise Exception(f'"{fill}" must be (None|True|False)')
 
-    draw = ImageDraw.Draw(self.image)
-    draw.rectangle(points, outline=1, fill=fill)
+    ImageDraw.Draw(self.image).rectangle(points, outline=1, fill=fill)
 
   def draw_ellipse(self, points, fill=None):
     """
@@ -245,8 +239,7 @@ Functions:
     if not fill in [None, True, False]:
       raise Exception(f'"{fill}" must be (None|True|False)')
 
-    draw = ImageDraw.Draw(self.image)
-    draw.ellipse(points, outline=1, fill=fill)
+    ImageDraw.Draw(self.image).ellipse(points, outline=1, fill=fill)
 
   def draw_line(self, points):
     """
@@ -265,8 +258,7 @@ Functions:
     if len(points) != 4:
       raise Exception(f'len({points}) must be 4')
 
-    draw = ImageDraw.Draw(self.image)
-    draw.line(points, fill=True)
+    ImageDraw.Draw(self.image).line(points, fill=True)
 
   def invert(self):
     """
@@ -276,7 +268,6 @@ Functions:
 
       pibo_oled.invert()
     """
-    self.image = self.image.convert("L")
-    self.image = PIL.ImageOps.invert(self.image)
-    self.image = self.image.convert("1")
+
+    self.image = ImageOps.invert(self.image.convert("L")).convert("1")
 
