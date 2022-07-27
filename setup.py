@@ -6,7 +6,7 @@ with open('README.rst') as readme_file:
 
 requirements = [
         'opencv-contrib-python>=4.5.4.60',
-        'dlib>=19.19.0',
+        'dlib>=19.24.0',
         'pyzbar>=0.1.8',
         'beautifulsoup4>=4.6.0',
         'konlpy>=0.5.2',
@@ -18,8 +18,8 @@ requirements = [
         'requests>=2.28.1',
         'tflite-runtime>=2.5.0',
         'openpibo_models>=0.4.3',
-        'openpibo_face_models>=0.4.1',
-        'openpibo_detect_models>=0.4.2',
+        'openpibo_face_models>=0.4.2',
+        'openpibo_detect_models>=0.4.3',
         'openpibo_dlib_models>=0.4.1',
 ]
 
