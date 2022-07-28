@@ -779,6 +779,7 @@ Functions:
     class_ids = []
     scores = []
     boxes = []
+    boxes_nms = []    
     img_h, img_w = img.shape[:2]
     self.mobilenet.setInput(cv2.dnn.blobFromImage(img, size=(300,300), swapRB=True))
     output = self.mobilenet.forward()
