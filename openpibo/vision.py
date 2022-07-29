@@ -13,7 +13,8 @@ Class:
 import cv2
 import dlib
 import numpy as np
-import pytesseract
+from PIL import Image
+from tflite_runtime.interpreter import Interpreter
 from pyzbar import pyzbar
 import pickle,os,time
 import os
