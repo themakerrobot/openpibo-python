@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>motion &mdash; openpibo 0.9.2.37 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/motion.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../genindex.html" />
+    <link rel="search" title="검색" href="../search.html" />
+    <link rel="next" title="oled" href="oled.html" />
+    <link rel="prev" title="device" href="device.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> openpibo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notes/usage.html">사용법</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/structure.html">라이브러리 구조</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/pibo_device.html">PIBO Device</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device.html">device</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="edu_v1.html">edu_v1</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../files/audio.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/icon.html">Icon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/image.html">Image</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openpibo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>motion</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/libraries/motion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-openpibo.motion">
+<span id="motion"></span><h1>motion<a class="headerlink" href="#module-openpibo.motion" title="제목 주소"></a></h1>
+<p>PIBO의 움직임을 제어합니다.</p>
+<p>Class:
+<a class="reference internal" href="#openpibo.motion.Motion" title="openpibo.motion.Motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Motion</span></code></a></p>
+<dl class="field-list">
+<dt class="field-odd">모터 번호당 위치</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>0번 : ‘Right Foot’</p></li>
+<li><p>1번 : ‘Right Leg’</p></li>
+<li><p>2번 : ‘Right Arm’</p></li>
+<li><p>3번 : ‘Right Hand’</p></li>
+<li><p>4번 : ‘Head Pan’</p></li>
+<li><p>5번 : ‘Head Tilt’</p></li>
+<li><p>6번 : ‘Left Foot’</p></li>
+<li><p>7번 : ‘Left Leg’</p></li>
+<li><p>8번 : ‘Left Arm’</p></li>
+<li><p>9번 : ‘Left Hand’</p></li>
+</ul>
+<p><strong>(파이보 기준으로 Right, Left 입니다.)</strong></p>
+</dd>
+<dt class="field-even">모터 제한 각도</dt>
+<dd class="field-even"><p>각 모터가 회전할 수 있는 범위가 제한되어있습니다.</p>
+<ul class="simple">
+<li><p>0번 : ± 25˚</p></li>
+<li><p>1번 : ± 35˚</p></li>
+<li><p>2번 : ± 80˚</p></li>
+<li><p>3번 : ± 30˚</p></li>
+<li><p>4번 : ± 50˚</p></li>
+<li><p>5번 : ± 25˚</p></li>
+<li><p>6번 : ± 25˚</p></li>
+<li><p>7번 : ± 35˚</p></li>
+<li><p>8번 : ± 80˚</p></li>
+<li><p>9번 : ± 30˚</p></li>
+</ul>
+</dd>
+<dt class="field-odd">모션 데이터베이스</dt>
+<dd class="field-odd"><p>모션 데이터가 저장되어있는 JSON형태의 데이터입니다.</p>
+<p>모션 데이터베이스는 다음 형식을 갖추고 있습니다:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot;description of this motion&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;init_def&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;init&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span>
+    <span class="s2">&quot;pos&quot;</span><span class="p">:[</span>
+      <span class="p">{</span> <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">모션 프로파일</dt>
+<dd class="field-even"><p>모션 데이터베이스로부터 가져온 모션 데이터를 인스턴스에 저장한 것. <code class="docutils literal notranslate"><span class="pre">set_motion</span></code> 메소드로 프로파일 내의 동작을 수행할 수 있습니다.</p>
+<p>모션 프로파일은 각 인스턴스에 저장되며, 인스턴스 초기화 시 인스턴스 변수 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 에 기본 모션 데이터베이스가 저장됩니다.</p>
+<p>기본 모션 데이터베이스 내 모션 리스트:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stop</span><span class="p">,</span> <span class="n">stop_body</span><span class="p">,</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">lookup</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">left_half</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">right_half</span><span class="p">,</span>
+<span class="n">foward1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">backward1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">step1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">hifive</span><span class="p">,</span> <span class="n">cheer1</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">wave1</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">think1</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+<span class="n">wake_up1</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">hey1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">yes_h</span><span class="p">,</span> <span class="n">no_h</span><span class="p">,</span> <span class="n">breath1</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">breath_long</span><span class="p">,</span> <span class="n">head_h</span><span class="p">,</span>
+<span class="n">spin_h</span><span class="p">,</span> <span class="n">clapping1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">hankshaking</span><span class="p">,</span> <span class="n">bow</span><span class="p">,</span> <span class="n">greeting</span><span class="p">,</span> <span class="n">hand1</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="n">foot1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">speak1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">speak_n1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">speak_q</span><span class="p">,</span> <span class="n">speak_r1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">speak_l1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">welcome</span><span class="p">,</span>
+<span class="n">happy1</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">excite1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">boring1</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sad1</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">handup_r</span><span class="p">,</span> <span class="n">handup_l</span><span class="p">,</span> <span class="n">look_r</span><span class="p">,</span>
+<span class="n">look_l</span><span class="p">,</span> <span class="n">dance1</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">motion_test</span><span class="p">,</span> <span class="n">test1</span><span class="o">-</span><span class="mi">4</span>
+<span class="c1"># foward1-2는 forward1, forward2 두 종류가 있음을 의미합니다.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="openpibo.motion.Motion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.motion.</span></span><span class="sig-name descname"><span class="pre">Motion</span></span><a class="headerlink" href="#openpibo.motion.Motion" title="정의 주소"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Functions:
+<a class="reference internal" href="#openpibo.motion.Motion.set_motor" title="openpibo.motion.Motion.set_motor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motor()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_motors" title="openpibo.motion.Motion.set_motors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motors()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_speed" title="openpibo.motion.Motion.set_speed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_speed()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_speeds" title="openpibo.motion.Motion.set_speeds"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_speeds()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_acceleration" title="openpibo.motion.Motion.set_acceleration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_acceleration()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_accelerations" title="openpibo.motion.Motion.set_accelerations"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_accelerations()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.get_motion" title="openpibo.motion.Motion.get_motion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_motion()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_motion_raw" title="openpibo.motion.Motion.set_motion_raw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motion_raw()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_motion" title="openpibo.motion.Motion.set_motion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_motion()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.set_mymotion" title="openpibo.motion.Motion.set_mymotion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_mymotion()</span></code></a>
+<a class="reference internal" href="#openpibo.motion.Motion.stop" title="openpibo.motion.Motion.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a></p>
+<blockquote>
+<div><p>파이보의 움직임을 제어합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.motion</span> <span class="kn">import</span> <span class="n">Motion</span>
+
+<span class="n">pibo_motion</span> <span class="o">=</span> <span class="n">Motion</span><span class="p">()</span>
+<span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_motor">
+<span class="sig-name descname"><span class="pre">set_motor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motor" title="정의 주소"></a></dt>
+<dd><p>모터 1개를 특정 위치로 이동합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motor</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – <p>모터 번호</p>
+<p>0~9의 숫자가 들어갑니다.
+해당 번호의 위치는 상단의 <code class="docutils literal notranslate"><span class="pre">모터</span> <span class="pre">번호당</span> <span class="pre">위치</span></code> 를 참고해주세요.</p>
+</p></li>
+<li><p><strong>pos</strong> (<em>int</em>) – <p>모터 각도</p>
+<p>-80~80의 숫자가 들어갑니다.
+자세한 범위는 상단의 <code class="docutils literal notranslate"><span class="pre">모터</span> <span class="pre">제한</span> <span class="pre">각도</span></code> 를 참고해주세요.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_motors">
+<span class="sig-name descname"><span class="pre">set_motors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movetime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motors" title="정의 주소"></a></dt>
+<dd><p>전체 모터를 특정 위치로 이동합니다.</p>
+<p>movetime이 짧을수록 모션을 취하는 속도가 빨라집니다.
+만약 <code class="docutils literal notranslate"><span class="pre">movetime</span></code> 이 <code class="docutils literal notranslate"><span class="pre">None</span></code> 이라면, 속도는 이전 설정값으로 유지됩니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motors</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>list</em>) – 0-9번 모터 각도 배열</p></li>
+<li><p><strong>movetime</strong> (<em>int</em>) – <p>모터 이동 시간(ms)</p>
+<p>50ms 단위, 모터가 정해진 위치까지 이동하는 시간</p>
+<p>(모터 컨트롤러와의 overhead문제로 정밀하지는 않음)</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_speed">
+<span class="sig-name descname"><span class="pre">set_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_speed" title="정의 주소"></a></dt>
+<dd><p>모터 1개의 속도를 설정합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_speed</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – 모터 번호</p></li>
+<li><p><strong>speed</strong> (<em>int</em>) – <p>모터 속도</p>
+<p>0~255 사이 값입니다.
+숫자가 클수록 속도가 빨라집니다.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_speeds">
+<span class="sig-name descname"><span class="pre">set_speeds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speeds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_speeds" title="정의 주소"></a></dt>
+<dd><p>전체 모터의 속도를 설정합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_speeds</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>speeds</strong> (<em>list</em>) – <p>0-9번 모터 속도 배열</p>
+<p>배열 안의 각 가속도는 0~255 사이 정수입니다.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_acceleration">
+<span class="sig-name descname"><span class="pre">set_acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_acceleration" title="정의 주소"></a></dt>
+<dd><p>모터 1개의 가속도를 설정합니다.</p>
+<p>가속도를 설정하게 되면, 속도가 0에서 시작하여 설정된 속도까지 점점 빨라집니다.
+그리고 점점 느려지다가 종료 지점에서 속도가 0이 됩니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_acceleration</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – 모터 번호</p></li>
+<li><p><strong>accel</strong> (<em>int</em>) – <p>모터 속도</p>
+<p>0~255 사이 값입니다.
+숫자가 클수록 가속도가 커집니다.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_accelerations">
+<span class="sig-name descname"><span class="pre">set_accelerations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_accelerations" title="정의 주소"></a></dt>
+<dd><p>전체 모터의 가속도를 설정합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_accelerations</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>accels</strong> (<em>list</em>) – <p>0-9번 모터 가속도 배열</p>
+<p>배열 안의 각 가속도는 0~255 사이 정수입니다.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.get_motion">
+<span class="sig-name descname"><span class="pre">get_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.get_motion" title="정의 주소"></a></dt>
+<dd><p>모션 프로파일을 조회합니다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> 매개변수가 <code class="docutils literal notranslate"><span class="pre">None</span></code> 이면, 해당 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,
+<code class="docutils literal notranslate"><span class="pre">None</span></code> 이 아니면, 해당 이름의 모션에 대한 데이터를 출력합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">get_motion</span><span class="p">(</span><span class="s1">&#39;forward1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
+<p>profile에 저장되어있는 동작의 이름입니다.</p>
+</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – <p>사용할 모션 파일 경로</p>
+<p>모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">반환</dt>
+<dd class="field-even"><p><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">==</span> <span class="pre">None</span></code> 인 경우:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pibo_motion.get_motion()</span>
+<span class="c1"># pibo_motion.get_motion(path=&#39;/home/pi/mymotion.json&#39;)</span>
+
+<span class="p">[</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="s1">&#39;stop_body&#39;</span><span class="p">,</span> <span class="s1">&#39;sleep&#39;</span><span class="p">,</span> <span class="s1">&#39;lookup&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;left_half&#39;</span><span class="p">,</span>
+<span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;right_half&#39;</span><span class="p">,</span> <span class="s1">&#39;forward1&#39;</span><span class="p">,</span> <span class="s1">&#39;forward2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">!=</span> <span class="pre">None</span></code> 인 경우:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pibo_motion.get_motion(&#39;stop&#39;)</span>
+<span class="c1"># pibo_motion.get_motion(&#39;stop&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
+
+<span class="p">{</span>
+  <span class="s1">&#39;comment&#39;</span><span class="p">:</span> <span class="s1">&#39;stop&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;init_def&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_motion_raw">
+<span class="sig-name descname"><span class="pre">set_motion_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motion_raw" title="정의 주소"></a></dt>
+<dd><p>모션 프로파일의 동작을 실행합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motion_raw</span><span class="p">(</span>
+  <span class="p">{</span><span class="s1">&#39;init_def&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">25</span><span class="p">]},</span>
+  <span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exe</strong> (<em>str</em>) – <p>특정 동작을 위한 각 모터의 움직임이 기록된 데이터 입니다.</p>
+<p>다음과 같은 양식을 따릅니다:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;init_def&quot;</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="s2">&quot;init&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span>
+  <span class="s2">&quot;pos&quot;</span><span class="p">:[</span>
+    <span class="p">{</span><span class="s2">&quot;d&quot;</span><span class="p">:[</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">],</span><span class="s2">&quot;seq&quot;</span><span class="p">:</span><span class="mi">500</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;d&quot;</span><span class="p">:[</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">,</span><span class="mi">999</span><span class="p">],</span><span class="s2">&quot;seq&quot;</span><span class="p">:</span><span class="mi">2000</span><span class="p">},</span>
+    <span class="o">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_def</span></code> 는 초기동작의 유무입니다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init</span></code> 은 동작을 시작하기 전의 준비동작입니다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pos</span></code> 는 연속된 동작이 담긴 list 입니다.
+<strong>seq</strong> 시간(ms)에 <strong>d</strong> 의 동작이 완료됨을 의미합니다.</p></li>
+</ul>
+</p></li>
+<li><p><strong>cycle</strong> (<em>int</em>) – 동작을 몇 번 반복할지 결정합니다.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_motion">
+<span class="sig-name descname"><span class="pre">set_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_motion" title="정의 주소"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">path</span></code> 파일에 저장된 모션 프로파일의 모션을 실행합니다.
+<code class="docutils literal notranslate"><span class="pre">path</span></code> 를 설정하지 않으면, 기본 모션 프로파일이 적용됩니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="s1">&#39;dance1&#39;</span><span class="p">)</span>
+<span class="c1">#pibo_motion.set_motion(&#39;dance1&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
+<p>모션 프로파일에 저장되어있는 동작의 이름입니다.</p>
+</p></li>
+<li><p><strong>cycle</strong> (<em>int</em>) – 동작 반복 횟수</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – 모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.set_mymotion">
+<span class="sig-name descname"><span class="pre">set_mymotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.set_mymotion" title="정의 주소"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">/home/pi/mymotion.json</span></code> 파일에 저장된 모션 프로파일의 모션을 실행합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_motion</span><span class="o">.</span><span class="n">set_mymotion</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – <p>동작 이름</p>
+<p>모션 프로파일에 저장되어있는 동작의 이름입니다.</p>
+</p></li>
+<li><p><strong>cycle</strong> (<em>int</em>) – 동작 반복 횟수</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.motion.Motion.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.motion.Motion.stop" title="정의 주소"></a></dt>
+<dd><p>수행 중인 동작을 정지합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 동작을 수행 중일 때,</span>
+<span class="n">pibo_motion</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="device.html" class="btn btn-neutral float-left" title="device" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="oled.html" class="btn btn-neutral float-right" title="oled" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.37.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

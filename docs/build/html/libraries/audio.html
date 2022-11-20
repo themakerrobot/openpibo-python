@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>audio &mdash; openpibo 0.9.2.37 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/audio.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../genindex.html" />
+    <link rel="search" title="검색" href="../search.html" />
+    <link rel="next" title="collect" href="collect.html" />
+    <link rel="prev" title="PIBO Device" href="../notes/pibo_device.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> openpibo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notes/usage.html">사용법</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/structure.html">라이브러리 구조</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/pibo_device.html">PIBO Device</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="edu_v1.html">edu_v1</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Files</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../files/audio.html">Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/icon.html">Icon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files/image.html">Image</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openpibo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>audio</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/libraries/audio.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-openpibo.audio">
+<span id="audio"></span><h1>audio<a class="headerlink" href="#module-openpibo.audio" title="제목 주소"></a></h1>
+<p>mp3, wav 오디오 파일을 재생 및 정지합니다.</p>
+<p>Class:
+<a class="reference internal" href="#openpibo.audio.Audio" title="openpibo.audio.Audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Audio</span></code></a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="openpibo.audio.Audio">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.audio.</span></span><span class="sig-name descname"><span class="pre">Audio</span></span><a class="headerlink" href="#openpibo.audio.Audio" title="정의 주소"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Functions:
+<a class="reference internal" href="#openpibo.audio.Audio.play" title="openpibo.audio.Audio.play"><code class="xref py py-meth docutils literal notranslate"><span class="pre">play()</span></code></a>
+<a class="reference internal" href="#openpibo.audio.Audio.stop" title="openpibo.audio.Audio.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>
+<a class="reference internal" href="#openpibo.audio.Audio.mute" title="openpibo.audio.Audio.mute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mute()</span></code></a></p>
+<blockquote>
+<div><p>mp3, wav 오디오 파일을 재생 및 정지합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.audio</span> <span class="kn">import</span> <span class="n">Audio</span>
+
+<span class="n">pibo_audio</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
+<span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.audio.Audio.play">
+<span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.play" title="정의 주소"></a></dt>
+<dd><p>mp3 또는 wav 파일을 재생합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo-files/audio/test.mp3&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – <p>재생할 파일의 경로를 지정합니다.</p>
+<p>mp3와 wav 형식을 지원합니다.</p>
+</p></li>
+<li><p><strong>volume</strong> (<em>int</em>) – 음량을 설정합니다. (0~100)</p></li>
+<li><p><strong>background</strong> (<em>bool</em>) – <p>오디오 파일을 백그라운드에서 실행할지 여부를 결정합니다.</p>
+<p>백그라운드에서 오디오가 재생되면, 오디오 재생되는 도중에 다른 명령어를 사용할 수 있습니다.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: 백그라운드에서 재생합니다. (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: 백그라운드에서 재생하지 않습니다.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.audio.Audio.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.stop" title="정의 주소"></a></dt>
+<dd><p>백그라운드에서 재생중인 오디오를 정지합니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openpibo.audio.Audio.mute">
+<span class="sig-name descname"><span class="pre">mute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.audio.Audio.mute" title="정의 주소"></a></dt>
+<dd><p>파이보를 무음모드로 만듭니다.</p>
+<p>인스턴스(pibo_audio)를 생성하면, 기본적으로 무음모드는 해제되어있습니다.</p>
+<p>무음모드에서는 <code class="docutils literal notranslate"><span class="pre">play</span></code> 메소드를 사용해도 소리가 출력되지 않습니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_audio</span><span class="o">.</span><span class="n">mute</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: 무음모드 설정.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: 무음모드 해제.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../notes/pibo_device.html" class="btn btn-neutral float-left" title="PIBO Device" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="collect.html" class="btn btn-neutral float-right" title="collect" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.37.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
