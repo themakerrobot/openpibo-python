@@ -3,7 +3,7 @@ openpibo-python
 """
 import os, sys, json, shutil
 
-__version__ = '0.9.2.37'
+__version__ = '0.9.2.38'
 
 if os.path.isfile('/home/pi/config.json') == False:
   config = {"datapath":"/home/pi/openpibo-files", "napi_host":"", "sapi_host":"", "robotId":"", "eye":"0,0,0,0,0,0"}

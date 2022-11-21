@@ -1050,7 +1050,7 @@ Functions:
 
   def __init__(self):
     try:
-      from tensorflow1 import keras
+      from tensorflow import keras
     except Exception as ex:
       print("Warn:", ex)
 
