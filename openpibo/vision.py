@@ -15,6 +15,10 @@ import os,pickle
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont
 from tflite_runtime.interpreter import Interpreter
+from pyzbar import pyzbar
+from .modules.pose.movenet import Movenet
+from .modules.pose.utils import visualize
+from .modules.card.decode_card import get_card
 
 import openpibo_models
 import openpibo_face_models
@@ -886,11 +890,6 @@ Functions:
   """
 
   def __init__(self):
-    from pyzbar import pyzbar
-    from .modules.pose.movenet import Movenet
-    from .modules.pose.utils import visualize
-    from .modules.card.decode_card import get_card
-
     self.object_class = ['background', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                          'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 
                          'None', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 
