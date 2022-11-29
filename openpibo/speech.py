@@ -60,8 +60,8 @@ Functions:
     if type(string) is not str:
       raise Exception(f'"{string}" must be str type')
 
-    if type(voice) is not str or voice not in ('espeak', 'main', 'boy', 'girl', 'man1', 'woman1'):
-      raise Exception(f'"{voice}" must be (espeak|main|boy|girl|man1|woman1)')
+    #if type(voice) is not str or voice not in ('espeak', 'main', 'boy', 'girl', 'man1', 'woman1'):
+    #  raise Exception(f'"{voice}" must be (espeak|main|boy|girl|man1|woman1)')
 
     if type(lang) is not str or lang not in ('en', 'ko'):
       raise Exception(f'"{lang}" must be (en|ko)')
