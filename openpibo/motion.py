@@ -62,7 +62,6 @@ Class:
     look_l, dance1-5, motion_test, test1-4
     # foward1-2는 forward1, forward2 두 종류가 있음을 의미합니다.
 """
-
 import serial
 import time
 import os

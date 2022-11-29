@@ -7,9 +7,8 @@ Class:
 
 from .modules.oled import ssd1306, board, busio, digitalio
 from PIL import Image, ImageDraw, ImageFont, ImageOps
-import cv2, os
+import cv2,os
 import numpy as np
-
 import openpibo_models
 
 class Oled:

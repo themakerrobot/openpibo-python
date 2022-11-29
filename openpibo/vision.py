@@ -25,6 +25,11 @@ import openpibo_face_models
 import openpibo_dlib_models
 import openpibo_detect_models
 
+try:
+  from tensorflow import keras
+except Exception as ex:
+  print("Warn:", ex)
+
 class Camera:
   """
 Functions:
@@ -1048,11 +1053,6 @@ Functions:
   """
 
   def __init__(self):
-    try:
-      from tensorflow import keras
-    except Exception as ex:
-      print("Warn:", ex)
-
     self.mode = None
 
   def load_tflite(self, model_path, label_path):
