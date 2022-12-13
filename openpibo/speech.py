@@ -67,7 +67,7 @@ Functions:
       raise Exception(f'"{lang}" must be (en|ko)')
 
     if voice == "espeak":
-      os.system(f'esspeak {string} -w {filename}')
+      os.system(f'espeak {string} -w {filename}')
       return
 
     headers = {
