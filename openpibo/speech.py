@@ -70,10 +70,10 @@ Functions:
       os.system(f'espeak "{string}" -w {filename}')
       return
 
-    headers = {
-      'accept': '*/*',
-      'Content-Type': 'application/json',
-    }
+    #headers = {
+    #  'accept': '*/*',
+    #  'Content-Type': 'application/json',
+    #}
 
     data = {
       "text":string,
@@ -83,7 +83,8 @@ Functions:
       "type":"mp3"
     }
 
-    res = requests.post(self.SAPI_HOST + '/tts', headers=headers, json=data)
+    #res = requests.post(self.SAPI_HOST + '/tts', headers=headers, json=data)
+    res = requests.get(self.SAPI_HOST + '/tts', params=data)
     if res.status_code != 200:
       raise Exception(f'response error: {res}')
 
