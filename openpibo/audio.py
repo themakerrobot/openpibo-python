@@ -71,7 +71,7 @@ Functions:
 
     volume = int(volume/2) + 50 # 실제 50 - 100%로 설정, 0-50%는 소리가 너무 작음
     cmd = f'amixer -q -c Headphones sset Headphone {volume}%;'
-    cmd += f'play -q -V1 {filename}'
+    cmd += f'play -q -V1 "{filename}"'
 
     if background:
       Thread(target=play_thread, args=(cmd,), daemon=True).start()
