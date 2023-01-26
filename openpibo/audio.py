@@ -32,7 +32,7 @@ Functions:
   def __init__(self):
     os.system(f'gpio mode 7 out;gpio write 7 {HIGH}')
 
-  def play(self, filename, volume=80, background=True):
+  def play(self, filename, volume=80, background=True, volume2=1.0):
     """
     mp3 또는 wav 파일을 재생합니다.
 
@@ -52,6 +52,8 @@ Functions:
 
       * ``True``: 백그라운드에서 재생합니다. (default)
       * ``False``: 백그라운드에서 재생하지 않습니다.
+
+    :param float volume2: 개별 음량을 조절합니다. (비율)
     """
 
     def play_thread(args):
@@ -63,15 +65,18 @@ Functions:
     if not filename.split('.')[-1] in ['mp3', 'wav']:
       raise Exception(f'"{filename}" must be (mp3|wav)')
 
-    if type(volume) is not int and (volume < 0 or volume > 100):
+    if type(volume) is not int or (volume < 0 or volume > 100):
       raise Exception(f'"{volume}" is Number(0~100)')
 
-    if type(background) != bool:
+    if type(background) is not bool:
       raise Exception(f'"{background}" is not bool')
+
+    if type(volume2) is not float or (volume2 < 0.0 or volume2 > 3.0):
+      raise Exception(f'"{volume2}" is float(0.0~1.5)')
 
     volume = int(volume/2) + 50 # 실제 50 - 100%로 설정, 0-50%는 소리가 너무 작음
     cmd = f'amixer -q -c Headphones sset Headphone {volume}%;'
-    cmd += f'play -q -V1 "{filename}"'
+    cmd += f'play -q -V1 -v {volume2} "{filename}"'
 
     if background:
       Thread(target=play_thread, args=(cmd,), daemon=True).start()
@@ -115,6 +120,6 @@ if __name__ == "__main__":
   import time
   
   audio = Audio()
-  audio.play("/home/pi/openpibo-files/audio/opening.mp3")
+  audio.play("/home/pi/openpibo-files/audio/system/opening.mp3")
   time.sleep(3)
   audio.stop()
