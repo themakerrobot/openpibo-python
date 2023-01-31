@@ -457,14 +457,17 @@ Functions:
 class Face:
   """
 Functions:
-:meth:`~openpibo.vision.Face.init_db`
 :meth:`~openpibo.vision.Face.detect`
-:meth:`~openpibo.vision.Face.train_face`
-:meth:`~openpibo.vision.Face.recognize`
 :meth:`~openpibo.vision.Face.get_ageGender`
+:meth:`~openpibo.vision.Face.get_age`
+:meth:`~openpibo.vision.Face.get_gender`
+:meth:`~openpibo.vision.Face.get_emotion`
+:meth:`~openpibo.vision.Face.init_db`
+:meth:`~openpibo.vision.Face.train_face`
+:meth:`~openpibo.vision.Face.delete_face`
+:meth:`~openpibo.vision.Face.recognize`
 :meth:`~openpibo.vision.Face.get_db`
 :meth:`~openpibo.vision.Face.save_db`
-:meth:`~openpibo.vision.Face.delete_face`
 :meth:`~openpibo.vision.Face.load_db`
 
   얼굴과 관련된 다양한 기능을 수행하는 클래스입니다. 다음 기능을 수행할 수 있습니다.
@@ -879,6 +882,7 @@ class Detect:
 Functions:
 :meth:`~openpibo.vision.Detect.detect_object`
 :meth:`~openpibo.vision.Detect.detect_qr`
+:meth:`~openpibo.vision.Detect.detect_pose`
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
