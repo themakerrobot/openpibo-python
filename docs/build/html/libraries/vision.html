@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vision &mdash; openpibo 0.9.2.44 documentation</title>
+  <title>vision &mdash; openpibo 0.9.2.45 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/vision.html" />
@@ -410,14 +410,17 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Face</span></span><a class="headerlink" href="#openpibo.vision.Face" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
-<a class="reference internal" href="#openpibo.vision.Face.init_db" title="openpibo.vision.Face.init_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_db()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face.detect" title="openpibo.vision.Face.detect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Face.train_face" title="openpibo.vision.Face.train_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_face()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Face.recognize" title="openpibo.vision.Face.recognize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">recognize()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face.get_ageGender" title="openpibo.vision.Face.get_ageGender"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ageGender()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.get_age" title="openpibo.vision.Face.get_age"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_age()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.get_gender" title="openpibo.vision.Face.get_gender"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_gender()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.get_emotion" title="openpibo.vision.Face.get_emotion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_emotion()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.init_db" title="openpibo.vision.Face.init_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_db()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.train_face" title="openpibo.vision.Face.train_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_face()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.delete_face" title="openpibo.vision.Face.delete_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_face()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Face.recognize" title="openpibo.vision.Face.recognize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">recognize()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face.get_db" title="openpibo.vision.Face.get_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_db()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face.save_db" title="openpibo.vision.Face.save_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_db()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Face.delete_face" title="openpibo.vision.Face.delete_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_face()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face.load_db" title="openpibo.vision.Face.load_db"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_db()</span></code></a></p>
 <blockquote>
 <div><p>얼굴과 관련된 다양한 기능을 수행하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</p>
@@ -724,7 +727,8 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <a class="reference internal" href="#openpibo.vision.Detect.detect_object" title="openpibo.vision.Detect.detect_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_object()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Detect.detect_qr" title="openpibo.vision.Detect.detect_qr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_qr()</span></code></a></p>
+<a class="reference internal" href="#openpibo.vision.Detect.detect_qr" title="openpibo.vision.Detect.detect_qr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_qr()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Detect.detect_pose" title="openpibo.vision.Detect.detect_pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_pose()</span></code></a></p>
 <blockquote>
 <div><p>인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.</p>
 <ul class="simple">
@@ -974,7 +978,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.44.</p>
+    <p>&#169; Copyright 2022 THE MAKER. All rights reserved. openpibo-python-0.9.2.45.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
