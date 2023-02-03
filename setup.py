@@ -19,7 +19,7 @@ requirements = [
         'tflite-runtime>=2.5.0',
         'openpibo_models>=0.4.5',
         'openpibo_face_models>=0.4.3',
-        'openpibo_detect_models>=0.4.3',
+        'openpibo_detect_models>=0.4.4',
         'openpibo_dlib_models>=0.4.1',
 ]
 

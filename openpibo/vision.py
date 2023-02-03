@@ -883,12 +883,14 @@ Functions:
 :meth:`~openpibo.vision.Detect.detect_object`
 :meth:`~openpibo.vision.Detect.detect_qr`
 :meth:`~openpibo.vision.Detect.detect_pose`
+:meth:`~openpibo.vision.Detect.classify_image`
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
   * 90개 class 안에서의 객체 인식 (MobileNet V2)
   * QR/바코드 인식 (pyzbar)
   * Pose 인식
+  * 이미지 분류
 
   example::
 
@@ -918,6 +920,13 @@ Functions:
                         openpibo_detect_models.filepath("ssd_mobilenet_v2_coco_2018_03_29.pbtxt")
                     )
     self.pose_detector = Movenet(openpibo_detect_models.filepath("movenet_lightning.tflite"))
+
+    with open(openpibo_detect_models.filepath("efficientnet_labels.txt"), 'r') as f:
+      self.cls_class_names = [item.strip() for item in f.readlines()]
+    self.cls_interpreter = Interpreter(model_path=openpibo_detect_models.filepath("efficientnet_lite3.tflite"))
+    self.cls_interpreter.allocate_tensors()
+    self.cls_input_details = self.cls_interpreter.get_input_details()
+    self.cls_output_details = self.cls_interpreter.get_output_details()
 
   def detect_object(self, img):
     """
@@ -1030,6 +1039,42 @@ Functions:
     list_persons = [self.pose_detector.detect(img)]
     img = visualize(img, list_persons)
     return {"data":list_persons, "img":img}
+
+  def classify_image(self, img, k=5):
+    """
+    이미지를 분류합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_detect.classify_image(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param int k: 가져올 결과 항목 개수
+
+    :returns: ``top_k 리스트 [{"score":정확도, "name":이름}, ...]``
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"face" must be image data from opencv')
+
+    height = self.cls_input_details[0]['shape'][1]
+    width = self.cls_input_details[0]['shape'][2]
+    img = cv2.resize(img, (height, width))
+    image = Image.fromarray(img)
+
+    input_data = np.expand_dims(image, axis=0).reshape(-1, height, width, 3)
+
+    # feed data to input tensor and run the interpreter
+    self.cls_interpreter.set_tensor(self.cls_input_details[0]['index'], input_data)
+    self.cls_interpreter.invoke()
+
+    preds = self.cls_interpreter.get_tensor(self.cls_output_details[0]['index'])
+    preds = np.squeeze(preds)
+    top_k = preds.argsort()[-k:][::-1]
+
+    return [{"score":int(100*float(preds[i]/255.0)), "name":self.cls_class_names[i]} for i in top_k]
 
 class TeachableMachine:
   """
