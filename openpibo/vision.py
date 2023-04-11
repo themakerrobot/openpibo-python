@@ -10,7 +10,7 @@ Class:
 :obj:`~openpibo.vision.TeachableMachine`
 """
 
-import cv2,dlib
+import cv2,dlib,requests
 import os,pickle
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont
@@ -29,6 +29,9 @@ try:
   from tensorflow import keras
 except Exception as ex:
   print("Warn:", ex)
+
+def vision_api(mode, imagepath, params={}):
+  return requests.post(f"https://o-vapi.circul.us/{mode}", files={'uploadFile':open(imagepath, 'rb')}, params=params).json()
 
 class Camera:
   """

@@ -86,6 +86,33 @@ Functions:
 
         return _chapters
 
+    def search_for_block(self, search_text: str):
+        """
+        위키백과에서 ``search_text`` 를 검색합니다. (block 전용)
+
+        example::
+
+            result = pibo_wiki.search_for_block('강아지')
+
+        :param str search_text: 위키백과에서의 검색어
+
+        :returns: search 함수의 반환 값의 content만 추출한 리스트를 반환합니다.
+
+            대부분의 경우 '0'번 항목에 개요를 표시하고, 검색된 내용이 없을 경우 None을 반환합니다.
+
+            example::
+
+                [
+                    "한국어 ‘강아지’는 ‘개’에 어린 짐승을 뜻하는 ‘아지’가 붙은 말이다...",
+                    ...
+                ]
+                or
+                None
+        """
+
+        res = self.search(search_text)
+        return [v['content'][0].strip().replace('\n', ' ') for _,v in res.items() if len(v['content']) > 0 and v['content'][0] != '\n']
+
 
 class Weather:
     """
@@ -202,6 +229,43 @@ Functions:
 
         return {'forecast':_forecast, 'today':_today, 'tomorrow':_tomorrow, 'after_tomorrow':_after_tomorrow}
 
+    def search_for_block(self, search_region:str='전국', search_type: str='forecast'):
+        """
+        해당 지역(```search_region```)의 날씨 정보(종합예보, 오늘/내일/모레 날씨)를 가져옵니다.
+
+        example::
+
+            result = pibo_weather.search('서울')
+
+        :param str search_region: 검색 가능한 지역 (default: 전국)
+
+            검색할 수 있는 지역은 다음과 같습니다::
+
+                '전국', '서울', '인천', '경기', '부산', '울산', '경남', '대구', '경북',
+                '광주', '전남', '전북', '대전', '세종', '충남', '충북', '강원', '제주'
+
+        :param str search_type: 검색할 내용 (default: forecast)
+
+            검색할 내용은 다음과 같습니다::
+
+                'forecast', 'today', 'tomorrow', 'after_tomorrow'
+
+        :returns: 종합예보 혹은 오늘/내일/모레의 날씨, 최저기온, 최고기온 리스트를 반환합니다.
+
+            example::
+
+                '내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼' # forecast
+                or
+                ['전국 대체로 흐림', 15.3, 27.6] # [weather, minimum_temp, highst_temp]  in search_type(today|tomorrow|after_tomorrow)
+        """
+
+        res = self.search(search_region)
+
+        if search_type == 'forecast':
+            return res['forecast'].strip().replace('\n', ' ')
+        else:
+            return [res[search_type]['weather'].strip().replace('\n', ' '), res[search_type]['minimum_temp'].split(' ~ ')[0], res[search_type]['highst_temp'].split(' ~ ')[1]]
+
 class News:
     """
 Functions:
@@ -236,7 +300,7 @@ Functions:
     뉴스 정보를 검색할 수 있는 주제입니다.
     """
 
-    def search(self, search_topic='뉴스랭킹'):
+    def search(self, search_topic:str = '뉴스랭킹'):
         """
         해당 주제(```search_topic```)에 맞는 뉴스를 가져옵니다.
 
@@ -244,7 +308,7 @@ Functions:
 
             result = pibo_news.search('속보')
 
-        :param str topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
+        :param str search_topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
 
             검색할 수 있는 주제는 다음과 같습니다::
 
@@ -265,6 +329,7 @@ Functions:
                 ]
                 or None
         """
+
         topic = News.topic_list.get(search_topic)
         if topic == None:
           raise Exception(f'"{search_topic}" not support')
@@ -282,6 +347,41 @@ Functions:
             'pubDate':item.find('pubDate').text
           })
         return _articles
+
+    def search_for_block(self, search_topic:str = '뉴스랭킹', search_type:str = "title"):
+        """
+        해당 주제(```search_topic```)에 맞는 뉴스를 가져옵니다.
+
+        example::
+
+            result = pibo_news.search('속보')
+
+        :param str search_topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
+
+            검색할 수 있는 주제는 다음과 같습니다::
+
+                '속보', '정치', '경제', '사회', '국제', '문화', '연예', '스포츠',
+                '풀영상', '뉴스랭킹', '뉴스룸', '아침&', '썰전 라이브', '정치부회의'
+
+        :param str search_type: 검색할 내용 (default: title)
+
+            검색할 내용은 다음과 같습니다::
+
+                'title', 'link', 'description'
+
+        :returns: title, link, description 중 선택한 요소의 리스트
+
+            example::
+
+                [
+                    '또 소방차 막은 불법주차, 이번엔 가차없이 밀어버렸다',
+                    ...
+                ]
+                or None
+        """
+
+        res = self.search(search_topic)
+        return [v[search_type] for v in res if '다시보기' not in v[search_type]]
 
 
 if __name__ == "__main__":
