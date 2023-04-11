@@ -91,7 +91,7 @@ Functions:
     with open(filename, 'wb') as f:
       f.write(res.content)
 
-  def stt(self, filename="stream.wav", timeout=5):
+  def stt(self, filename="stream.wav", timeout=5, verbose=True):
     """
     STT(Speech to Text)
 
@@ -110,7 +110,10 @@ Functions:
     :returns: 인식된 문자열
     """
 
-    os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {filename};rm stream.raw')
+    if verbose == True:
+      os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {filename};rm stream.raw')
+    else:
+      os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q stream.raw;sox stream.raw -q -c 1 -b 16 {filename};rm stream.raw')
 
     res = requests.post(self.SAPI_HOST + '/stt', files={'file':open(filename, 'rb')})
 
