@@ -17,6 +17,7 @@ Functions:
 :meth:`~openpibo.audio.Audio.play`
 :meth:`~openpibo.audio.Audio.stop`
 :meth:`~openpibo.audio.Audio.mute`
+:meth:`~openpibo.audio.Audio.record`
 
   mp3, wav 오디오 파일을 재생 및 정지합니다.
 
@@ -115,6 +116,24 @@ Functions:
 
     opt = LOW if value else HIGH
     os.system(f'gpio write 7 {opt}')
+
+  def record(self, filename, timeout=5, verbose=True):
+    """
+    마이크로 소리를 녹음합니다.
+
+    example::
+
+      pibo_audio.record('/home/pi/test.wav', 5)
+
+    :param str filename: 녹음한 파일이 저장 될 경로. ``wav`` 확장자를 사용합니다.
+
+    :param int timeout: 녹음 시간(s)
+    """
+
+    if verbose == True:
+      os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 {filename};rm stream.raw')
+    else:
+      os.system(f'arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d {timeout} -t wav -q stream.raw;sox stream.raw -q -c 1 -b 16 {filename};rm stream.raw')
 
 if __name__ == "__main__":
   import time
