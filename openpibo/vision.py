@@ -11,7 +11,7 @@ Class:
 """
 
 import cv2,dlib,requests
-import os,pickle
+import os,pickle,math
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont
 from tflite_runtime.interpreter import Interpreter
@@ -38,6 +38,7 @@ class Camera:
 Functions:
 :meth:`~openpibo.vision.Camera.imread`
 :meth:`~openpibo.vision.Camera.read`
+:meth:`~openpibo.vision.Camera.imshow_to_ide`
 :meth:`~openpibo.vision.Camera.resize`
 :meth:`~openpibo.vision.Camera.imwrite`
 :meth:`~openpibo.vision.Camera.rectangle`
@@ -125,6 +126,23 @@ Functions:
     self.cap.grab()
     self.cap.grab()
     return self.cap.read()[1]
+
+  def imshow_to_ide(self, filename):
+    """
+    이미지 파일을 Web IDE에 출력합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_camera.imshow_to_ide('/home/pi/image.jpg')
+
+    :param str filename: 저장할 파일 경로
+
+      확장자는 jpg 또는 png를 사용할 수 있습니다.
+    """
+
+    # curl -X 'POST' -so /dev/null 'http://0.0.0.0:50000/show' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'data=@{filename};type=image/png'
+    requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', open(filename, 'rb'), 'image/png')})
 
   def resize (self, img, w, h):
     """
@@ -886,6 +904,7 @@ Functions:
 :meth:`~openpibo.vision.Detect.detect_object`
 :meth:`~openpibo.vision.Detect.detect_qr`
 :meth:`~openpibo.vision.Detect.detect_pose`
+:meth:`~openpibo.vision.Detect.analyze_pose`
 :meth:`~openpibo.vision.Detect.classify_image`
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
@@ -1042,6 +1061,40 @@ Functions:
     list_persons = [self.pose_detector.detect(img)]
     img = visualize(img, list_persons)
     return {"data":list_persons, "img":img}
+
+  def analyze_pose(self, data):
+    """
+    detect_pose 함수의 결과 값을 분석합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      result = pibo_detect.detect_pose(img)
+      pibo_detect.analyze_pose(result)
+
+    :param dict data: 이미지 객체
+
+    :returns: ``인식한 포즈 리스트 ['left_hand_up', 'right_hand_up', 'clap']``
+    """
+
+    def distance(p1, p2):
+      return math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2)
+
+    NOSE, LEFT_EYE, RIGHT_EYE, LEFT_EAR, RIGHT_EAR = 0,1,2,3,4
+    LEFT_SHOULDER, RIGHT_SHOULDER, LEFT_ELBOW, RIGHT_ELBOW, LEFT_WRIST, RIGHT_WRIST = 5,6,7,8,9,10
+    LEFT_HIP, RIGHT_HIP, LEFT_KNEE, RIGHT_KNEE, LEFT_ANKLE, RIGHT_ANKLE = 11,12,13,14,15,16
+
+    res = []
+    data = data['data'][0].keypoints
+
+    if data[LEFT_WRIST].coordinate.y < data[LEFT_ELBOW].coordinate.y:
+      res.append("left_hand_up")
+    if data[RIGHT_WRIST].coordinate.y < data[RIGHT_ELBOW].coordinate.y:
+      res.append("right_hand_up")
+    if distance(data[LEFT_WRIST].coordinate, data[RIGHT_WRIST].coordinate) <  75:
+      res.append("clap")
+
+    return res
 
   def classify_image(self, img, k=5):
     """
