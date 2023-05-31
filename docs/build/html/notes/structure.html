@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>라이브러리 구조 &mdash; openpibo 0.9.2.48 documentation</title>
+  <title>라이브러리 구조 &mdash; openpibo 0.9.2.50 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/notes/structure.html" />
@@ -198,14 +198,14 @@ openpibo_models 패키지는 openpibo 패키지를 사용하기 위한 폰트/�
 <li><p><strong>sample_db.json</strong></p>
 <p>모션 데이터베이스의 양식이 저장되어있습니다.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">   </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot;description of this motion&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;init_def&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;init&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">-70</span><span class="p">,</span><span class="mi">-25</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span>
-<span class="w">      </span><span class="nt">&quot;pos&quot;</span><span class="p">:[</span>
-<span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;seq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
-<span class="w">      </span><span class="p">]</span>
-<span class="w">   </span><span class="p">}</span>
+   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot;description of this motion&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;init_def&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;init&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">-70</span><span class="p">,</span><span class="mi">-25</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span>
+      <span class="nt">&quot;pos&quot;</span><span class="p">:[</span>
+         <span class="p">{</span> <span class="nt">&quot;d&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">,</span> <span class="nt">&quot;seq&quot;</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span>
+      <span class="p">]</span>
+   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -252,7 +252,7 @@ openpibo_models 패키지는 openpibo 패키지를 사용하기 위한 폰트/�
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023 THE MAKER. All rights reserved. openpibo-python-0.9.2.48.</p>
+    <p>&#169; Copyright 2023 THE MAKER. All rights reserved. openpibo-python-0.9.2.50.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

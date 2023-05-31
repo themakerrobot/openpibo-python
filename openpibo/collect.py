@@ -111,8 +111,7 @@ Functions:
         """
 
         res = self.search(search_text)
-        return [v['content'][0].strip().replace('\n', ' ') for _,v in res.items() if len(v['content']) > 0 and v['content'][0] != '\n']
-
+        return [item.strip().replace('\n', '') for _, v in res.items() if len(v['content']) > 0 for item in v['content'] if item != '\n']
 
 class Weather:
     """
