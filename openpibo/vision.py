@@ -352,7 +352,7 @@ Functions:
 
   def cartoonize(self, img):
     """
-    만화 이미지로 변환합니다.
+    만화 이미지로 변환합니다. (high speed)
 
     example::
 
@@ -403,7 +403,7 @@ Functions:
 
   def stylization(self, img, sigma_s=100, sigma_r=0.5):
     """
-    만화 이미지로 변환합니다. (opencv api)
+    만화 이미지로 변환합니다. (opencv api) low speed
 
     example::
 
