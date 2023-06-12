@@ -46,6 +46,9 @@ Functions:
 :meth:`~openpibo.vision.Camera.putTextPIL`
 :meth:`~openpibo.vision.Camera.putText`
 :meth:`~openpibo.vision.Camera.cartoonize`
+:meth:`~openpibo.vision.Camera.stylization`
+:meth:`~openpibo.vision.Camera.detailEnhance`
+:meth:`~openpibo.vision.Camera.pencilSketch`
 :meth:`~openpibo.vision.Camera.convert_img`
 :meth:`~openpibo.vision.Camera.rotate`
 :meth:`~openpibo.vision.Camera.bgrhls`
@@ -349,7 +352,7 @@ Functions:
 
   def cartoonize(self, img):
     """
-    만화같은 이미지로 변경합니다.
+    만화 이미지로 변환합니다.
 
     example::
 
@@ -397,6 +400,77 @@ Functions:
     # with color image
     img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2RGB)
     return cv2.bitwise_and(img_color, img_edge)
+
+  def stylization(self, img, sigma_s=100, sigma_r=0.5):
+    """
+    만화 이미지로 변환합니다. (opencv api)
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_camera.stylization(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)
+
+    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)
+
+    :returns: 변환 후의 이미지 객체
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    return cv2.stylization(img, sigma_s=sigma_s, sigma_r=sigma_r)
+
+  def detailEnhance(self, img, sigma_s=100, sigma_r=0.05):
+    """
+    만화 이미지로 변환합니다. (opencv api)
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_camera.stylization(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)
+
+    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)
+
+    :returns: 변환 후의 이미지 객체
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    return cv2.detailEnhance(img, sigma_s=sigma_s, sigma_r=sigma_r)
+
+  def pencilSketch(self, img, sigma_s=100, sigma_r=0.2, shade_factor=0.018):
+    """
+    스케치 이미지로 변환합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_camera.sketchize(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)
+
+    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)
+
+    :param float shade_factor: 이미지의 밝기 정도 (0-0.1)
+
+    :returns: 변환 후의 이미지 객체(grayscale), 변환 후의 이미지 객체(bgr)
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    return cv2.pencilSketch(img, sigma_s=sigma_s, sigma_r=sigma_r, shade_factor=shade_factor)
 
   def convert_img(self, img, w=128, h=64):
     """
