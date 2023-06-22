@@ -276,7 +276,7 @@ Functions:
   Device가 사용하는 ``code_list`` 정보입니다.
   """
 
-  def __init__(self, api_mode=True, port=51000):
+  def __init__(self, api_mode=True, port=50002):
     """
     Device 클래스를 초기화합니다.
     """
