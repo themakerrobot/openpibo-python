@@ -230,6 +230,8 @@ Class:
 import serial
 import time
 from threading import Lock
+import requests
+import urllib
 
 class Device:
   """
@@ -274,13 +276,17 @@ Functions:
   Device가 사용하는 ``code_list`` 정보입니다.
   """
 
-  def __init__(self):
+  def __init__(self, api_mode=True, port=51000):
     """
     Device 클래스를 초기화합니다.
     """
 
-    self.dev = serial.Serial(port="/dev/ttyS0", baudrate=9600)
-    self.lock = Lock()
+    if api_mode == False:
+      self.dev = serial.Serial(port="/dev/ttyS0", baudrate=9600)
+      self.lock = Lock()
+
+    self.api_mode = api_mode
+    self.port = port
     self.code_val_list = [i for i in Device.code_list.values()]
 
   def send_cmd(self, code, data:str=""):
@@ -357,9 +363,11 @@ Functions:
 
     :returns: Device로부터 받은 응답
     """
-
-    #if self.lock.locked() == True:
+    # if self.lock.locked() == True:
     #  return False
+
+    if self.api_mode == True: # RESTAPI 모드
+      return requests.get(f"http://0.0.0.0:{self.port}/device/{urllib.parse.quote(raw)}").json()
 
     self.lock.acquire()
     self.dev.write(raw.encode('utf-8'))
