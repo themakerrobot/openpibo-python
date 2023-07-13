@@ -18,6 +18,12 @@ from .modules.speech.mtranslate import translate
 import openpibo_models
 #current_path = os.path.dirname(os.path.realpath(__file__))
 
+def speech_api(mode, type, params={}, json_data={}):
+  if type == "GET":
+    return requests.get(f"{napi_host}/{mode}", params=params)
+  elif type == "POST":
+    return requests.post(f"{napi_host}/{mode}", params=params, json=json_data)
+
 class Speech:
   """
 Functions:
