@@ -56,7 +56,7 @@ Functions:
 
     :param str string: 변환할 문장구
 
-    :param str voice: 목소리 타입(main | boy | girl | man1 | woman1)
+    :param str voice: 목소리 타입(espeak | gtts | main | boy | girl | man1 | woman1)
 
     :param str lang: 사용할 언어(ko | en)
 
@@ -75,22 +75,24 @@ Functions:
     if voice == "espeak":
       os.system(f'espeak "{string}" -w {filename}')
       return
+    elif voice == "gtts":
+      data = {
+        "client":"tw-ob",
+        "q":string,
+        "tl":lang
+      }
+      url = 'https://translate.google.com/translate_tts'
+    else:
+      data = {
+        "text":string,
+        "hash":"",
+        "voice":voice, # ['main', 'boy', 'girl', 'man1', 'woman1']
+        "lang":lang, # ['ko', 'en']
+        "type":"mp3"
+      }
+      url = self.SAPI_HOST + '/tts'
 
-    #headers = {
-    #  'accept': '*/*',
-    #  'Content-Type': 'application/json',
-    #}
-
-    data = {
-      "text":string,
-      "hash":"",
-      "voice":voice, # ['main', 'boy', 'girl', 'man1', 'woman1']
-      "lang":lang, # ['ko', 'en']
-      "type":"mp3"
-    }
-
-    #res = requests.post(self.SAPI_HOST + '/tts', headers=headers, json=data)
-    res = requests.get(self.SAPI_HOST + '/tts', params=data)
+    res = requests.get(url, params=data)
     if res.status_code != 200:
       raise Exception(f'response error: {res}')
 
