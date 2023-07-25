@@ -75,7 +75,7 @@ Functions:
     if voice == "espeak":
       os.system(f'espeak "{string}" -w {filename}')
       return
-    elif voice == "gtts":
+    elif voice in ["gtts", "e_gtts"]:
       data = {
         "client":"tw-ob",
         "q":string,
@@ -255,11 +255,11 @@ Functions:
     exmaple::
 
       pibo_dialog.ngram('아버지가 방에 들어가셨다.')
-      # ['아버', '버지', '지가', '가 ', ' 방', '방에', '에 ', ' 들', '들어', '어가', '가셨', '셨다', '다.']
+      # ['아버지가', '방에', '들어가셨다.']
 
-    :param str string: 분석할 문장 (한글)
+    :param str string: 분석할 문장
     
-    :param int n: N-gram에 사용할 n 값 (한글) default:2
+    :param int n: N-gram에 사용할 n 값 default:2
 
     :returns: 문장에서 추출한 N-gram 값
 
@@ -278,17 +278,18 @@ Functions:
       pibo_dialog.diff_ngram('아버지가 방에 들어가셨다.' '어머니가 방에 들어가셨다.')
       # 0.6923076923076923
 
-    :param str string: 비교할 문장A (한글)
+    :param str string: 비교할 문장A
     
-    :param str string: 비교할 문장B (한글)
+    :param str string: 비교할 문장B
     
-    :param int n: N-gram에 사용할 n 값 (한글) default:2
+    :param int n: N-gram에 사용할 n 값 default:2
 
     :returns: N-gram 방식으로 비교한 유사도
 
       ``float`` 타입 입니다.
     """
 
+    n = min(len(string_a), len(string_b), n)
     a = self.ngram(string_a, n)
     b = self.ngram(string_b, n)
 
@@ -309,9 +310,9 @@ Functions:
 
       pibo_dialog.get_dialog('나랑 같이 놀자')
 
-    :param str string: 질문하는 문장 (한글)
+    :param str string: 질문하는 문장
     
-    :param int n: N-gram에 사용할 n 값 (한글) default:2
+    :param int n: N-gram에 사용할 n 값 default:2
 
     :returns: 답변하는 문장 (한글)
 
