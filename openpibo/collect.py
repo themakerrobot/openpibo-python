@@ -255,7 +255,8 @@ Functions:
 
                 '내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼' # forecast
                 or
-                ['전국 대체로 흐림', 15.3, 27.6] # [weather, minimum_temp, highst_temp]  in search_type(today|tomorrow|after_tomorrow)
+                ['전국 대체로 흐림', 15.3, 27.6]
+                # [weather, minimum_temp, highst_temp]  in search_type(today|tomorrow|after_tomorrow)
         """
 
         res = self.search(search_region)
