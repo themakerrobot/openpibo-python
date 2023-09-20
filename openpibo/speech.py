@@ -366,7 +366,7 @@ Functions:
 
     :returns: 답변하는 문장 (한글)
     """
-    res = requests.get(self.NAPI_HOST + '/v2/dialog', params={'input':string})
+    res = requests.get(self.NAPI_HOST + '/dialog', params={'input':string})
 
     if res.status_code != 200:
       raise Exception(f'response error: {res}')
