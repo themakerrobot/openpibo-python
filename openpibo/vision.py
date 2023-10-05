@@ -31,7 +31,7 @@ except Exception as ex:
   print("Warn:", ex)
 
 def vision_api(mode, imagepath, params={}):
-  return requests.post(f"https://o-vapi.circul.us/{mode}", files={'uploadFile':open(imagepath, 'rb')}, params=params).json()
+  return requests.post(f"https://s-vapi.circul.us/{mode}", files={'uploadFile':open(imagepath, 'rb')}, params=params)
 
 class Camera:
   """

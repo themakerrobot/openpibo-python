@@ -18,11 +18,11 @@ from .modules.speech.mtranslate import translate
 import openpibo_models
 #current_path = os.path.dirname(os.path.realpath(__file__))
 
-def speech_api(mode, type, params={}, json_data={}):
-  if type == "GET":
-    return requests.get(f"{napi_host}/{mode}", params=params)
-  elif type == "POST":
-    return requests.post(f"{napi_host}/{mode}", params=params, json=json_data)
+def speech_api(server, mode, _type, params={}, json_data={}, files={}):
+  if _type == "GET":
+    return requests.get(f"{server}/{mode}", params=params)
+  elif _type == "POST":
+    return requests.post(f"{server}/{mode}", params=params, json=json_data, files=files)
 
 class Speech:
   """
@@ -366,7 +366,7 @@ Functions:
 
     :returns: 답변하는 문장 (한글)
     """
-    res = requests.get(self.NAPI_HOST + '/dialog', params={'input':string})
+    res = requests.get(self.NAPI_HOST + '/v2/dialog', params={'input':string})
 
     if res.status_code != 200:
       raise Exception(f'response error: {res}')
