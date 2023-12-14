@@ -30,8 +30,43 @@ try:
 except Exception as ex:
   print("Warn:", ex)
 
-def vision_api(mode, imagepath, params={}):
-  return requests.post(f"https://o-vapi.circul.us/{mode}", files={'uploadFile':open(imagepath, 'rb')}, params=params).json()
+def vision_api(mode, image, params={}):
+  """
+  인공지능 비전 API를 호출합니다.
+
+  example::
+    from openpibo.vision import vision_api
+    from openpibo.vision import Camera
+
+    pibo_camera = Camera()
+
+    res = vision_api('caption/caption', pibo_camera.read(), {})
+    res = vision_api('caption/caption', "test.jpg", {})
+
+  :param str mode: 호출할 비전 API
+
+  :param str/Mat image: 표시할 이미지 파일 경로 / 데이터(cv2)
+
+  :returns: ``Json`` 타입 결과의 데이터
+
+    example::
+    { 'type': 'caption', 'result': 'ok', 
+      'data': {
+        caption:  "사람에게 로봇을 과시하는 사람",
+        caption_en:  "a person showing off a robot to a person",
+        raw:  [
+          "a person showing off a robot to a person",
+          "a robot that is sitting on top of a table",
+          "a very cute white robot that is sitting in front of a table"
+        ]
+      }
+    }
+  """
+
+  if type(image) is np.ndarray:
+    return requests.post(f"https://o-vapi.circul.us/{mode}", files={'uploadFile':cv2.imencode('.jpg', image)[1].tobytes()}, params=params).json()
+  else:
+    return requests.post(f"https://o-vapi.circul.us/{mode}", files={'uploadFile':open(image, 'rb')}, params=params).json()
 
 class Camera:
   """
@@ -130,22 +165,26 @@ Functions:
     self.cap.grab()
     return self.cap.read()[1]
 
-  def imshow_to_ide(self, filename):
+  def imshow_to_ide(self, image):
     """
     이미지 파일을 Web IDE에 출력합니다.
 
     example::
 
       img = pibo_camera.read()
+      pibo_camera.imshow_to_ide(img)
       pibo_camera.imshow_to_ide('/home/pi/image.jpg')
 
-    :param str filename: 저장할 파일 경로
+    :param str/Mat image: 표시할 이미지 파일 경로 / 데이터(cv2)
 
       확장자는 jpg 또는 png를 사용할 수 있습니다.
     """
 
-    # curl -X 'POST' -so /dev/null 'http://0.0.0.0:50000/show' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'data=@{filename};type=image/png'
-    requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', open(filename, 'rb'), 'image/png')})
+    if type(image) is np.ndarray:
+      requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', cv2.imencode('.jpg', image)[1].tobytes(), 'image/png')})
+    else:
+      # curl -X 'POST' -so /dev/null 'http://0.0.0.0:50000/show' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'data=@{filename};type=image/png'
+      requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', open(image, 'rb'), 'image/png')})
 
   def resize (self, img, w, h):
     """
@@ -349,57 +388,6 @@ Functions:
       raise Exception(f'len({colors}) must be 3')
 
     return cv2.putText(img, text, points, cv2.FONT_HERSHEY_SIMPLEX, size, colors, tickness)
-
-  def cartoonize(self, img):
-    """
-    만화 이미지로 변환합니다. (high speed)
-
-    example::
-
-      img = pibo_camera.read()
-      new_image = pibo_camera.cartoonize(img)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :returns: 변환된 ``numpy.ndarray`` 이미지 객체
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv')
-
-    numDownSamples = 2 # number of downscaling steps
-    numBilateralFilters = 7  # number of bilateral filtering steps
-
-    # -- STEP 1 --
-    # downsample image using Gaussian pyramid
-    img_color = img
-    for _ in range(numDownSamples):
-      img_color = cv2.pyrDown(img_color)
-
-    # repeatedly apply small bilateral filter instead of applying
-    # one large filter
-    for _ in range(numBilateralFilters):
-      img_color = cv2.bilateralFilter(img_color, 9, 9, 7)
-
-    # upsample image to original size
-    for _ in range(numDownSamples):
-      img_color = cv2.pyrUp(img_color)
-
-    # -- STEPS 2 and 3 --
-    # convert to grayscale and apply median blur
-    img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    img_blur = cv2.medianBlur(img_gray, 7)
-
-    # -- STEP 4 --
-    # detect and enhance edges
-    img_edge = cv2.adaptiveThreshold(img_blur, 255,
-        cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 7)
-
-    # -- STEP 5 --
-    # convert back to color so that it can be bit-ANDed
-    # with color image
-    img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2RGB)
-    return cv2.bitwise_and(img_color, img_edge)
 
   def stylization(self, img, sigma_s=100, sigma_r=0.5):
     """
