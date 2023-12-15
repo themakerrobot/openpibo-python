@@ -43,13 +43,13 @@ Functions:
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
-  def __init__(self):
+  def __init__(self, w=128, h=64):
     """
     Oled 클래스를 초기화
     """
 
-    self.width = 128
-    self.height = 64
+    self.width = w
+    self.height = h
     self.font_path = openpibo_models.filepath("KDL.ttf") # KoPub Dotum Light
     self.font_size = 10
 
@@ -169,7 +169,7 @@ Functions:
     if not os.path.isfile(filename):
       raise Exception(f'"{filename}" does not exist') 
 
-    self.image = Image.open(filename).resize((128,64)).convert('1')
+    self.image = Image.open(filename).resize((self.width, self.height)).convert('1')
 
   def draw_data(self, img):
     """
@@ -182,7 +182,7 @@ Functions:
       from openpibo.vision import Camera
 
       pibo_camera = Camera()
-      img = pibo_camera.read(128, 64)
+      img = pibo_camera.read()
 
       pibo_oled.draw_data(img)
       pibo_oled.show()
@@ -193,7 +193,7 @@ Functions:
     if type(img) is not np.ndarray:
       raise Exception('"img" must be image data from opencv.')
 
-    self.image = Image.fromarray(img).convert('1')
+    self.image = Image.fromarray(img).resize((self.width, self.height)).convert('1')
 
   def draw_rectangle(self, points, fill=None):
     """

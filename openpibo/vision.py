@@ -25,11 +25,6 @@ import openpibo_face_models
 import openpibo_dlib_models
 import openpibo_detect_models
 
-try:
-  from tensorflow import keras
-except Exception as ex:
-  print("Warn:", ex)
-
 def vision_api(mode, image, params={}):
   """
   인공지능 비전 API를 호출합니다.
@@ -75,23 +70,20 @@ Functions:
 :meth:`~openpibo.vision.Camera.read`
 :meth:`~openpibo.vision.Camera.imshow_to_ide`
 :meth:`~openpibo.vision.Camera.resize`
+:meth:`~openpibo.vision.Camera.rotate`
 :meth:`~openpibo.vision.Camera.imwrite`
 :meth:`~openpibo.vision.Camera.rectangle`
 :meth:`~openpibo.vision.Camera.circle`
-:meth:`~openpibo.vision.Camera.putTextPIL`
 :meth:`~openpibo.vision.Camera.putText`
-:meth:`~openpibo.vision.Camera.cartoonize`
 :meth:`~openpibo.vision.Camera.stylization`
 :meth:`~openpibo.vision.Camera.detailEnhance`
 :meth:`~openpibo.vision.Camera.pencilSketch`
-:meth:`~openpibo.vision.Camera.convert_img`
-:meth:`~openpibo.vision.Camera.rotate`
-:meth:`~openpibo.vision.Camera.bgrhls`
 
   파이보의 카메라를 제어합니다.
 
   * 사진 촬영, 읽기, 쓰기 등 카메라 기본 기능을 사용할 수 있습니다.
-  * Cartoonize 기능을 사용할 수 있습니다.
+  * 이미지에 도형/글자를 추가할 수 있습니다.
+  * 이미지를 변환할 수 있습니다.
 
   example::
 
@@ -206,6 +198,37 @@ Functions:
 
     return cv2.resize(img, (w, h))
 
+  def rotate(self, img, degree=10, ratio=0.9):
+    """
+    이미지를 회전시킵니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_camera.rotate(img, 10, 0.9)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param int degree: 회전할 각도
+
+    :param float ratio: 축소 또는 확대할 비율
+
+    :returns: 회전한 ``numpy.ndarray`` 이미지 객체
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    if type(degree) is not int or abs(degree) >= 360:
+      raise Exception(f'{degree} must be integer type and -360~360')
+
+    if type(ratio) is not float or ratio >= 1.0:
+      raise Exception(f'"{ratio} must be float type and 0~1.0')
+
+    rows, cols = img.shape[0:2]
+    op = cv2.getRotationMatrix2D((cols/2,rows/2), degree, ratio)
+    return cv2.warpAffine(img, op, (cols,rows))
+
   def imwrite(self, filename, img):
     """
     이미지를 파일로 저장합니다.
@@ -307,7 +330,7 @@ Functions:
 
     return cv2.circle(img, p, r, colors, tickness)
 
-  def putTextPIL(self, img, text, points, size=30, colors=(255,255,255)):
+  def putText(self, img, text, points, size=30, colors=(255,255,255)):
     """
     이미지에 문자를 입력합니다. (한/영 가능 - pillow 이용)
 
@@ -343,51 +366,9 @@ Functions:
       raise Exception(f'len({colors}) must be 3')
 
     font = ImageFont.truetype(openpibo_models.filepath("KDL.ttf"), size)
-
     pil = Image.fromarray(img)  # CV to PIL
-
     ImageDraw.Draw(pil).text(points, text, font=font, fill=colors)  # putText
-
     return np.array(pil)  # PIL to CV
-
-  def putText(self, img, text, points, size=1, colors=(255,255,255), tickness=1):
-    """
-    이미지에 문자를 입력합니다. (영어만 가능)
-
-    example::
-
-      img = pibo_camera.read()
-      new_img = pibo_camera.putText(img, 'hello', (15, 10), 10, (255, 255, 255), 1)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :param str text: 표시할 문자열
-
-    :param tuple(int, int) points: 텍스트 블록 좌측하단 좌표 (x, y)
-
-    :param int size: 표시할 글자의 크기
-
-    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (b, g, r)
-
-    :param int tickness: 글자 두께
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv')
-
-    if type(points) is not tuple:
-      raise Exception(f'"{points}" must be tuple type')
-
-    if len(points) != 2:
-      raise Exception(f'len({points}) must be 2')
-
-    if type(colors) is not tuple:
-      raise Exception(f'"{colors}" must be tuple type')
-
-    if len(colors) != 3:
-      raise Exception(f'len({colors}) must be 3')
-
-    return cv2.putText(img, text, points, cv2.FONT_HERSHEY_SIMPLEX, size, colors, tickness)
 
   def stylization(self, img, sigma_s=100, sigma_r=0.5):
     """
@@ -460,82 +441,6 @@ Functions:
 
     return cv2.pencilSketch(img, sigma_s=sigma_s, sigma_r=sigma_r, shade_factor=shade_factor)
 
-  def convert_img(self, img, w=128, h=64):
-    """
-    이미지의 크기를 변환합니다.
-
-    example::
-
-      img = pibo_camera.read()
-      pibo_camera.convert_img(img, 128, 64)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :param int w: 변환될 이미지의 가로 크기입니다. (픽셀 단위)
-
-    :param int h: 변환될 이미지의 세로 크기입니다. (픽셀 단위)
-
-    :returns: 크기 변환 후의 이미지 객체
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv')
-
-    return cv2.cvtColor(cv2.resize(img, (w, h)), cv2.COLOR_BGR2GRAY)
-
-  def rotate(self, img, degree=10, ratio=0.9):
-    """
-    이미지를 회전시킵니다.
-
-    example::
-
-      img = pibo_camera.read()
-      pibo_camera.rotate(img, 10, 0.9)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :param int degree: 회전할 각도
-
-    :param float ratio: 축소 또는 확대할 비율
-
-    :returns: 회전한 ``numpy.ndarray`` 이미지 객체
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv')
-
-    if type(degree) is not int or abs(degree) >= 360:
-      raise Exception(f'{degree} must be integer type and -360~360')
-
-    if type(ratio) is not float or ratio >= 1.0:
-      raise Exception(f'"{ratio} must be float type and 0~1.0')
-
-    rows, cols = img.shape[0:2]
-    op = cv2.getRotationMatrix2D((cols/2,rows/2), degree, ratio)
-    return cv2.warpAffine(img, op, (cols,rows))
-
-  def bgr_hls(self, img):
-    """
-    BGR 이미지 모델을 HLS 이미지 모델로 변환한다.
-
-    BGR: Blue, Green, Red
-
-    HLS: Hue(색상), Luminance(명도), Saturation(채도)
-
-    example::
-
-      img = pibo_camera.read()
-      new_img = pibo_camera.bgr_hls(img)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :returns: 변환된 ``numpy.ndarray`` 이미지 객체
-    """
-
-    if not type(img) is np.ndarray:
-      raise Exception('"img" must be image data from opencv')
-
-    return cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
 
 class Face:
   """
@@ -544,7 +449,6 @@ Functions:
 :meth:`~openpibo.vision.Face.get_ageGender`
 :meth:`~openpibo.vision.Face.get_age`
 :meth:`~openpibo.vision.Face.get_gender`
-:meth:`~openpibo.vision.Face.get_emotion`
 :meth:`~openpibo.vision.Face.init_db`
 :meth:`~openpibo.vision.Face.train_face`
 :meth:`~openpibo.vision.Face.delete_face`
@@ -591,20 +495,14 @@ Functions:
     self.predictor = dlib.shape_predictor(openpibo_dlib_models.filepath("shape_predictor_5_face_landmarks.dat"))
     self.face_encoder = dlib.face_recognition_model_v1(openpibo_dlib_models.filepath("dlib_face_recognition_resnet_model_v1.dat"))
 
-    self.emotion_class_names = ['angry','disgusted','fearful','happy','sad','surprised','neutral']
-    self.emotion_interpreter = Interpreter(model_path=openpibo_face_models.filepath("emotion.tflite"))
-    self.emotion_interpreter.allocate_tensors()
-    self.emotion_input_details = self.emotion_interpreter.get_input_details()
-    self.emotion_output_details = self.emotion_interpreter.get_output_details()
-
-  def detect(self, img):
+  def detect_face(self, img):
     """
     얼굴을 탐색합니다.
 
     example::
 
       img = pibo_camera.read()
-      pibo_face.detect(img)
+      pibo_face.detect_face(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -620,8 +518,7 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv') 
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return self.face_detector.detectMultiScale(gray, 1.1, 5) # [(x,y,w,h), ...]
+    return self.face_detector.detectMultiScale(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 1.1, 5) # [(x,y,w,h), ...]
 
   def get_ageGender(self, img, face):
     """
@@ -630,7 +527,7 @@ Functions:
     example::
 
       img = pibo_camera.read()
-      faces = pibo_face.detect(img)
+      faces = pibo_face.detect_face(img)
       face = faces[0] # face는 faces중 하나
       pibo_face.get_ageGender(img, face)
 
@@ -671,23 +568,22 @@ Functions:
     age_preds = self.agenet.forward()
     age = self.age_class[age_preds[0].argmax()]
 
-    # visualize
-    #cv2.rectangle(img, (x1, y1), (x2, y2), (255,255,255), 2)
-    #cv2.putText(img, "{} {}".format(gender, age), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,128,128), 2)
     return {"age":age, "gender":gender}
 
-  def get_age(self, face):
+  def get_age(self, img, face):
     """
     얼굴의 나이를 추정합니다.
 
     example::
 
       img = pibo_camera.read()
-      faces = pibo_face.detect(img)
-      x,y,w,h = faces[0] # face는 faces중 하나
-      pibo_face.get_age(img[y:y+h, x:x+w])
+      faces = pibo_face.detect_face(img)
+      face = faces[0] # face는 faces중 하나
+      pibo_face.get_age(img, face)
 
-    :param numpy.ndarray face: 얼굴 이미지
+    :param numpy.ndarray img: 이미지 객체
+
+    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
 
     :returns: ``나이 범위`` ``Raw데이터``
 
@@ -698,10 +594,14 @@ Functions:
     참고: https://github.com/kairess/age_gender_estimation
     """
 
-    if not type(face) is np.ndarray:
-      raise Exception('"face" must be image data from opencv')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
-    face_img = face.copy()
+    if len(face) != 4:
+      raise Exception('"face" must be [x,y,w,h]')
+
+    x, y, w, h = face
+    face_img = img[y:y+h, x:x+w].copy()
     blob = cv2.dnn.blobFromImage(face_img, scalefactor=1, size=(227, 227),
       mean=(78.4263377603, 87.7689143744, 114.895847746),
       swapRB=False, crop=False)
@@ -713,18 +613,20 @@ Functions:
 
     return age, age_preds[0]
 
-  def get_gender(self, face):
+  def get_gender(self, img, face):
     """
     얼굴의 성별을 추정합니다.
 
     example::
 
       img = pibo_camera.read()
-      faces = pibo_face.detect(img)
-      x,y,w,h = faces[0] # face는 faces중 하나
-      pibo_face.get_gender(img[y:y+h, x:x+w])
+      faces = pibo_face.detect_face(img)
+      face = faces[0] # face는 faces중 하나
+      pibo_face.get_gender(img, face)
 
-    :param numpy.ndarray face: 얼굴 이미지
+    :param numpy.ndarray img: 이미지 객체
+
+    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
 
     :returns: ``성별`` ``Raw데이터``
 
@@ -733,10 +635,14 @@ Functions:
     참고: https://github.com/kairess/age_gender_estimation
     """
 
-    if not type(face) is np.ndarray:
-      raise Exception('"face" must be image data from opencv')
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
 
-    face_img = face.copy()
+    if len(face) != 4:
+      raise Exception('"face" must be [x,y,w,h]')
+
+    x, y, w, h = face
+    face_img = img[y:y+h, x:x+w].copy()
     blob = cv2.dnn.blobFromImage(face_img, scalefactor=1, size=(227, 227),
       mean=(78.4263377603, 87.7689143744, 114.895847746),
       swapRB=False, crop=False)
@@ -747,47 +653,6 @@ Functions:
     gender = self.gender_class[gender_preds[0].argmax()]
 
     return gender, gender_preds[0]
-
-  def get_emotion(self, face):
-    """
-    얼굴의 감정을 추정합니다.
-
-    example::
-
-      img = pibo_camera.read()
-      faces = pibo_face.detect(img)
-      x,y,w,h = faces[0] # face는 faces중 하나
-      pibo_face.get_gender(img[y:y+h, x:x+w])
-
-    :param numpy.ndarray face: 얼굴 이미지
-
-    :returns: ``감정`` ``Raw데이터``
-
-      * emotion: ``angry``, ``disgusted``, ``fearful``, ``happy``, ``sad``, ``surprised``, ``neutral``
-
-    참고: https://github.com/kairess/age_gender_estimation
-    """
-
-    if not type(face) is np.ndarray:
-      raise Exception('"face" must be image data from opencv')
-
-    img = face.copy()
-
-    img = cv2.resize(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), (96, 96))
-    image = Image.fromarray(img)
-
-    # Add a batch dimension
-    input_data = np.expand_dims(image, axis=0).reshape(-1, 96, 96, 1)
-    input_data = (np.float32(input_data) - 127.5) / 127.5
-
-    # feed data to input tensor and run the interpreter
-    self.emotion_interpreter.set_tensor(self.emotion_input_details[0]['index'], input_data)
-    self.emotion_interpreter.invoke()
-
-    # Obtain results and map them to the classes
-    preds = self.emotion_interpreter.get_tensor(self.emotion_output_details[0]['index'])
-    preds = np.squeeze(preds)
-    return self.emotion_class_names[np.argmax(preds)], preds.tolist()
 
   def init_db(self):
     """
@@ -809,7 +674,7 @@ Functions:
     example::
 
       img = pibo_camera.read()
-      faces = pibo_face.detect(img)
+      faces = pibo_face.detect_face(img)
       face = faces[0] # face는 faces중 하나
       pibo_face.train_face(img, face, 'honggildong')
 
@@ -865,7 +730,7 @@ Functions:
     example::
 
       img = pibo_camera.read()
-      faces = pibo_face.detect(img)
+      faces = pibo_face.detect_face(img)
       face = faces[0] # face는 faces중 하나
       pibo_face.recognize(img, face)
 
@@ -887,12 +752,12 @@ Functions:
       raise Exception('"face" must be [x,y,w,h]')
 
     if len(self.facedb[0]) < 1:
-      return False
+      return {"name":"Guest", "score":0}
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     data={"name":"Guest", "score":0}
     (x,y,w,h) = face
-    rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
+    rect = dlib.rectangle(int(x), int(y), int(x+w), int(y+h))
     shape = self.predictor(gray, rect)
     face_encoding = np.array(self.face_encoder.compute_face_descriptor(img, shape, 1))
     matches = []
@@ -1175,7 +1040,7 @@ Functions:
     """
 
     if not type(img) is np.ndarray:
-      raise Exception('"face" must be image data from opencv')
+      raise Exception('"img" must be image data from opencv')
 
     height = self.cls_input_details[0]['shape'][1]
     width = self.cls_input_details[0]['shape'][2]
@@ -1194,22 +1059,18 @@ Functions:
 
     return [{"score":int(100*float(preds[i]/255.0)), "name":self.cls_class_names[i]} for i in top_k]
 
+
 class TeachableMachine:
   """
 Functions:
-:meth:`~openpibo.vision.TeachableMachine.load_tflite`
-:meth:`~openpibo.vision.TeachableMachine.predict_tflite`
-:meth:`~openpibo.vision.TeachableMachine.load_keras`
-:meth:`~openpibo.vision.TeachableMachine.predict_keras`
 :meth:`~openpibo.vision.TeachableMachine.load`
 :meth:`~openpibo.vision.TeachableMachine.predict`
-
 
   파이보의 카메라 Teachable Machine 기능을 사용합니다.
 
   * ``이미지 프로젝트`` 의 ``표준 이미지 모델`` 을 사용합니다.
   * ``Teachable Machine`` 에서 학습한 모델을 적용하여 추론할 수 있습니다.
-  * 학습한 모델은 ``Tensorflow Lite`` 또는 ``Keras`` 형태로 다운로드 해주세요.
+  * 학습한 모델은 ``Tensorflow Lite`` 형태로 다운로드 해주세요.
 
   example::
 
@@ -1219,10 +1080,7 @@ Functions:
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
-  def __init__(self):
-    self.mode = None
-
-  def load_tflite(self, model_path, label_path):
+  def load(self, model_path, label_path):
     """
     (내부 함수) Tflite 모델로 불러옵니다. (부동소수점/양자화) 모두 가능
 
@@ -1255,7 +1113,7 @@ Functions:
 
     self.class_names = class_names
 
-  def predict_tflite(self, img):
+  def predict(self, img):
     """
     (내부 함수) Tflite 모델로 추론합니다.
 
@@ -1288,88 +1146,3 @@ Functions:
     preds = self.interpreter.get_tensor(self.output_details[0]['index'])
     preds = np.squeeze(preds)
     return self.class_names[np.argmax(preds)], preds
-
-  def load_keras(self, model_path, label_path):
-    """
-    (내부 함수) Keras 모델을 불러옵니다.
-
-    example::
-
-      tm.load('keras_model.h5', 'labels.txt')
-
-    :param str model_path: Teachable Machine의 모델파일
-
-    :param str label_path: Teachable Machine의 라벨파일
-    """
-
-    with open(label_path) as f:
-      c = f.read().split('\n')
-      class_names = [c[i].split(maxsplit=1)[1] for i in range(len(c)-1)]
-
-    self.model = keras.models.load_model(model_path, compile=False)
-    self.class_names = class_names
-
-  def predict_keras(self, img):
-    """
-    (내부 함수) Keras 모델로 추론합니다.
-
-    example::
-
-      cm = Camera()
-      img = cm.read()
-      tm.predict(img)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :returns: 가장 높은 확률을 가진 클래스 명, 결과(raw 데이터)
-    """
-
-    img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)
-    img = np.asarray(img, dtype=np.float32).reshape(1, 224, 224, 3)
-    img = (img / 127.5) - 1
-    predictions = self.model.predict(img)[0]
-    return self.class_names[np.argmax(predictions)], predictions
-
-  def load(self, model_path, label_path):
-    """
-    Teachable Machine (Tflite, Keras) 모델을 초기화 합니다.
-
-    example::
-
-      tm.load('keras_model.h5', 'labels.txt')
-
-    :param str model_path: Teachable Machine의 모델파일
-
-    :param str label_path: Teachable Machine의 라벨파일
-    """
-
-    if model_path.rsplit('.')[-1] == 'tflite':
-      self.load_tflite(model_path, label_path)
-      self.mode = 'tflite'
-    elif model_path.rsplit('.')[-1] == 'h5':
-      self.load_keras(model_path, label_path)
-      self.mode = 'keras'
-    else:
-      raise Exception('can load Teachable Machine model "tflite" or "h5"')
-
-  def predict(self, img):
-    """
-    적용한 Teachable Machine (Tflite, Keras) 모델을 기반으로 추론합니다.
-
-    example::
-
-      cm = Camera()
-      img = cm.read()
-      tm.predict(img)
-
-    :param numpy.ndarray img: 이미지 객체
-
-    :returns: 가장 높은 확률을 가진 클래스 명, 결과(raw 데이터)
-    """
-
-    if self.mode == 'tflite':
-      return self.predict_tflite(img)
-    elif self.mode == 'keras':
-      return self.predict_keras(img)
-    else:
-      raise Exception('did not load Teachable Machine Model.')
