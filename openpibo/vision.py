@@ -1128,21 +1128,24 @@ Functions:
     :returns: 가장 높은 확률을 가진 클래스 명, 결과(raw 데이터)
     """
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img, (self.width, self.height))
-    image = Image.fromarray(img)
+    try:
+      img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+      img = cv2.resize(img, (self.width, self.height))
+      image = Image.fromarray(img)
 
-    # Add a batch dimension
-    input_data = np.expand_dims(image, axis=0)
+      # Add a batch dimension
+      input_data = np.expand_dims(image, axis=0)
 
-    if self.floating_model:
-      input_data = (np.float32(input_data) - 127.5) / 127.5
+      if self.floating_model:
+        input_data = (np.float32(input_data) - 127.5) / 127.5
 
-    # feed data to input tensor and run the interpreter
-    self.interpreter.set_tensor(self.input_details[0]['index'], input_data)
-    self.interpreter.invoke()
+      # feed data to input tensor and run the interpreter
+      self.interpreter.set_tensor(self.input_details[0]['index'], input_data)
+      self.interpreter.invoke()
 
-    # Obtain results and map them to the classes
-    preds = self.interpreter.get_tensor(self.output_details[0]['index'])
-    preds = np.squeeze(preds)
-    return self.class_names[np.argmax(preds)], preds
+      # Obtain results and map them to the classes
+      preds = self.interpreter.get_tensor(self.output_details[0]['index'])
+      preds = np.squeeze(preds)
+      return self.class_names[np.argmax(preds)], preds
+    except Exception as ex:
+      raise Exception('Teachable Machine Model did not load properly.')
