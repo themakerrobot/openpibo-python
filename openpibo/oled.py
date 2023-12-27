@@ -366,7 +366,7 @@ Functions:
     if fill == True:
       self.oled.fill(0)
     if show == True:
-      self.oled.image(image)
+      self.oled.image(self.image)
 
   def set_font(self, filename=None, size=None):
     """
@@ -398,7 +398,7 @@ Functions:
 
     self.font = ImageFont.truetype(filename, size)
 
-  def draw_text(self, points, text:str):
+  def draw_text(self, points, text:str, colors=(255,255,255)):
     """
     문자를 그립니다.(한글, 영어 지원)
 
@@ -417,7 +417,7 @@ Functions:
     if len(points) != 2:
       raise Exception(f'len({points}) must be 2')
 
-    ImageDraw.Draw(self.image).text(points, text, font=self.font, fill=255)
+    ImageDraw.Draw(self.image).text(points, text, font=self.font, fill=colors)
 
   def draw_image(self, filename):
     """
@@ -435,7 +435,7 @@ Functions:
     if not os.path.isfile(filename):
       raise Exception(f'"{filename}" does not exist') 
 
-    self.image = Image.open(filename).resize((self.width, self.height))
+    self.image = Image.open(filename).resize((self.width, self.height)).convert('RGB')
 
   def draw_data(self, img):
     """
