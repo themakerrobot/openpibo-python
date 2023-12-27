@@ -330,14 +330,14 @@ Functions:
 
     return cv2.circle(img, p, r, colors, tickness)
 
-  def putText(self, img, text, points, size=30, colors=(255,255,255)):
+  def putTextPIL(self, img, text, points, size=30, colors=(255,255,255)):
     """
     이미지에 문자를 입력합니다. (한/영 가능 - pillow 이용)
 
     example::
 
       img = pibo_camera.read()
-      new_img = pibo_camera.putText(img, '안녕하세요.', (15, 10), 30, (255, 255, 255))
+      new_img = pibo_camera.putTextPIL(img, '안녕하세요.', (15, 10), 30, (255, 255, 255))
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -369,6 +369,45 @@ Functions:
     pil = Image.fromarray(img)  # CV to PIL
     ImageDraw.Draw(pil).text(points, text, font=font, fill=colors)  # putText
     return np.array(pil)  # PIL to CV
+
+  def putText(self, img, text, points, size=1, colors=(255,255,255), tickness=1):
+    """
+    이미지에 문자를 입력합니다. (영어만 가능)
+
+    example::
+
+      img = pibo_camera.read()
+      new_img = pibo_camera.putText(img, 'hello', (15, 10), 10, (255, 255, 255), 1)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param str text: 표시할 문자열
+
+    :param tuple(int, int) points: 텍스트 블록 좌측하단 좌표 (x, y)
+
+    :param int size: 표시할 글자의 크기
+
+    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (b, g, r)
+
+    :param int tickness: 글자 두께
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    if type(points) is not tuple:
+      raise Exception(f'"{points}" must be tuple type')
+
+    if len(points) != 2:
+      raise Exception(f'len({points}) must be 2')
+
+    if type(colors) is not tuple:
+      raise Exception(f'"{colors}" must be tuple type')
+
+    if len(colors) != 3:
+      raise Exception(f'len({colors}) must be 3')
+
+    return cv2.putText(img, text, points, cv2.FONT_HERSHEY_SIMPLEX, size, colors, tickness)
 
   def stylization(self, img, sigma_s=100, sigma_r=0.5):
     """
@@ -491,7 +530,8 @@ Functions:
                     openpibo_face_models.filepath("deploy_gender.prototxt"),
                     openpibo_face_models.filepath("gender_net.caffemodel")
                 )
-    self.face_detector = cv2.CascadeClassifier(openpibo_face_models.filepath("haarcascade_frontalface_default.xml"))
+    #self.face_detector = cv2.CascadeClassifier(openpibo_face_models.filepath("haarcascade_frontalface_default.xml"))
+    self.face_detector = dlib.get_frontal_face_detector()
     self.predictor = dlib.shape_predictor(openpibo_dlib_models.filepath("shape_predictor_5_face_landmarks.dat"))
     self.face_encoder = dlib.face_recognition_model_v1(openpibo_dlib_models.filepath("dlib_face_recognition_resnet_model_v1.dat"))
 
@@ -518,7 +558,8 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv') 
 
-    return self.face_detector.detectMultiScale(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 1.1, 5) # [(x,y,w,h), ...]
+    return [(d.left(), d.top(), d.right()-d.left(), d.bottom()-d.top()) for d in self.face_detector(img)]
+    #return self.face_detector.detectMultiScale(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 1.1, 5) # [(x,y,w,h), ...]
 
   def get_ageGender(self, img, face):
     """
