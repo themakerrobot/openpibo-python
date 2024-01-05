@@ -69,8 +69,8 @@ Functions:
     #if type(voice) is not str or voice not in ('espeak', 'main', 'boy', 'girl', 'man1', 'woman1'):
     #  raise Exception(f'"{voice}" must be (espeak|main|boy|girl|man1|woman1)')
 
-    if type(lang) is not str or lang not in ('en', 'ko'):
-      raise Exception(f'"{lang}" must be (en|ko)')
+    #if type(lang) is not str or lang not in ('en', 'ko'):
+    #  raise Exception(f'"{lang}" must be (en|ko)')
 
     if voice == "espeak":
       os.system(f'espeak "{string}" -w {filename}')

@@ -480,6 +480,30 @@ Functions:
 
     return cv2.pencilSketch(img, sigma_s=sigma_s, sigma_r=sigma_r, shade_factor=shade_factor)
 
+  def edgePreservingFilter(self, img, flags=1, sigma_s=60, sigma_r=0.4):
+    """
+    흐림 이미지로 변환합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_camera.edgePreservingFilter(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param int flags: 필터 종류 1 (RECURS_FILTER) or 2 (NORMCONV_FILTER)
+
+    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)
+
+    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)
+
+    :returns: 변환 후의 이미지 객체(grayscale), 변환 후의 이미지 객체(bgr)
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    return cv2.edgePreservingFilter(img, flags=flags, sigma_s=sigma_s, sigma_r=sigma_r)
 
 class Face:
   """
@@ -1100,6 +1124,52 @@ Functions:
 
     return [{"score":int(100*float(preds[i]/255.0)), "name":self.cls_class_names[i]} for i in top_k]
 
+  def object_tracker_init(self, img, p):
+    """
+    이미지 안의 사물 트래커를 설정합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_detect.object_tracker_init(img)
+
+    :param numpy.ndarray img: 이미지 객체
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    x1,y1,x2,y2 = p
+    tracker = dlib.correlation_tracker()
+    tracker.start_track(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), dlib.rectangle(x1,y1,x2,y2))
+    return tracker
+
+  def object_track(self, tracker, img):
+    """
+    이미지 안의 사물 트래커를 설정합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      tracker = pibo_detect.object_tracker_init(img, (10,10,100,100))
+      tracker, position = pibo_detect.object_track(tracker, img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :returns: ``{"tracker": 업데이트된 tracker, "position": 업데이트된 사물 위치 }``
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    tracker.update(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    pos = tracker.get_position()
+
+    x1 = int(pos.left())
+    y1 = int(pos.top())
+    x2 = int(pos.right())
+    y2 = int(pos.bottom())
+    return {'tracker':tracker, 'position':(x1, y1, x2, y2)}
 
 class TeachableMachine:
   """
