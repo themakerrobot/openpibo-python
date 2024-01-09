@@ -30,6 +30,7 @@ def vision_api(mode, image, params={}):
   인공지능 비전 API를 호출합니다.
 
   example::
+
     from openpibo.vision import vision_api
     from openpibo.vision import Camera
 

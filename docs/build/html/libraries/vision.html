@@ -92,14 +92,16 @@
 <dt class="sig sig-object py" id="openpibo.vision.vision_api">
 <span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">vision_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.vision_api" title="정의 주소"></a></dt>
 <dd><p>인공지능 비전 API를 호출합니다.</p>
-<dl>
-<dt>example::</dt><dd><p>from openpibo.vision import vision_api
-from openpibo.vision import Camera</p>
-<p>pibo_camera = Camera()</p>
-<p>res = vision_api(‘caption/caption’, pibo_camera.read(), {})
-res = vision_api(‘caption/caption’, “test.jpg”, {})</p>
-</dd>
-</dl>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">vision_api</span>
+<span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
+
+<span class="n">pibo_camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">vision_api</span><span class="p">(</span><span class="s1">&#39;caption/caption&#39;</span><span class="p">,</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="p">{})</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">vision_api</span><span class="p">(</span><span class="s1">&#39;caption/caption&#39;</span><span class="p">,</span> <span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="p">{})</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
