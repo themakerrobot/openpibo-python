@@ -45,17 +45,18 @@ def vision_api(mode, image, params={}):
   :returns: ``Json`` 타입 결과의 데이터
 
     example::
-    { 'type': 'caption', 'result': 'ok', 
-      'data': {
-        caption:  "사람에게 로봇을 과시하는 사람",
-        caption_en:  "a person showing off a robot to a person",
-        raw:  [
-          "a person showing off a robot to a person",
-          "a robot that is sitting on top of a table",
-          "a very cute white robot that is sitting in front of a table"
-        ]
+    
+      { 'type': 'caption', 'result': 'ok', 
+        'data': {
+          caption:  "사람에게 로봇을 과시하는 사람",
+          caption_en:  "a person showing off a robot to a person",
+          raw:  [
+            "a person showing off a robot to a person",
+            "a robot that is sitting on top of a table",
+            "a very cute white robot that is sitting in front of a table"
+          ]
+        }
       }
-    }
   """
 
   if type(image) is np.ndarray:

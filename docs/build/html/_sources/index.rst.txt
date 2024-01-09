@@ -25,15 +25,6 @@ Welcome to openpibo's documentation!
    libraries/oled
    libraries/speech
    libraries/vision
-   libraries/edu_v1
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Files
-
-   files/audio
-   files/icon
-   files/image
 
 Indices and tables
 ==================

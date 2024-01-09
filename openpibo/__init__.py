@@ -3,7 +3,7 @@ openpibo-python
 """
 import os, sys, json, shutil
 
-__version__ = '0.9.2.55.test'
+__version__ = '0.9.2.60'
 
 defconfig = {"kakaokey":"","datapath":"/home/pi/openpibo-files", "napi_host":"https://oe-napi.circul.us", "sapi_host":"https://oe-sapi.circul.us", "robotId":"", "eye":"0,0,0,0,0,0"}
 config_path = '/home/pi/config.json'
