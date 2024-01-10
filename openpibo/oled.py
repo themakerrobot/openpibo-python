@@ -291,7 +291,6 @@ Functions:
 :meth:`~openpibo.oled.OledRGB.draw_rectangle`
 :meth:`~openpibo.oled.OledRGB.draw_ellipse`
 :meth:`~openpibo.oled.OledRGB.draw_line`
-:meth:`~openpibo.oled.OledRGB.invert`
 
   파이보의 OLED를 통해 다양한 그림을 표현합니다.
 
@@ -305,9 +304,9 @@ Functions:
 
   example::
 
-    from openpibo.oled import OledRGB
+    from openpibo.oled import OledRGB as Oled
 
-    pibo_oled = OledRGB()
+    pibo_oled = Oled()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
@@ -486,7 +485,7 @@ Functions:
     if not fill in [None, True, False]:
       raise Exception(f'"{fill}" must be (None|True|False)')
 
-    ImageDraw.Draw(self.image).rectangle(points, outline=1, fill=fill)
+    ImageDraw.Draw(self.image).rectangle(points, outline=(255,255,255), width=1,  fill= (255,255,255) if fill else None)
 
   def draw_ellipse(self, points, fill=None):
     """
@@ -513,7 +512,7 @@ Functions:
     if not fill in [None, True, False]:
       raise Exception(f'"{fill}" must be (None|True|False)')
 
-    ImageDraw.Draw(self.image).ellipse(points, outline=1, fill=fill)
+    ImageDraw.Draw(self.image).ellipse(points, outline=(255,255,255), width=1, fill= (255,255,255) if fill else None)
 
   def draw_line(self, points):
     """
@@ -532,16 +531,4 @@ Functions:
     if len(points) != 4:
       raise Exception(f'len({points}) must be 4')
 
-    ImageDraw.Draw(self.image).line(points, fill=True)
-
-  def invert(self):
-    """
-    그려진 이미지를 흑백 반전시킵니다.
-
-    example::
-
-      pibo_oled.invert()
-    """
-
-    self.image = ImageOps.invert(self.image.convert("L"))
-
+    ImageDraw.Draw(self.image).line(points, fill=(255,255,255))
