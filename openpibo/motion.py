@@ -152,6 +152,9 @@ Functions:
       (모터 컨트롤러와의 overhead문제로 정밀하지는 않음)
     """
 
+    if type(positions) is str:
+      positions = list(map(int, positions.split(',')))
+
     if len(positions) != 10:
       raise Exception (f'len({positions}) must be 10')
 

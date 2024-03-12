@@ -138,6 +138,7 @@ class Dialog:
   """
 Functions:
 :meth:`~openpibo.speech.Dialog.load`
+:meth:`~openpibo.speech.Dialog.reset`
 :meth:`~openpibo.speech.Dialog.mecab_pos`
 :meth:`~openpibo.speech.Dialog.mecab_morphs`
 :meth:`~openpibo.speech.Dialog.mecab_nouns`
@@ -190,6 +191,19 @@ Functions:
     self.dialog_path = filepath
     with open(self.dialog_path, 'r', encoding='utf-8') as f:
       self.dialog_db = [item for item in csv.reader(f)]
+
+  def reset(self):
+    """
+    대화 데이터를 초기화합니다.
+
+    example::
+
+      pibo_dialog.reset()
+
+    """
+
+    self.load(openpibo_models.filepath("dialog.csv"))
+
 
   def mecab_pos(self, string):
     """

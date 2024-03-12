@@ -239,11 +239,14 @@ Functions:
 :meth:`~openpibo.device.Device.send_cmd`
 :meth:`~openpibo.device.Device.send_raw`
 :meth:`~openpibo.device.Device.eye_on`
+:meth:`~openpibo.device.Device.eye_on_s`
 :meth:`~openpibo.device.Device.eye_off`
 :meth:`~openpibo.device.Device.get_battery`
 :meth:`~openpibo.device.Device.get_dc`
 :meth:`~openpibo.device.Device.get_system`
-
+:meth:`~openpibo.device.Device.get_pir`
+:meth:`~openpibo.device.Device.get_touch`
+:meth:`~openpibo.device.Device.get_button`
 
   메인컨트롤러를 제어하여 파이보의 여러가지 상태를 체크하거나, 눈 색깔을 변경합니다.
 
@@ -385,7 +388,7 @@ Functions:
     self.lock.release()
     return data
 
-  def eye_on(self, *color):
+  def eye_on(self, *color, intv=0):
     """
     LED를 켭니다.
 
@@ -400,6 +403,11 @@ Functions:
       * (R, G, B) -> 양쪽 눈 함께 제어
       * (R,G,B,R,G,B) -> 양쪽 눈 각각 제어
 
+    :param intv:
+
+      * interval (RGB 값이 1씩 바뀌는 시간)
+      * 0 이면 off
+
     """
 
     if len(color) == 0:
@@ -412,9 +420,39 @@ Functions:
       if v < 0 or v > 255:
         raise Exception("All color must be 0~255")
 
-    code = '20' if len(color) == 3 else '23'
+    if intv == 0:
+      code = '20' if len(color) == 3 else '23'
+      return self.send_raw(f'#{code}:{",".join(str(p) for p in color)}!')
+    else:
+      code = '21' if len(color) == 3 else '24'
+      return self.send_raw(f'#{code}:{",".join(str(p) for p in color)},{intv}!')
 
-    return self.send_raw(f'#{code}:{",".join(str(p) for p in color)}!')
+  def eye_on_s(self, colors, intv=0):
+    """
+    LED를 켭니다.
+
+    example::
+
+      pibo_device.eye_on_s(['#ffffff', '#ffffff'])	# 양쪽 눈 제어
+
+    :param colors:
+
+      * RGB 16진수 문자 리스트 ['#ffffff', '#ffffff']
+
+    """
+
+    data = []
+    data.append(int(colors[0][1:3], 16))
+    data.append(int(colors[0][3:5], 16))
+    data.append(int(colors[0][5:7], 16))
+    data.append(int(colors[1][1:3], 16))
+    data.append(int(colors[1][3:5], 16))
+    data.append(int(colors[1][5:7], 16))
+
+    if intv == 0:
+      return self.send_raw(f'#23:{",".join(str(p) for p in data)}!')
+    else:
+      return self.send_raw(f'#24:{",".join(str(p) for p in data)},{intv}!')
 
   def eye_off(self):
     """
@@ -428,7 +466,7 @@ Functions:
 
     return self.send_raw('#20:0,0,0!')
 
-  def get_battery(self):
+  def get_battery(self, v=False):
     """
     배터리 정보를 요청합니다.
 
@@ -436,12 +474,15 @@ Functions:
 
       pibo_device.get_battery()
 
+    :param v: 값만 가져올지 메시지 전체를 가져올지 선택
+
     :returns: 배터리 정보 응답
     """
 
-    return self.send_raw('#15:!')
+
+    return self.send_raw('#15:!') if v == False else self.send_raw('#15:!').split(':')[1]
   
-  def get_dc(self):
+  def get_dc(self, v=False):
     """
     DC커넥터 정보를 요청합니다.
 
@@ -449,12 +490,14 @@ Functions:
 
       pibo_device.get_dc()
 
+    :param v: 값만 가져올지 메시지 전체를 가져올지 선택
+
     :returns: DC커넥터 연결 정보 응답
     """
 
-    return self.send_raw('#14:!')
+    return self.send_raw('#14:!') if v == False else self.send_raw('#14:!').split(':')[1]
 
-  def get_system(self):
+  def get_system(self, v=False):
     """
     시스템 메시지를 요청합니다.
 
@@ -462,10 +505,54 @@ Functions:
 
       pibo_device.get_system()
 
+    :param v: 값만 가져올지 메시지 전체를 가져올지 선택
+
+    :param name: 가져올 값 선택 ('pir'|'touch'|'dc'|'button'|'all')
+
     :returns: 시스템 메시지 정보 응답 (pir-touch-dc-button) 
     """
 
-    return self.send_raw('#40:!')
+    return self.send_raw('#40:!') if v == False else self.send_raw('#40:!').split(':')[1]
+
+  def get_pir(self):
+    """
+    시스템 메시지를 요청합니다. (pir)
+
+    example::
+
+      pibo_device.get_pir()
+
+    :returns: 시스템 메시지 정보 응답에서 pir 값 추출
+    """
+
+    return self.send_raw('#40:!').split(':')[1].split('-')[0]
+
+  def get_touch(self):
+    """
+    시스템 메시지를 요청합니다. (touch)
+
+    example::
+
+      pibo_device.get_touch()
+
+    :returns: 시스템 메시지 정보 응답에서 touch 값 추출
+    """
+
+    return self.send_raw('#40:!').split(':')[1].split('-')[1]
+
+  def get_button(self):
+    """
+    시스템 메시지를 요청합니다. (button)
+
+    example::
+
+      pibo_device.get_button()
+
+    :returns: 시스템 메시지 정보 응답에서 button 값 추출
+    """
+
+    return self.send_raw('#40:!').split(':')[1].split('-')[3]
+
 
 if __name__ == "__main__":
   device = Device()

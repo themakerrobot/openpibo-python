@@ -17,6 +17,7 @@ class Wikipedia:
     """
 Functions:
 :meth:`~openpibo.collect.Wikipedia.search`
+:meth:`~openpibo.collect.Wikipedia.search_s`
 
     위키백과에서 단어를 검색합니다.
 
@@ -86,13 +87,13 @@ Functions:
 
         return _chapters
 
-    def search_for_block(self, search_text: str):
+    def search_s(self, search_text: str):
         """
         위키백과에서 ``search_text`` 를 검색합니다. (block 전용)
 
         example::
 
-            result = pibo_wiki.search_for_block('강아지')
+            result = pibo_wiki.search_s('강아지')
 
         :param str search_text: 위키백과에서의 검색어
 
@@ -117,6 +118,7 @@ class Weather:
     """
 Functions:
 :meth:`~openpibo.collect.Weather.search`
+:meth:`~openpibo.collect.Weather.search_s`
 
     종합 예보와 오늘/내일/모레의 날씨 정보를 검색합니다.
 
@@ -228,13 +230,13 @@ Functions:
 
         return {'forecast':_forecast, 'today':_today, 'tomorrow':_tomorrow, 'after_tomorrow':_after_tomorrow}
 
-    def search_for_block(self, search_region:str='전국', search_type: str='forecast'):
+    def search_s(self, search_region:str='전국', search_type: str='forecast', search_item: str = 'weather'):
         """
         해당 지역(```search_region```)의 날씨 정보(종합예보, 오늘/내일/모레 날씨)를 가져옵니다.
 
         example::
 
-            result = pibo_weather.search('서울')
+            result = pibo_weather.search_s('서울')
 
         :param str search_region: 검색 가능한 지역 (default: 전국)
 
@@ -262,14 +264,20 @@ Functions:
         res = self.search(search_region)
 
         if search_type == 'forecast':
-            return res['forecast'].strip().replace('\n', ' ')
-        else:
-            return [res[search_type]['weather'].strip().replace('\n', ' '), res[search_type]['minimum_temp'].split(' ~ ')[0], res[search_type]['highst_temp'].split(' ~ ')[1]]
+          return res['forecast'].strip().replace('\n', ' ')
+        else: # search_type ('today'|'tomorrow'|'after_tomorrow')
+          if search_item == 'minimum_temp':
+            return res[search_type][search_item].split(' ~ ')[0]
+          elif search_item == 'highst_temp':
+            return res[search_type][search_item].split(' ~ ')[1]
+          else: # weather
+            return res[search_type][search_item].strip().replace('\n', ' ')
 
 class News:
     """
 Functions:
 :meth:`~openpibo.collect.News.search`
+:meth:`~openpibo.collect.News.search_s`
 
     JTBC 뉴스 RSS 서비스를 사용해 뉴스 자료를 가져옵니다.
 
@@ -348,13 +356,13 @@ Functions:
           })
         return _articles
 
-    def search_for_block(self, search_topic:str = '뉴스랭킹', search_type:str = "title"):
+    def search_s(self, search_topic:str = '뉴스랭킹', search_type:str = "title"):
         """
         해당 주제(```search_topic```)에 맞는 뉴스를 가져옵니다.
 
         example::
 
-            result = pibo_news.search('속보')
+            result = pibo_news.search_s('속보')
 
         :param str search_topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
 

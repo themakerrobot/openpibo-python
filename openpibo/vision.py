@@ -900,6 +900,7 @@ Functions:
 :meth:`~openpibo.vision.Detect.detect_pose`
 :meth:`~openpibo.vision.Detect.analyze_pose`
 :meth:`~openpibo.vision.Detect.classify_image`
+:meth:`~openpibo.vision.Detect.marker_detect`
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
@@ -943,6 +944,13 @@ Functions:
     self.cls_interpreter.allocate_tensors()
     self.cls_input_details = self.cls_interpreter.get_input_details()
     self.cls_output_details = self.cls_interpreter.get_output_details()
+    self.camera_matrix = np.array([
+      [1.42068235e+03,0.00000000e+00,9.49208512e+02],
+      [0.00000000e+00,1.37416685e+03,5.39622051e+02],
+      [0.00000000e+00,0.00000000e+00,1.00000000e+00]])
+    self.distortion_coeff = np.array([1.69926613e-01,-7.40003491e-01,-7.45655262e-03,-1.79442353e-03, 2.46650225e+00])
+    self.dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
+    self.parameters = cv2.aruco.DetectorParameters_create()
 
   def detect_object(self, img):
     """
@@ -1172,6 +1180,52 @@ Functions:
     x2 = int(pos.right())
     y2 = int(pos.bottom())
     return {'tracker':tracker, 'position':(x1, y1, x2, y2)}
+
+  def marker_detect(self, img, marker_length=0.02):
+    """
+    이미지 안의 마커를 인식합니다. # cv2.aruco.DICT_4X4_50
+
+    example::
+
+      img = pibo_camera.read()
+      result = pibo_detect.marker_detect(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :returns: ``[{"id": 마커번호, "center":  }, ...]``
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    corners, ids, _ = cv2.aruco.detectMarkers(img, self.dictionary, parameters=self.parameters)
+    res = []
+    if len(corners) > 0:
+      img = cv2.aruco.drawDetectedMarkers(img, corners, ids)
+      ids = ids.flatten()
+
+      for (corner, markerID) in zip(corners, ids):
+        rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(corner, marker_length, self.camera_matrix, self.distortion_coeff)
+        (topLeft, topRight, bottomRight, bottomLeft) = corner.reshape((4, 2))
+
+        topRight = (int(topRight[0]), int(topRight[1]))
+        topLeft = (int(topLeft[0]), int(topLeft[1]))
+        bottomRight = (int(bottomRight[0]), int(bottomRight[1]))
+        bottomLeft = (int(bottomLeft[0]), int(bottomLeft[1]))
+
+        cX = int((topLeft[0] + bottomRight[0]) / 2.0)
+        cY = int((topLeft[1] + bottomRight[1]) / 2.0)
+        distance = int(tvec[0][0][2] * 100) #[cm]
+
+        # cv2.line(img, topLeft, topRight, (255, 0, 0), 4)
+        # cv2.line(img, topRight, bottomRight, (255, 0, 0), 4)
+        # cv2.line(img, bottomRight, bottomLeft, (255, 0, 0), 4)
+        # cv2.line(img, bottomLeft, topLeft, (255, 0, 0), 4)
+        # cv2.circle(img, (cX, cY), 4, (0, 0, 255), -1)
+        # cv2.putText(img, str(markerID), (topLeft[0], topLeft[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        res.append({"id":markerID, "center": (cX, cY), "box": [topLeft, topRight, bottomRight, bottomLeft], "distance":distance})
+
+    return {"data":res, "img":img}
 
 class TeachableMachine:
   """
