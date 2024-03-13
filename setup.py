@@ -20,7 +20,7 @@ requirements = [
         'openpibo_models>=0.4.7',
         'openpibo_face_models>=0.4.3',
         'openpibo_detect_models>=0.4.4',
-        'openpibo_dlib_models>=0.4.1',
+        'openpibo_dlib_models>=0.4.2',
 ]
 
 test_requirements = [

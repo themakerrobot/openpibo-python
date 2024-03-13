@@ -558,7 +558,7 @@ Functions:
                 )
     #self.face_detector = cv2.CascadeClassifier(openpibo_face_models.filepath("haarcascade_frontalface_default.xml"))
     self.face_detector = dlib.get_frontal_face_detector()
-    self.predictor = dlib.shape_predictor(openpibo_dlib_models.filepath("shape_predictor_5_face_landmarks.dat"))
+    self.predictor = dlib.shape_predictor(openpibo_dlib_models.filepath("shape_predictor_68_face_landmarks.dat"))
     self.face_encoder = dlib.face_recognition_model_v1(openpibo_dlib_models.filepath("dlib_face_recognition_resnet_model_v1.dat"))
 
   def detect_face(self, img):
@@ -587,9 +587,44 @@ Functions:
     return [(d.left(), d.top(), d.right()-d.left(), d.bottom()-d.top()) for d in self.face_detector(img)]
     #return self.face_detector.detectMultiScale(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 1.1, 5) # [(x,y,w,h), ...]
 
+  def landmark_face(self, img):
+    """
+    얼굴의 랜드마크를 탐색합니다.
+
+    example::
+
+      img = pibo_camera.read()
+      pibo_face.landmark_face(img)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :returns: ``{"data": 인식한 결과, "img": landmark를 반영한 이미지 }``
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    res = []
+    rects = self.face_detector(img)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    for rect in rects:
+      #rect = dlib.rectangle(int(d.left()), int(d.top()), int(d.right()), int(d.bottom()))
+      shape = self.predictor(gray, rect)
+
+      coords = np.zeros((shape.num_parts, 2), dtype="int")
+      for i in range(0, shape.num_parts):
+        coords[i] = (shape.part(i).x, shape.part(i).y)
+        cv2.circle(img, (coords[i][0], coords[i][1]), 2, (50, 200, 50), -1)
+        cv2.putText(img, str(i+1), (coords[i][0]-10, coords[i][1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (50, 200, 50), 1)
+
+      res.append(coords)
+
+    return {"data":res, "img":img}
+
   def get_ageGender(self, img, face):
     """
-    얼굴의 나이, 성별을 추정합니다. (deprecate soon)
+    얼굴의 나이, 성별을 추정합니다.
 
     example::
 
@@ -1181,7 +1216,7 @@ Functions:
     y2 = int(pos.bottom())
     return {'tracker':tracker, 'position':(x1, y1, x2, y2)}
 
-  def marker_detect(self, img, marker_length=0.02):
+  def marker_detect(self, img, marker_length=2):
     """
     이미지 안의 마커를 인식합니다. # cv2.aruco.DICT_4X4_50
 
@@ -1198,6 +1233,7 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
+    marker_length /= 100
     corners, ids, _ = cv2.aruco.detectMarkers(img, self.dictionary, parameters=self.parameters)
     res = []
     if len(corners) > 0:
