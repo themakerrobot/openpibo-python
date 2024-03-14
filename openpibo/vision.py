@@ -1245,7 +1245,7 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
-    marker_length /= 100
+    marker_length /= 250
     corners, ids, _ = cv2.aruco.detectMarkers(img, self.dictionary, parameters=self.parameters)
     res = []
     if len(corners) > 0:
@@ -1263,7 +1263,7 @@ Functions:
 
         cX = int((topLeft[0] + bottomRight[0]) / 2.0)
         cY = int((topLeft[1] + bottomRight[1]) / 2.0)
-        distance = int(tvec[0][0][2] * 100) #[cm]
+        distance = round(tvec[0][0][2] * 100, 1) #[cm]
 
         # cv2.line(img, topLeft, topRight, (255, 0, 0), 4)
         # cv2.line(img, topRight, bottomRight, (255, 0, 0), 4)
