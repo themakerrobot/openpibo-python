@@ -264,7 +264,7 @@ Functions:
 
     :param tuple(int, int) p2: 우측하단 좌표 (x, y)
 
-    :param tuple(int, int, int) colors: RGB 값 (r, g, b)
+    :param tuple(int, int, int) colors: RGB 값 (r, g, b) or 16진수 값 '#ffffff'
 
     :param int tickness: 사각형 모서리의 두께 (픽셀 단위)
     """
@@ -283,6 +283,9 @@ Functions:
 
     if len(p2) != 2:
       raise Exception(f'len({p2}) must be 2')
+
+    if type(colors) is str:
+      colors = (int(colors[5:7], 16), int(colors[3:5], 16), int(colors[1:3], 16))
 
     if type(colors) is not tuple:
       raise Exception(f'"{colors}" must be tuple type')
@@ -307,7 +310,7 @@ Functions:
 
     :param int r: 반지름
 
-    :param tuple(int, int, int) colors: RGB 값 (r, g, b)
+    :param tuple(int, int, int) colors: RGB 값 (r, g, b) or 16진수 값 '#ffffff'
 
     :param int tickness: 사각형 모서리의 두께 (픽셀 단위)
     """
@@ -323,6 +326,9 @@ Functions:
 
     if type(r) is not int:
       raise Exception(f'len({r}) must be Integer type')
+
+    if type(colors) is str:
+      colors = (int(colors[5:7], 16), int(colors[3:5], 16), int(colors[1:3], 16))
 
     if type(colors) is not tuple:
       raise Exception(f'"{colors}" must be tuple type')
@@ -349,7 +355,7 @@ Functions:
 
     :param int size: 표시할 글자의 크기
 
-    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (b, g, r)
+    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (b, g, r) or 16진수 값 '#ffffff'
 
     """
     if not type(img) is np.ndarray:
@@ -360,6 +366,9 @@ Functions:
 
     if len(points) != 2:
       raise Exception(f'len({points}) must be 2')
+
+    if type(colors) is str:
+      colors = (int(colors[5:7], 16), int(colors[3:5], 16), int(colors[1:3], 16))
 
     if type(colors) is not tuple:
       raise Exception(f'"{colors}" must be tuple type')
@@ -389,7 +398,7 @@ Functions:
 
     :param int size: 표시할 글자의 크기
 
-    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (b, g, r)
+    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (r, g, b) or 16진수 값 '#ffffff'
 
     :param int tickness: 글자 두께
     """
@@ -402,6 +411,9 @@ Functions:
 
     if len(points) != 2:
       raise Exception(f'len({points}) must be 2')
+
+    if type(colors) is str:
+      colors = (int(colors[5:7], 16), int(colors[3:5], 16), int(colors[1:3], 16))
 
     if type(colors) is not tuple:
       raise Exception(f'"{colors}" must be tuple type')
@@ -1233,7 +1245,7 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
-    marker_length /= 100
+    marker_length /= 250
     corners, ids, _ = cv2.aruco.detectMarkers(img, self.dictionary, parameters=self.parameters)
     res = []
     if len(corners) > 0:
@@ -1251,7 +1263,7 @@ Functions:
 
         cX = int((topLeft[0] + bottomRight[0]) / 2.0)
         cY = int((topLeft[1] + bottomRight[1]) / 2.0)
-        distance = int(tvec[0][0][2] * 100) #[cm]
+        distance = round(tvec[0][0][2] * 100, 1) #[cm]
 
         # cv2.line(img, topLeft, topRight, (255, 0, 0), 4)
         # cv2.line(img, topRight, bottomRight, (255, 0, 0), 4)
