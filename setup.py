@@ -37,6 +37,7 @@ setup(
     packages            = find_packages(),
     install_requires    = requirements,
     keywords            = 'openpibo',
+    long_description_content_type = 'text/markdown',
     classifiers         = [
         'Natural Language :: English',
         'Programming Language :: Python :: 3.5',
