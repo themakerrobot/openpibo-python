@@ -1,9 +1,8 @@
 """
-`OpenCV` 라이브러리를 활용한 PIBO의 영상처리 관련 라이브러리입니다.
-
-카메라 기능, 얼굴 인식, 객체/바코드/문자 인식을 수행합니다.
+`OpenCV` 라이브러리를 활용한 영상처리, 인공지능 비전 기술을 사용합니다.
 
 Class:
+:meth:`~openpibo.vision.vision_api`
 :obj:`~openpibo.vision.Camera`
 :obj:`~openpibo.vision.Face`
 :obj:`~openpibo.vision.Detect`
@@ -31,17 +30,15 @@ def vision_api(mode, image, params={}):
 
   example::
 
-    from openpibo.vision import vision_api
-    from openpibo.vision import Camera
+    from openpibo.vision import vision_api, Camera
 
-    pibo_camera = Camera()
+    camera = Camera()
 
-    res = vision_api('caption/caption', pibo_camera.read(), {})
-    res = vision_api('caption/caption', "test.jpg", {})
+    res = vision_api('caption/caption', camera.read(), {})
 
   :param str mode: 호출할 비전 API
 
-  :param str/Mat image: 표시할 이미지 파일 경로 / 데이터(cv2)
+  :param str/numpy.ndarray image: 표시할 이미지 파일 경로 / 데이터(cv2)
 
   :returns: ``Json`` 타입 결과의 데이터
 
@@ -49,7 +46,7 @@ def vision_api(mode, image, params={}):
     
       { 'type': 'caption', 'result': 'ok', 
         'data': {
-          caption:  "사람에게 로봇을 과시하는 사람",
+          caption:  "사람에게 로봇을 과시하는 사람", 
           caption_en:  "a person showing off a robot to a person",
           raw:  [
             "a person showing off a robot to a person",
@@ -76,6 +73,7 @@ Functions:
 :meth:`~openpibo.vision.Camera.imwrite`
 :meth:`~openpibo.vision.Camera.rectangle`
 :meth:`~openpibo.vision.Camera.circle`
+:meth:`~openpibo.vision.Camera.line`
 :meth:`~openpibo.vision.Camera.putText`
 :meth:`~openpibo.vision.Camera.stylization`
 :meth:`~openpibo.vision.Camera.detailEnhance`
@@ -91,7 +89,7 @@ Functions:
 
     from openpibo.vision import Camera
 
-    pibo_camera = Camera()
+    camera = Camera()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
@@ -110,7 +108,7 @@ Functions:
 
     example::
 
-      pibo_camera.imread('/home/pi/openpibo-files/data/image/clear.png')
+      camera.imread('/home/pi/openpibo-files/data/image/clear.png')
 
     :param str filename: 사용할 이미지 파일
 
@@ -149,7 +147,7 @@ Functions:
 
     example::
 
-      pibo_camera.read()
+      camera.read()
 
     :returns: ``numpy.ndarray`` 타입 이미지 객체
     """
@@ -159,26 +157,26 @@ Functions:
     self.cap.grab()
     return self.cap.read()[1]
 
-  def imshow_to_ide(self, image):
+  def imshow_to_ide(self, img, ratio=0.25):
     """
     이미지 파일을 Web IDE에 출력합니다.
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.imshow_to_ide(img)
-      pibo_camera.imshow_to_ide('/home/pi/image.jpg')
+      img = camera.read()
+      camera.imshow_to_ide(img)
 
-    :param str/Mat image: 표시할 이미지 파일 경로 / 데이터(cv2)
+    :param numpy.ndarray img: 이미지 객체
 
-      확장자는 jpg 또는 png를 사용할 수 있습니다.
+    :param float ratio: 이미지 사이즈 변환 비율 (다수 동시 사용시, 네트워크 부하)
     """
 
-    if type(image) is np.ndarray:
-      requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', cv2.imencode('.jpg', image)[1].tobytes(), 'image/png')})
-    else:
-      # curl -X 'POST' -so /dev/null 'http://0.0.0.0:50000/show' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'data=@{filename};type=image/png'
-      requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', open(image, 'rb'), 'image/png')})
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    img = cv2.resize(img, (0, 0), fx=ratio, fy=ratio, interpolation=cv2.INTER_AREA)
+    # curl -X 'POST' -so /dev/null 'http://0.0.0.0:50000/show' -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'data=@{filename};type=image/png'
+    requests.post('http://0.0.0.0:50000/show', headers={'accept': 'application/json'}, files={'data': ('filename', cv2.imencode('.jpg', img)[1].tobytes(), 'image/png')})
 
   def resize (self, img, w, h):
     """
@@ -186,8 +184,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.resize(img, 128, 64)
+      img = camera.read()
+      camera.resize(img, 128, 64)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -206,8 +204,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.rotate(img, 10, 0.9)
+      img = camera.read()
+      camera.rotate(img, 10, 0.9)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -237,8 +235,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.imwrite('/home/pi/image.jpg', img)
+      img = camera.read()
+      camera.imwrite('/home/pi/image.jpg', img)
 
     :param str filename: 저장할 파일 경로
 
@@ -255,8 +253,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.rectangle(img, (10, 10), (300, 200), (255, 255, 255), 1)
+      img = camera.read()
+      camera.rectangle(img, (10, 10), (300, 200), (255, 255, 255), 1)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -301,8 +299,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.circle(img, (10, 10), (255, 255, 255), 1)
+      img = camera.read()
+      camera.circle(img, (10, 10), (255, 255, 255), 1)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -338,14 +336,60 @@ Functions:
 
     return cv2.circle(img, p, r, colors, tickness)
 
+  def line(self, img, p1, p2, colors=(255,255,255), tickness=1):
+    """
+    이미지에 직선을 그립니다.
+
+    example::
+
+      img = camera.read()
+      camera.line(img, (10, 10), (300, 200), (255, 255, 255), 1)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param tuple(int, int) p1: 시작 좌표 (x, y)
+
+    :param tuple(int, int) p2: 끝 좌표 (x, y)
+
+    :param tuple(int, int, int) colors: RGB 값 (r, g, b) or 16진수 값 '#ffffff'
+
+    :param int tickness: 선의 두께 (픽셀 단위)
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    if type(p1) is not tuple:
+      raise Exception(f'"{p1}" must be tuple type')
+
+    if len(p1) != 2:
+      raise Exception(f'len({p1}) must be 2')
+
+    if type(p2) is not tuple:
+      raise Exception(f'"{p2}" must be tuple type')
+
+    if len(p2) != 2:
+      raise Exception(f'len({p2}) must be 2')
+
+    if type(colors) is str:
+      colors = (int(colors[5:7], 16), int(colors[3:5], 16), int(colors[1:3], 16))
+
+    if type(colors) is not tuple:
+      raise Exception(f'"{colors}" must be tuple type')
+
+    if len(colors) != 3:
+      raise Exception(f'len({colors}) must be 3')
+
+    return cv2.line(img, p1, p2, colors, tickness)
+
   def putTextPIL(self, img, text, points, size=30, colors=(255,255,255)):
     """
     이미지에 문자를 입력합니다. (한/영 가능 - pillow 이용)
 
     example::
 
-      img = pibo_camera.read()
-      new_img = pibo_camera.putTextPIL(img, '안녕하세요.', (15, 10), 30, (255, 255, 255))
+      img = camera.read()
+      new_img = camera.putTextPIL(img, '안녕하세요.', (15, 10), 30, (255, 255, 255))
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -387,8 +431,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      new_img = pibo_camera.putText(img, 'hello', (15, 10), 10, (255, 255, 255), 1)
+      img = camera.read()
+      new_img = camera.putText(img, 'hello', (15, 10), 10, (255, 255, 255), 1)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -429,8 +473,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.stylization(img)
+      img = camera.read()
+      camera.stylization(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -452,8 +496,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.stylization(img)
+      img = camera.read()
+      camera.stylization(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -475,8 +519,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.sketchize(img)
+      img = camera.read()
+      camera.sketchize(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -500,8 +544,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_camera.edgePreservingFilter(img)
+      img = camera.read()
+      camera.edgePreservingFilter(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -551,7 +595,7 @@ Functions:
 
     from openpibo.vision import Face
 
-    pibo_face = Face()
+    face = Face()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
@@ -579,8 +623,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_face.detect_face(img)
+      img = camera.read()
+      face.detect_face(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -605,8 +649,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_face.landmark_face(img)
+      img = camera.read()
+      face.landmark_face(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -634,20 +678,20 @@ Functions:
 
     return {"data":res, "img":img}
 
-  def get_ageGender(self, img, face):
+  def get_ageGender(self, img, item):
     """
     얼굴의 나이, 성별을 추정합니다.
 
     example::
 
-      img = pibo_camera.read()
-      faces = pibo_face.detect_face(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.get_ageGender(img, face)
+      img = camera.read()
+      items = face.detect_face(img)
+      item = items[0] # item은 items 중 하나
+      face.get_ageGender(img, item)
 
     :param numpy.ndarray img: 이미지 객체
 
-    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
+    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)
 
     :returns: ``{"age": 나이, "gender": 성별}``
 
@@ -663,10 +707,10 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
+    if len(item) != 4:
+      raise Exception('"item" must be [x,y,w,h]')
 
-    x, y, w, h = face
+    x, y, w, h = item
     face_img = img[y:y+h, x:x+w].copy()
     blob = cv2.dnn.blobFromImage(face_img, scalefactor=1, size=(227, 227),
       mean=(78.4263377603, 87.7689143744, 114.895847746),
@@ -684,20 +728,20 @@ Functions:
 
     return {"age":age, "gender":gender}
 
-  def get_age(self, img, face):
+  def get_age(self, img, item):
     """
     얼굴의 나이를 추정합니다.
 
     example::
 
-      img = pibo_camera.read()
-      faces = pibo_face.detect_face(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.get_age(img, face)
+      img = camera.read()
+      items = face.detect_face(img)
+      item = items[0] # item는 items중 하나
+      face.get_age(img, item)
 
     :param numpy.ndarray img: 이미지 객체
 
-    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
+    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)
 
     :returns: ``나이 범위`` ``Raw데이터``
 
@@ -711,10 +755,10 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
+    if len(item) != 4:
+      raise Exception('"item" must be [x,y,w,h]')
 
-    x, y, w, h = face
+    x, y, w, h = item
     face_img = img[y:y+h, x:x+w].copy()
     blob = cv2.dnn.blobFromImage(face_img, scalefactor=1, size=(227, 227),
       mean=(78.4263377603, 87.7689143744, 114.895847746),
@@ -727,20 +771,20 @@ Functions:
 
     return age, age_preds[0]
 
-  def get_gender(self, img, face):
+  def get_gender(self, img, item):
     """
     얼굴의 성별을 추정합니다.
 
     example::
 
-      img = pibo_camera.read()
-      faces = pibo_face.detect_face(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.get_gender(img, face)
+      img = camera.read()
+      items = face.detect_face(img)
+      item = items[0] # item는 items중 하나
+      face.get_gender(img, item)
 
     :param numpy.ndarray img: 이미지 객체
 
-    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
+    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)
 
     :returns: ``성별`` ``Raw데이터``
 
@@ -752,10 +796,10 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv')
 
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
+    if len(item) != 4:
+      raise Exception('"item" must be [x,y,w,h]')
 
-    x, y, w, h = face
+    x, y, w, h = item
     face_img = img[y:y+h, x:x+w].copy()
     blob = cv2.dnn.blobFromImage(face_img, scalefactor=1, size=(227, 227),
       mean=(78.4263377603, 87.7689143744, 114.895847746),
@@ -776,25 +820,25 @@ Functions:
 
     example::
 
-      pibo_face.init_db()
+      face.init_db()
     """
 
     self.facedb = [[], []]
 
-  def train_face(self, img, face, name):
+  def train_face(self, img, item, name):
     """
     얼굴을 학습하여 얼굴 데이터베이스에 저장합니다.
 
     example::
 
-      img = pibo_camera.read()
-      faces = pibo_face.detect_face(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.train_face(img, face, 'honggildong')
+      img = camera.read()
+      items = face.detect_face(img)
+      item = items[0] # item는 items중 하나
+      face.train_face(img, item, 'honggildong')
 
     :param numpy.ndarray img: 이미지 객체
 
-    :param numpy.ndarray face: 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)
+    :param numpy.ndarray item: 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)
 
     :param str name: 디텍팅한 얼굴에 붙일 이름
     """
@@ -802,10 +846,10 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv') 
 
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
+    if len(item) != 4:
+      raise Exception('"item" must be [x,y,w,h]')
 
-    x,y,w,h = face
+    x,y,w,h = item
     rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     shape = self.predictor(gray, rect)
@@ -821,7 +865,7 @@ Functions:
 
     example::
 
-      pibo_face.delete_face('honggildong')
+      face.delete_face('honggildong')
 
     :param str name: 삭제할 얼굴의 이름
 
@@ -837,20 +881,20 @@ Functions:
 
     return ret
 
-  def recognize(self, img, face):
+  def recognize(self, img, item):
     """
     등록된 얼굴을 인식합니다.
 
     example::
 
-      img = pibo_camera.read()
-      faces = pibo_face.detect_face(img)
-      face = faces[0] # face는 faces중 하나
-      pibo_face.recognize(img, face)
+      img = camera.read()
+      items = face.detect_face(img)
+      item = items[0] # item는 items중 하나
+      face.recognize(img, item)
 
     :param numpy.ndarray img: 이미지 객체
 
-    :param numpy.ndarray face: 얼굴의 좌표 (x, y, w, h)
+    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)
 
     :returns: ``{"name": 이름, "score": 오차도}``
 
@@ -862,15 +906,15 @@ Functions:
     if not type(img) is np.ndarray:
       raise Exception('"img" must be image data from opencv') 
 
-    if len(face) != 4:
-      raise Exception('"face" must be [x,y,w,h]')
+    if len(item) != 4:
+      raise Exception('"item" must be [x,y,w,h]')
 
     if len(self.facedb[0]) < 1:
       return {"name":"Guest", "score":0}
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     data={"name":"Guest", "score":0}
-    (x,y,w,h) = face
+    (x,y,w,h) = item
     rect = dlib.rectangle(int(x), int(y), int(x+w), int(y+h))
     shape = self.predictor(gray, rect)
     face_encoding = np.array(self.face_encoder.compute_face_descriptor(img, shape, 1))
@@ -888,7 +932,7 @@ Functions:
 
     example::
 
-      pibo_face.get_db()
+      face.get_db()
 
     :returns: **facedb** (``list(list, list)`` 타입)
 
@@ -914,7 +958,7 @@ Functions:
 
     example::
 
-      pibo_face.save_db('/home/pi/facedb')
+      face.save_db('/home/pi/facedb')
 
     :param str filename: 저장할 얼굴 데이터베이스 파일의 경로입니다.
     """
@@ -928,7 +972,7 @@ Functions:
 
     example::
 
-      pibo_face.load_db('/home/pi/facedb')
+      face.load_db('/home/pi/facedb')
 
     :param str filename: 불러 올 ``facedb`` 파일의 경로입니다.
     """
@@ -947,7 +991,9 @@ Functions:
 :meth:`~openpibo.vision.Detect.detect_pose`
 :meth:`~openpibo.vision.Detect.analyze_pose`
 :meth:`~openpibo.vision.Detect.classify_image`
-:meth:`~openpibo.vision.Detect.marker_detect`
+:meth:`~openpibo.vision.Detect.object_tracker_init`
+:meth:`~openpibo.vision.Detect.track_object`
+:meth:`~openpibo.vision.Detect.detect_marker`
 
   인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.
 
@@ -960,7 +1006,7 @@ Functions:
 
     from openpibo.vision import Detect
 
-    pibo_detect = Detect()
+    detect = Detect()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
@@ -1021,8 +1067,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_detect.detect_object(img)
+      img = camera.read()
+      detect.detect_object(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -1066,8 +1112,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_detect.detect_qr(img)
+      img = camera.read()
+      detect.detect_qr(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -1096,8 +1142,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_detect.detect_pose(img)
+      img = camera.read()
+      detect.detect_pose(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -1117,9 +1163,9 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      result = pibo_detect.detect_pose(img)
-      pibo_detect.analyze_pose(result)
+      img = camera.read()
+      result = detect.detect_pose(img)
+      detect.analyze_pose(result)
 
     :param dict data: 이미지 객체
 
@@ -1151,8 +1197,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_detect.classify_image(img)
+      img = camera.read()
+      detect.classify_image(img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -1187,8 +1233,8 @@ Functions:
 
     example::
 
-      img = pibo_camera.read()
-      pibo_detect.object_tracker_init(img)
+      img = camera.read()
+      detect.object_tracker_init(img)
 
     :param numpy.ndarray img: 이미지 객체
     """
@@ -1201,15 +1247,15 @@ Functions:
     tracker.start_track(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), dlib.rectangle(x1,y1,x2,y2))
     return tracker
 
-  def object_track(self, tracker, img):
+  def track_object(self, tracker, img):
     """
     이미지 안의 사물 트래커를 설정합니다.
 
     example::
 
-      img = pibo_camera.read()
-      tracker = pibo_detect.object_tracker_init(img, (10,10,100,100))
-      tracker, position = pibo_detect.object_track(tracker, img)
+      img = camera.read()
+      tracker = detect.object_tracker_init(img, (10,10,100,100))
+      tracker, position = detect.track_object(tracker, img)
 
     :param numpy.ndarray img: 이미지 객체
 
@@ -1228,14 +1274,14 @@ Functions:
     y2 = int(pos.bottom())
     return {'tracker':tracker, 'position':(x1, y1, x2, y2)}
 
-  def marker_detect(self, img, marker_length=2):
+  def detect_marker(self, img, marker_length=2):
     """
     이미지 안의 마커를 인식합니다. # cv2.aruco.DICT_4X4_50
 
     example::
 
-      img = pibo_camera.read()
-      result = pibo_detect.marker_detect(img)
+      img = camera.read()
+      result = detect.detect_marker(img)
 
     :param numpy.ndarray img: 이미지 객체
 

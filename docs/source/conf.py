@@ -17,8 +17,8 @@ from openpibo import __version__ as VERSION
 
 # -- Project information -----------------------------------------------------
 
-project = 'openpibo'
-copyright = f'2023 THE MAKER. All rights reserved. openpibo-python-{VERSION}'
+project = 'OPENPIBO'
+copyright = f'2024 THE MAKER. All rights reserved. openpibo-python-{VERSION}'
 author = 'Circulus'
 
 # The full version, including alpha/beta/rc tags
@@ -34,7 +34,12 @@ html_baseurl = 'https://themakerrobot.github.io/openpibo-python/'
 extensions = [
     'myst_parser',
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosectionlabel',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinx_copybutton',
+    'sphinx_rtd_theme'
 ]
 source_suffix = {
     '.rst': 'restructuredtext',
@@ -68,4 +73,5 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
+html_static_path = ['_static']
+html_css_files = ['mycss.css']

@@ -1,7 +1,5 @@
 """
-인터넷에서 유용한 정보를 가져옵니다.
-
-**단어정보, 날씨 정보, 뉴스 정보** 를 가져올 수 있습니다.
+인터넷에서 **위키 검색 정보, 날씨 정보, 뉴스 정보** 를 가져올 수 있습니다.
 
 Class:
 :obj:`~openpibo.collect.Wikipedia`
@@ -25,7 +23,7 @@ Functions:
 
         from openpibo.collect import Wikipedia
 
-        pibo_wiki = Wikipedia()
+        wiki = Wikipedia()
         # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
     """
     def search(self, search_text: str):
@@ -34,7 +32,7 @@ Functions:
 
         example::
 
-            result = pibo_wiki.search('강아지')
+            result = wiki.search('강아지')
 
         :param str search_text: 위키백과에서의 검색어
 
@@ -93,7 +91,7 @@ Functions:
 
         example::
 
-            result = pibo_wiki.search_s('강아지')
+            result = wiki.search_s('강아지')
 
         :param str search_text: 위키백과에서의 검색어
 
@@ -126,7 +124,7 @@ Functions:
 
         from openpibo.collect import Weather
 
-        pibo_weather = Weather()
+        weather = Weather()
         # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
     """
     region_list = {
@@ -159,7 +157,7 @@ Functions:
 
         example::
 
-            result = pibo_weather.search('서울')
+            result = weather.search('서울')
 
         :param str search_region: 검색 가능한 지역 (default: 전국)
 
@@ -236,7 +234,7 @@ Functions:
 
         example::
 
-            result = pibo_weather.search_s('서울')
+            result = weather.search_s('서울')
 
         :param str search_region: 검색 가능한 지역 (default: 전국)
 
@@ -285,7 +283,7 @@ Functions:
 
         from openpibo.collect import News
 
-        pibo_news = News()
+        news = News()
         # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
     """
     topic_list = {
@@ -314,7 +312,7 @@ Functions:
 
         example::
 
-            result = pibo_news.search('속보')
+            result = news.search('속보')
 
         :param str search_topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
 
@@ -362,7 +360,7 @@ Functions:
 
         example::
 
-            result = pibo_news.search_s('속보')
+            result = news.search_s('속보')
 
         :param str search_topic: 검색 가능한 뉴스 주제 (default: 뉴스랭킹)
 

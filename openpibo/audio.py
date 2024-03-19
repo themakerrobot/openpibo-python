@@ -1,5 +1,5 @@
 """
-mp3, wav 오디오 파일을 재생 및 정지합니다.
+mp3, wav 오디오 파일을 재생, 정지하고 마이크로 소리를 녹음합니다.
 
 Class:
 :obj:`~openpibo.audio.Audio`
@@ -25,7 +25,7 @@ Functions:
 
     from openpibo.audio import Audio
 
-    pibo_audio = Audio()
+    audio = Audio()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
   # volume: 0 ~ 100
@@ -39,7 +39,7 @@ Functions:
 
     example::
 
-      pibo_audio.play('/home/pi/openpibo-files/audio/test.mp3', 80, True)
+      audio.play('/home/pi/openpibo-files/audio/test.mp3', 80, True)
 
     :param str filename: 재생할 파일의 경로를 지정합니다.
 
@@ -89,7 +89,7 @@ Functions:
 
     example::
 
-      pibo_audio.stop()
+      audio.stop()
     """
 
     os.system('sudo pkill play')
@@ -103,7 +103,7 @@ Functions:
 
     example::
 
-      pibo_audio.mute(True)
+      audio.mute(True)
 
     :param bool value:
 
@@ -123,7 +123,7 @@ Functions:
 
     example::
 
-      pibo_audio.record('/home/pi/test.wav', 5)
+      audio.record('/home/pi/test.wav', 5)
 
     :param str filename: 녹음한 파일이 저장 될 경로. ``wav`` 확장자를 사용합니다.
 

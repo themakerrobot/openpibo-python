@@ -19,6 +19,15 @@ import openpibo_models
 #current_path = os.path.dirname(os.path.realpath(__file__))
 
 def speech_api(mode, type, params={}, json_data={}):
+  """
+  인공지능 보이스 API를 호출합니다.
+
+  example::
+
+    from openpibo.speech import speech_api
+
+    res = speech_api(...)
+  """
   if type == "GET":
     return requests.get(f"{napi_host}/{mode}", params=params)
   elif type == "POST":
@@ -37,7 +46,7 @@ Functions:
 
     from openpibo.speech import Speech
 
-    pibo_speech = Speech()
+    speech = Speech()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
@@ -52,7 +61,7 @@ Functions:
 
     example::
 
-      pibo_speech.tts('안녕하세요! 만나서 반가워요!', 'main', 'ko', '/home/pi/tts.mp3')
+      speech.tts('안녕하세요! 만나서 반가워요!', 'main', 'ko', '/home/pi/tts.mp3')
 
     :param str string: 변환할 문장구
 
@@ -109,7 +118,7 @@ Functions:
 
     example::
 
-      pibo_speech2.stt('/home/pi/stt.wav', 5)
+      speech.stt('/home/pi/stt.wav', 5)
 
     :param str filename: 녹음한 파일이 저장 될 경로. ``wav`` 확장자를 사용합니다.
 
@@ -160,7 +169,7 @@ Functions:
 
     from openpibo.speech import Dialog
 
-    pibo_dialog = Dialog()
+    dialog = Dialog()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
@@ -176,7 +185,7 @@ Functions:
 
     example::
 
-      pibo_dialog.load('/home/pi/dialog.csv')
+      dialog.load('/home/pi/dialog.csv')
 
     :param str string: 대화 데이터 파일 경로(csv)
 
@@ -198,7 +207,7 @@ Functions:
 
     example::
 
-      pibo_dialog.reset()
+      dialog.reset()
 
     """
 
@@ -211,7 +220,7 @@ Functions:
 
     exmaple::
 
-      pibo_dialog.mecab_pos('아버지가 방에 들어가셨다.')
+      dialog.mecab_pos('아버지가 방에 들어가셨다.')
       # [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어가', 'VV'), ('셨', 'EP+EP'), ('다', 'EF'), ('.', 'SF')]
 
     :param str string: 분석할 문장 (한글)
@@ -230,7 +239,7 @@ Functions:
 
     exmaple::
 
-      pibo_dialog.mecab_morphs('아버지가 방에 들어가셨다.')
+      dialog.mecab_morphs('아버지가 방에 들어가셨다.')
       # ['아버지', '가', '방', '에', '들어가', '셨', '다', '.']
 
     :param str string: 분석할 문장 (한글)
@@ -249,7 +258,7 @@ Functions:
 
     exmaple::
 
-      pibo_dialog.mecab_nouns('아버지가 방에 들어가셨다.')
+      dialog.mecab_nouns('아버지가 방에 들어가셨다.')
       # ['아버지', '방']
 
     :param str string: 분석할 문장 (한글)
@@ -268,7 +277,7 @@ Functions:
 
     exmaple::
 
-      pibo_dialog.ngram('아버지가 방에 들어가셨다.')
+      dialog.ngram('아버지가 방에 들어가셨다.')
       # ['아버지가', '방에', '들어가셨다.']
 
     :param str string: 분석할 문장
@@ -289,7 +298,7 @@ Functions:
 
     exmaple::
 
-      pibo_dialog.diff_ngram('아버지가 방에 들어가셨다.' '어머니가 방에 들어가셨다.')
+      dialog.diff_ngram('아버지가 방에 들어가셨다.' '어머니가 방에 들어가셨다.')
       # 0.6923076923076923
 
     :param str string: 비교할 문장A
@@ -322,7 +331,7 @@ Functions:
 
     example::
 
-      pibo_dialog.get_dialog('나랑 같이 놀자')
+      dialog.get_dialog('나랑 같이 놀자')
 
     :param str string: 질문하는 문장
     
@@ -353,7 +362,7 @@ Functions:
 
     example::
 
-      pibo_dialog.translate('안녕하세요! 만나서 정말 반가워요!')
+      dialog.translate('안녕하세요! 만나서 정말 반가워요!')
       # "Hi! Nice to meet you!"
 
     :param str string: 번역할 문장
@@ -374,7 +383,7 @@ Functions:
 
     example::
 
-      pibo_dialog.get_dialog_ml('나랑 같이 놀자')
+      dialog.get_dialog_ml('나랑 같이 놀자')
 
     :param str string: 질문하는 문장 (한글)
 
@@ -403,7 +412,7 @@ Functions:
 
     example::
 
-      pibo_dialog.nlp_ml('안녕하세요. 오늘 매우 즐거워요', 'ner')
+      dialog.nlp_ml('안녕하세요. 오늘 매우 즐거워요', 'ner')
 
     :param str string: 분석할 문장
 

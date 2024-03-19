@@ -1,66 +1,8 @@
 """
-PIBO의 움직임을 제어합니다.
+서보 모터를 제어하고, 모션을 생성합니다.
 
 Class:
 :obj:`~openpibo.motion.Motion`
-
-:모터 번호당 위치:
-
-  * 0번 : 'Right Foot'
-  * 1번 : 'Right Leg'
-  * 2번 : 'Right Arm'
-  * 3번 : 'Right Hand'
-  * 4번 : 'Head Pan'
-  * 5번 : 'Head Tilt'
-  * 6번 : 'Left Foot'
-  * 7번 : 'Left Leg'
-  * 8번 : 'Left Arm'
-  * 9번 : 'Left Hand'
-
-  **(파이보 기준으로 Right, Left 입니다.)**
-
-:모터 제한 각도: 각 모터가 회전할 수 있는 범위가 제한되어있습니다.
-
-  * 0번 : ± 25˚
-  * 1번 : ± 35˚
-  * 2번 : ± 80˚
-  * 3번 : ± 30˚
-  * 4번 : ± 50˚
-  * 5번 : ± 25˚
-  * 6번 : ± 25˚
-  * 7번 : ± 35˚
-  * 8번 : ± 80˚
-  * 9번 : ± 30˚
-
-:모션 데이터베이스: 모션 데이터가 저장되어있는 JSON형태의 데이터입니다.
-
-  모션 데이터베이스는 다음 형식을 갖추고 있습니다::
-
-    {
-      "name": {
-        "comment":"description of this motion",
-        "init_def":0,
-        "init":[0,0,-70,-25,0,0,0,0,70,25],
-        "pos":[
-          { "d": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] , "seq": 0 }
-        ]
-      }
-    }
-
-:모션 프로파일: 모션 데이터베이스로부터 가져온 모션 데이터를 인스턴스에 저장한 것. ``set_motion`` 메소드로 프로파일 내의 동작을 수행할 수 있습니다.
-
-  모션 프로파일은 각 인스턴스에 저장되며, 인스턴스 초기화 시 인스턴스 변수 ``profile`` 에 기본 모션 데이터베이스가 저장됩니다.
-
-  기본 모션 데이터베이스 내 모션 리스트::
-
-    stop, stop_body, sleep, lookup, left, left_half, right, right_half,
-    foward1-2, backward1-2, step1-2, hifive, cheer1-3, wave1-6, think1-4,
-    wake_up1-3, hey1-2, yes_h, no_h, breath1-3, breath_long, head_h,
-    spin_h, clapping1-2, hankshaking, bow, greeting, hand1-4, foot1-2,
-    speak1-2, speak_n1-2, speak_q, speak_r1-2, speak_l1-2, welcome,
-    happy1-3, excite1-2, boring1-2, sad1-3, handup_r, handup_l, look_r,
-    look_l, dance1-5, motion_test, test1-4
-    # foward1-2는 forward1, forward2 두 종류가 있음을 의미합니다.
 """
 import time
 import os
@@ -90,9 +32,58 @@ Functions:
 
     from openpibo.motion import Motion
 
-    pibo_motion = Motion()
+    motion = Motion()
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
+
+
+  """
+서보 모터 정보::
+
+  *모터 번호당 위치 / 제학 각도
+    * 0번 : 'Right Foot' / ± 25˚
+    * 1번 : 'Right Leg'  / ± 35˚
+    * 2번 : 'Right Arm'  / ± 80˚
+    * 3번 : 'Right Hand' / ± 30˚
+    * 4번 : 'Head Pan'   / ± 50˚
+    * 5번 : 'Head Tilt'  / ± 25˚
+    * 6번 : 'Left Foot'  / ± 25˚
+    * 7번 : 'Left Leg'   / ± 35˚
+    * 8번 : 'Left Arm'   / ± 80˚
+    * 9번 : 'Left Hand'  / ± 30˚
+
+    **(파이보 기준으로 Right, Left 입니다.)**
+
+  *모션 데이터베이스: 모션 데이터가 저장되어있는 JSON형태의 데이터입니다.
+  
+    * 모션 데이터베이스는 다음 형식을 갖추고 있습니다
+
+      {
+        "name": {
+          "comment":"description of this motion",
+          "init_def":0,
+          "init":[0,0,-70,-25,0,0,0,0,70,25],
+          "pos":[
+            { "d": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] , "seq": 0 }
+          ]
+        }
+      }
+
+  *모션 프로파일: 내장된 모션 프로파일 ``set_motion`` 메소드로 프로파일 내의 동작을 수행할 수 있습니다.
+
+    모션 프로파일은 각 인스턴스에 저장되며, 인스턴스 초기화 시 인스턴스 변수 ``profile`` 에 기본 모션 데이터베이스가 저장됩니다.
+
+    기본 모션 데이터베이스 내 모션 리스트::
+
+      stop, stop_body, sleep, lookup, left, left_half, right, right_half,
+      foward1-2, backward1-2, step1-2, hifive, cheer1-3, wave1-6, think1-4,
+      wake_up1-3, hey1-2, yes_h, no_h, breath1-3, breath_long, head_h,
+      spin_h, clapping1-2, hankshaking, bow, greeting, hand1-4, foot1-2,
+      speak1-2, speak_n1-2, speak_q, speak_r1-2, speak_l1-2, welcome,
+      happy1-3, excite1-2, boring1-2, sad1-3, handup_r, handup_l, look_r,
+      look_l, dance1-5, motion_test, test1-4
+      # foward1-2는 forward1, forward2 두 종류가 있음을 의미합니다.
+    """
 
   def __init__(self):
     """Motion 클래스 초기화"""
@@ -108,7 +99,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_motor(2, 30)
+      motion.set_motor(2, 30)
 
     :param int n: 모터 번호
 
@@ -141,7 +132,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_motors([0, 0, -80, 0, 0, 0, 0, 0, 80, 0])
+      motion.set_motors([0, 0, -80, 0, 0, 0, 0, 0, 80, 0])
 
     :param list positions: 0-9번 모터 각도 배열
 
@@ -171,7 +162,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_speed(3, 255)
+      motion.set_speed(3, 255)
 
     :param int n: 모터 번호
 
@@ -201,7 +192,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_speeds([20, 50, 40, 20, 20, 10, 20, 50, 40, 20])
+      motion.set_speeds([20, 50, 40, 20, 20, 10, 20, 50, 40, 20])
 
     :param list speeds: 0-9번 모터 속도 배열
 
@@ -222,7 +213,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_acceleration(3, 5)
+      motion.set_acceleration(3, 5)
 
     :param int n: 모터 번호
 
@@ -252,7 +243,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_accelerations([5, 5, 5, 5, 10, 10, 5, 5, 5, 5])
+      motion.set_accelerations([5, 5, 5, 5, 10, 10, 5, 5, 5, 5])
 
     :param list accels: 0-9번 모터 가속도 배열
 
@@ -273,7 +264,7 @@ Functions:
 
     example::
 
-      pibo_motion.get_motion('forward1')
+      motion.get_motion('forward1')
 
     :param str name: 동작 이름
 
@@ -287,16 +278,16 @@ Functions:
 
       * ``name == None`` 인 경우::
 
-          # pibo_motion.get_motion()
-          # pibo_motion.get_motion(path='/home/pi/mymotion.json')
+          # motion.get_motion()
+          # motion.get_motion(path='/home/pi/mymotion.json')
 
           ['stop', 'stop_body', 'sleep', 'lookup', 'left', 'left_half',
           'right', 'right_half', 'forward1', 'forward2', ...]
 
       * ``name != None`` 인 경우::
 
-          # pibo_motion.get_motion('stop')
-          # pibo_motion.get_motion('stop', path='/home/pi/mymotion.json')
+          # motion.get_motion('stop')
+          # motion.get_motion('stop', path='/home/pi/mymotion.json')
 
           {
             'comment': 'stop',
@@ -319,7 +310,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_motion_raw(
+      motion.set_motion_raw(
         {'init_def': 1, 'init': [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]},
         1
       )
@@ -388,8 +379,8 @@ Functions:
 
     example::
 
-      pibo_motion.set_motion('dance1')
-      #pibo_motion.set_motion('dance1', path='/home/pi/mymotion.json')
+      motion.set_motion('dance1')
+      #motion.set_motion('dance1', path='/home/pi/mymotion.json')
 
     :param str name: 동작 이름
 
@@ -422,7 +413,7 @@ Functions:
 
     example::
 
-      pibo_motion.set_mymotion('test')
+      motion.set_mymotion('test')
 
     :param str name: 동작 이름
 
@@ -442,6 +433,6 @@ Functions:
     example::
 
       # 동작을 수행 중일 때,
-      pibo_motion.stop()
+      motion.stop()
     """
     self.stopped = True

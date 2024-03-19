@@ -4,9 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vision &mdash; openpibo 0.9.2.61 documentation</title>
+  <title>vision &mdash; OPENPIBO 0.9.2.61.dev documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mycss.css" type="text/css" />
     <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/libraries/vision.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -16,6 +18,8 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
         <script src="../_static/translations.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="색인" href="../genindex.html" />
@@ -28,7 +32,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> openpibo
+            <a href="../index.html" class="icon icon-home"> OPENPIBO
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -40,9 +44,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notes/usage.html">사용법</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notes/structure.html">라이브러리 구조</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notes/pibo_device.html">PIBO Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/hardware.html">하드웨어</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
 <ul class="current">
@@ -61,7 +64,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">openpibo</a>
+          <a href="../index.html">OPENPIBO</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -81,32 +84,30 @@
              
   <section id="module-openpibo.vision">
 <span id="vision"></span><h1>vision<a class="headerlink" href="#module-openpibo.vision" title="제목 주소"></a></h1>
-<p><cite>OpenCV</cite> 라이브러리를 활용한 PIBO의 영상처리 관련 라이브러리입니다.</p>
-<p>카메라 기능, 얼굴 인식, 객체/바코드/문자 인식을 수행합니다.</p>
+<p><cite>OpenCV</cite> 라이브러리를 활용한 영상처리, 인공지능 비전 기술을 사용합니다.</p>
 <p>Class:
+<a class="reference internal" href="#openpibo.vision.vision_api" title="openpibo.vision.vision_api"><code class="xref py py-meth docutils literal notranslate"><span class="pre">vision_api()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Camera" title="openpibo.vision.Camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Camera</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Face" title="openpibo.vision.Face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Face</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Detect" title="openpibo.vision.Detect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Detect</span></code></a>
 <a class="reference internal" href="#openpibo.vision.TeachableMachine" title="openpibo.vision.TeachableMachine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TeachableMachine</span></code></a></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="openpibo.vision.vision_api">
-<span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">vision_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.vision_api" title="정의 주소"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">vision_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#vision_api"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.vision_api" title="정의 주소"></a></dt>
 <dd><p>인공지능 비전 API를 호출합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">vision_api</span>
-<span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">vision_api</span><span class="p">,</span> <span class="n">Camera</span>
 
-<span class="n">pibo_camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+<span class="n">camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
 
-<span class="n">res</span> <span class="o">=</span> <span class="n">vision_api</span><span class="p">(</span><span class="s1">&#39;caption/caption&#39;</span><span class="p">,</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="p">{})</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">vision_api</span><span class="p">(</span><span class="s1">&#39;caption/caption&#39;</span><span class="p">,</span> <span class="s2">&quot;test.jpg&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">vision_api</span><span class="p">(</span><span class="s1">&#39;caption/caption&#39;</span><span class="p">,</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="p">{})</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode</strong> (<em>str</em>) – 호출할 비전 API</p></li>
-<li><p><strong>image</strong> (<em>str/Mat</em>) – 표시할 이미지 파일 경로 / 데이터(cv2)</p></li>
+<li><p><strong>image</strong> (<em>str/numpy.ndarray</em>) – 표시할 이미지 파일 경로 / 데이터(cv2)</p></li>
 </ul>
 </dd>
 <dt class="field-even">반환</dt>
@@ -114,7 +115,7 @@
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;caption&#39;</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> 
   <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="n">caption</span><span class="p">:</span>  <span class="s2">&quot;사람에게 로봇을 과시하는 사람&quot;</span><span class="p">,</span>
+    <span class="n">caption</span><span class="p">:</span>  <span class="s2">&quot;사람에게 로봇을 과시하는 사람&quot;</span><span class="p">,</span> 
     <span class="n">caption_en</span><span class="p">:</span>  <span class="s2">&quot;a person showing off a robot to a person&quot;</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span>  <span class="p">[</span>
       <span class="s2">&quot;a person showing off a robot to a person&quot;</span><span class="p">,</span>
@@ -132,7 +133,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.vision.Camera">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera" title="정의 주소"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <a class="reference internal" href="#openpibo.vision.Camera.imread" title="openpibo.vision.Camera.imread"><code class="xref py py-meth docutils literal notranslate"><span class="pre">imread()</span></code></a>
@@ -143,6 +144,7 @@
 <a class="reference internal" href="#openpibo.vision.Camera.imwrite" title="openpibo.vision.Camera.imwrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">imwrite()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Camera.rectangle" title="openpibo.vision.Camera.rectangle"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rectangle()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Camera.circle" title="openpibo.vision.Camera.circle"><code class="xref py py-meth docutils literal notranslate"><span class="pre">circle()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Camera.line" title="openpibo.vision.Camera.line"><code class="xref py py-meth docutils literal notranslate"><span class="pre">line()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Camera.putText" title="openpibo.vision.Camera.putText"><code class="xref py py-meth docutils literal notranslate"><span class="pre">putText()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Camera.stylization" title="openpibo.vision.Camera.stylization"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stylization()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Camera.detailEnhance" title="openpibo.vision.Camera.detailEnhance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detailEnhance()</span></code></a>
@@ -157,17 +159,17 @@
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Camera</span>
 
-<span class="n">pibo_camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
+<span class="n">camera</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.imread">
-<span class="sig-name descname"><span class="pre">imread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.imread" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">imread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.imread"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.imread" title="정의 주소"></a></dt>
 <dd><p>이미지 파일을 읽습니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_camera</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo-files/data/image/clear.png&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">camera</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;/home/pi/openpibo-files/data/image/clear.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -205,11 +207,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.read" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.read"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.read" title="정의 주소"></a></dt>
 <dd><p>카메라를 통해 이미지를 촬영합니다.</p>
 <p>해상도 변경 시 이미지가 깨질 수 있으므로, 기본 해상도를 권장합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -221,30 +223,27 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.imshow_to_ide">
-<span class="sig-name descname"><span class="pre">imshow_to_ide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.imshow_to_ide" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">imshow_to_ide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.imshow_to_ide"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.imshow_to_ide" title="정의 주소"></a></dt>
 <dd><p>이미지 파일을 Web IDE에 출력합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">imshow_to_ide</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">imshow_to_ide</span><span class="p">(</span><span class="s1">&#39;/home/pi/image.jpg&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">imshow_to_ide</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
-<dd class="field-odd"><p><strong>image</strong> (<em>str/Mat</em>) – <p>표시할 이미지 파일 경로 / 데이터(cv2)</p>
-<p>확장자는 jpg 또는 png를 사용할 수 있습니다.</p>
-</p>
+<dd class="field-odd"><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.resize">
-<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.resize" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.resize"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.resize" title="정의 주소"></a></dt>
 <dd><p>Opencv 이미지의 크기를 변환합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -263,11 +262,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.rotate">
-<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.rotate" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.rotate"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.rotate" title="정의 주소"></a></dt>
 <dd><p>이미지를 회전시킵니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -286,11 +285,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.imwrite">
-<span class="sig-name descname"><span class="pre">imwrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.imwrite" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">imwrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.imwrite"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.imwrite" title="정의 주소"></a></dt>
 <dd><p>이미지를 파일로 저장합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;/home/pi/image.jpg&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;/home/pi/image.jpg&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -307,11 +306,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.rectangle">
-<span class="sig-name descname"><span class="pre">rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.rectangle" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.rectangle"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.rectangle" title="정의 주소"></a></dt>
 <dd><p>이미지에 직사각형을 그립니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -329,11 +328,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.circle">
-<span class="sig-name descname"><span class="pre">circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.circle" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.circle"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.circle" title="정의 주소"></a></dt>
 <dd><p>이미지에 직사각형을 그립니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -350,12 +349,34 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="openpibo.vision.Camera.line">
+<span class="sig-name descname"><span class="pre">line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.line"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.line" title="정의 주소"></a></dt>
+<dd><p>이미지에 직선을 그립니다.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">매개 변수</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p></li>
+<li><p><strong>p1</strong> (<em>tuple</em><em>(</em><em>int</em><em>, </em><em>int</em><em>)</em>) – 시작 좌표 (x, y)</p></li>
+<li><p><strong>p2</strong> (<em>tuple</em><em>(</em><em>int</em><em>, </em><em>int</em><em>)</em>) – 끝 좌표 (x, y)</p></li>
+<li><p><strong>colors</strong> (<em>tuple</em><em>(</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>)</em>) – RGB 값 (r, g, b) or 16진수 값 ‘#ffffff’</p></li>
+<li><p><strong>tickness</strong> (<em>int</em>) – 선의 두께 (픽셀 단위)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.putTextPIL">
-<span class="sig-name descname"><span class="pre">putTextPIL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.putTextPIL" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">putTextPIL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.putTextPIL"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.putTextPIL" title="정의 주소"></a></dt>
 <dd><p>이미지에 문자를 입력합니다. (한/영 가능 - pillow 이용)</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">new_img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">putTextPIL</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;안녕하세요.&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">new_img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">putTextPIL</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;안녕하세요.&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -373,11 +394,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.putText">
-<span class="sig-name descname"><span class="pre">putText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.putText" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">putText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.putText"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.putText" title="정의 주소"></a></dt>
 <dd><p>이미지에 문자를 입력합니다. (영어만 가능)</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">new_img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">new_img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -396,11 +417,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.stylization">
-<span class="sig-name descname"><span class="pre">stylization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.stylization" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">stylization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.stylization"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.stylization" title="정의 주소"></a></dt>
 <dd><p>만화 이미지로 변환합니다. (opencv api) low speed</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -419,11 +440,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.detailEnhance">
-<span class="sig-name descname"><span class="pre">detailEnhance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.detailEnhance" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">detailEnhance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.detailEnhance"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.detailEnhance" title="정의 주소"></a></dt>
 <dd><p>만화 이미지로 변환합니다. (opencv api)</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -442,11 +463,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.pencilSketch">
-<span class="sig-name descname"><span class="pre">pencilSketch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shade_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.018</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.pencilSketch" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">pencilSketch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shade_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.018</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.pencilSketch"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.pencilSketch" title="정의 주소"></a></dt>
 <dd><p>스케치 이미지로 변환합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">sketchize</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">sketchize</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -466,11 +487,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Camera.edgePreservingFilter">
-<span class="sig-name descname"><span class="pre">edgePreservingFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Camera.edgePreservingFilter" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">edgePreservingFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Camera.edgePreservingFilter"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Camera.edgePreservingFilter" title="정의 주소"></a></dt>
 <dd><p>흐림 이미지로 변환합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_camera</span><span class="o">.</span><span class="n">edgePreservingFilter</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">camera</span><span class="o">.</span><span class="n">edgePreservingFilter</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -492,7 +513,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.vision.Face">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Face</span></span><a class="headerlink" href="#openpibo.vision.Face" title="정의 주소"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Face</span></span><a class="reference internal" href="../_modules/openpibo/vision.html#Face"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">detect()</span></code>
@@ -524,18 +545,18 @@
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Face</span>
 
-<span class="n">pibo_face</span> <span class="o">=</span> <span class="n">Face</span><span class="p">()</span>
+<span class="n">face</span> <span class="o">=</span> <span class="n">Face</span><span class="p">()</span>
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.detect_face">
-<span class="sig-name descname"><span class="pre">detect_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.detect_face" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">detect_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.detect_face"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.detect_face" title="정의 주소"></a></dt>
 <dd><p>얼굴을 탐색합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -556,11 +577,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.landmark_face">
-<span class="sig-name descname"><span class="pre">landmark_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.landmark_face" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">landmark_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.landmark_face"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.landmark_face" title="정의 주소"></a></dt>
 <dd><p>얼굴의 랜드마크를 탐색합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">landmark_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">face</span><span class="o">.</span><span class="n">landmark_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -575,20 +596,20 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.get_ageGender">
-<span class="sig-name descname"><span class="pre">get_ageGender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.get_ageGender" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">get_ageGender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.get_ageGender"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.get_ageGender" title="정의 주소"></a></dt>
 <dd><p>얼굴의 나이, 성별을 추정합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="n">pibo_face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># face는 faces중 하나</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">get_ageGender</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># item은 items 중 하나</span>
+<span class="n">face</span><span class="o">.</span><span class="n">get_ageGender</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p></li>
-<li><p><strong>face</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
+<li><p><strong>item</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
 </ul>
 </dd>
 <dt class="field-even">반환</dt>
@@ -607,20 +628,20 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.get_age">
-<span class="sig-name descname"><span class="pre">get_age</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.get_age" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">get_age</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.get_age"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.get_age" title="정의 주소"></a></dt>
 <dd><p>얼굴의 나이를 추정합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="n">pibo_face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># face는 faces중 하나</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">get_age</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># item는 items중 하나</span>
+<span class="n">face</span><span class="o">.</span><span class="n">get_age</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p></li>
-<li><p><strong>face</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
+<li><p><strong>item</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
 </ul>
 </dd>
 <dt class="field-even">반환</dt>
@@ -638,20 +659,20 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.get_gender">
-<span class="sig-name descname"><span class="pre">get_gender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.get_gender" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">get_gender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.get_gender"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.get_gender" title="정의 주소"></a></dt>
 <dd><p>얼굴의 성별을 추정합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="n">pibo_face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># face는 faces중 하나</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">get_gender</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># item는 items중 하나</span>
+<span class="n">face</span><span class="o">.</span><span class="n">get_gender</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p></li>
-<li><p><strong>face</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
+<li><p><strong>item</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
 </ul>
 </dd>
 <dt class="field-even">반환</dt>
@@ -667,31 +688,31 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.init_db">
-<span class="sig-name descname"><span class="pre">init_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.init_db" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">init_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.init_db"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.init_db" title="정의 주소"></a></dt>
 <dd><p>얼굴 데이터베이스를 초기화합니다.</p>
 <p>초기화된 데이터베이스는 빈 이중 list <code class="docutils literal notranslate"><span class="pre">[[],</span> <span class="pre">[]]</span></code> 입니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_face</span><span class="o">.</span><span class="n">init_db</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">face</span><span class="o">.</span><span class="n">init_db</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.train_face">
-<span class="sig-name descname"><span class="pre">train_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.train_face" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">train_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.train_face"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.train_face" title="정의 주소"></a></dt>
 <dd><p>얼굴을 학습하여 얼굴 데이터베이스에 저장합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="n">pibo_face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># face는 faces중 하나</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">train_face</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="s1">&#39;honggildong&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># item는 items중 하나</span>
+<span class="n">face</span><span class="o">.</span><span class="n">train_face</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="s1">&#39;honggildong&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p></li>
-<li><p><strong>face</strong> (<em>numpy.ndarray</em>) – 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)</p></li>
+<li><p><strong>item</strong> (<em>numpy.ndarray</em>) – 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – 디텍팅한 얼굴에 붙일 이름</p></li>
 </ul>
 </dd>
@@ -700,10 +721,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.delete_face">
-<span class="sig-name descname"><span class="pre">delete_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.delete_face" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">delete_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.delete_face"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.delete_face" title="정의 주소"></a></dt>
 <dd><p>등록된 얼굴을 삭제합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_face</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="s1">&#39;honggildong&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">face</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="s1">&#39;honggildong&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -718,20 +739,20 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.recognize">
-<span class="sig-name descname"><span class="pre">recognize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.recognize" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">recognize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.recognize"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.recognize" title="정의 주소"></a></dt>
 <dd><p>등록된 얼굴을 인식합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">faces</span> <span class="o">=</span> <span class="n">pibo_face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># face는 faces중 하나</span>
-<span class="n">pibo_face</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># item는 items중 하나</span>
+<span class="n">face</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">매개 변수</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>img</strong> (<em>numpy.ndarray</em>) – 이미지 객체</p></li>
-<li><p><strong>face</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
+<li><p><strong>item</strong> (<em>numpy.ndarray</em>) – 얼굴의 좌표 (x, y, w, h)</p></li>
 </ul>
 </dd>
 <dt class="field-even">반환</dt>
@@ -745,10 +766,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.get_db">
-<span class="sig-name descname"><span class="pre">get_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.get_db" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">get_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.get_db"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.get_db" title="정의 주소"></a></dt>
 <dd><p>사용 중인 얼굴 데이터베이스를 확인합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">face</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -774,10 +795,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.save_db">
-<span class="sig-name descname"><span class="pre">save_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.save_db" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">save_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.save_db"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.save_db" title="정의 주소"></a></dt>
 <dd><p>얼굴 데이터베이스를 파일로 저장합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_face</span><span class="o">.</span><span class="n">save_db</span><span class="p">(</span><span class="s1">&#39;/home/pi/facedb&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">face</span><span class="o">.</span><span class="n">save_db</span><span class="p">(</span><span class="s1">&#39;/home/pi/facedb&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -789,10 +810,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Face.load_db">
-<span class="sig-name descname"><span class="pre">load_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Face.load_db" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">load_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Face.load_db"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Face.load_db" title="정의 주소"></a></dt>
 <dd><p>얼굴 데이터베이스 파일을 불러옵니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pibo_face</span><span class="o">.</span><span class="n">load_db</span><span class="p">(</span><span class="s1">&#39;/home/pi/facedb&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">face</span><span class="o">.</span><span class="n">load_db</span><span class="p">(</span><span class="s1">&#39;/home/pi/facedb&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -806,7 +827,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.vision.Detect">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Detect</span></span><a class="headerlink" href="#openpibo.vision.Detect" title="정의 주소"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">Detect</span></span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <a class="reference internal" href="#openpibo.vision.Detect.detect_object" title="openpibo.vision.Detect.detect_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_object()</span></code></a>
@@ -814,7 +835,9 @@
 <a class="reference internal" href="#openpibo.vision.Detect.detect_pose" title="openpibo.vision.Detect.detect_pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_pose()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Detect.analyze_pose" title="openpibo.vision.Detect.analyze_pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analyze_pose()</span></code></a>
 <a class="reference internal" href="#openpibo.vision.Detect.classify_image" title="openpibo.vision.Detect.classify_image"><code class="xref py py-meth docutils literal notranslate"><span class="pre">classify_image()</span></code></a>
-<a class="reference internal" href="#openpibo.vision.Detect.marker_detect" title="openpibo.vision.Detect.marker_detect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marker_detect()</span></code></a></p>
+<a class="reference internal" href="#openpibo.vision.Detect.object_tracker_init" title="openpibo.vision.Detect.object_tracker_init"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object_tracker_init()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Detect.track_object" title="openpibo.vision.Detect.track_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">track_object()</span></code></a>
+<a class="reference internal" href="#openpibo.vision.Detect.detect_marker" title="openpibo.vision.Detect.detect_marker"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_marker()</span></code></a></p>
 <blockquote>
 <div><p>인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.</p>
 <ul class="simple">
@@ -826,14 +849,14 @@
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openpibo.vision</span> <span class="kn">import</span> <span class="n">Detect</span>
 
-<span class="n">pibo_detect</span> <span class="o">=</span> <span class="n">Detect</span><span class="p">()</span>
+<span class="n">detect</span> <span class="o">=</span> <span class="n">Detect</span><span class="p">()</span>
 <span class="c1"># 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
 </pre></div>
 </div>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.detect_object">
-<span class="sig-name descname"><span class="pre">detect_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.detect_object" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">detect_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.detect_object"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.detect_object" title="정의 주소"></a></dt>
 <dd><p>이미지 안의 객체를 인식합니다. (아래 class의 사물 인식 가능)</p>
 <p>인식 가능한 사물은 다음과 같습니다:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;bicycle&#39;</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">,</span> <span class="s1">&#39;motorcycle&#39;</span><span class="p">,</span> <span class="s1">&#39;airplane&#39;</span><span class="p">,</span>
@@ -852,8 +875,8 @@
 </pre></div>
 </div>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">detect_object</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">detect_object</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -872,11 +895,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.detect_qr">
-<span class="sig-name descname"><span class="pre">detect_qr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.detect_qr" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">detect_qr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.detect_qr"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.detect_qr" title="정의 주소"></a></dt>
 <dd><p>이미지 안의 QR코드 및 바코드를 인식합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">detect_qr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">detect_qr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -891,11 +914,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.detect_pose">
-<span class="sig-name descname"><span class="pre">detect_pose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.detect_pose" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">detect_pose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.detect_pose"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.detect_pose" title="정의 주소"></a></dt>
 <dd><p>이미지 안의 Pose를 인식합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">detect_pose</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">detect_pose</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -910,12 +933,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.analyze_pose">
-<span class="sig-name descname"><span class="pre">analyze_pose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.analyze_pose" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">analyze_pose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.analyze_pose"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.analyze_pose" title="정의 주소"></a></dt>
 <dd><p>detect_pose 함수의 결과 값을 분석합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">pibo_detect</span><span class="o">.</span><span class="n">detect_pose</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">analyze_pose</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">detect</span><span class="o">.</span><span class="n">detect_pose</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">analyze_pose</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -930,11 +953,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.classify_image">
-<span class="sig-name descname"><span class="pre">classify_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.classify_image" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">classify_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.classify_image"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.classify_image" title="정의 주소"></a></dt>
 <dd><p>이미지를 분류합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">classify_image</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">classify_image</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -952,11 +975,11 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.Detect.object_tracker_init">
-<span class="sig-name descname"><span class="pre">object_tracker_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.object_tracker_init" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">object_tracker_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.object_tracker_init"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.object_tracker_init" title="정의 주소"></a></dt>
 <dd><p>이미지 안의 사물 트래커를 설정합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">pibo_detect</span><span class="o">.</span><span class="n">object_tracker_init</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">detect</span><span class="o">.</span><span class="n">object_tracker_init</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -967,13 +990,13 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.vision.Detect.object_track">
-<span class="sig-name descname"><span class="pre">object_track</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.object_track" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.vision.Detect.track_object">
+<span class="sig-name descname"><span class="pre">track_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.track_object"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.track_object" title="정의 주소"></a></dt>
 <dd><p>이미지 안의 사물 트래커를 설정합니다.</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">tracker</span> <span class="o">=</span> <span class="n">pibo_detect</span><span class="o">.</span><span class="n">object_tracker_init</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
-<span class="n">tracker</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="n">pibo_detect</span><span class="o">.</span><span class="n">object_track</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">detect</span><span class="o">.</span><span class="n">object_tracker_init</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">tracker</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="n">detect</span><span class="o">.</span><span class="n">track_object</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -987,12 +1010,12 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="openpibo.vision.Detect.marker_detect">
-<span class="sig-name descname"><span class="pre">marker_detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.Detect.marker_detect" title="정의 주소"></a></dt>
+<dt class="sig sig-object py" id="openpibo.vision.Detect.detect_marker">
+<span class="sig-name descname"><span class="pre">detect_marker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#Detect.detect_marker"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.Detect.detect_marker" title="정의 주소"></a></dt>
 <dd><p>이미지 안의 마커를 인식합니다. # cv2.aruco.DICT_4X4_50</p>
 <p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">pibo_camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">pibo_detect</span><span class="o">.</span><span class="n">marker_detect</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">detect</span><span class="o">.</span><span class="n">detect_marker</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1009,7 +1032,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="openpibo.vision.TeachableMachine">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">TeachableMachine</span></span><a class="headerlink" href="#openpibo.vision.TeachableMachine" title="정의 주소"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">openpibo.vision.</span></span><span class="sig-name descname"><span class="pre">TeachableMachine</span></span><a class="reference internal" href="../_modules/openpibo/vision.html#TeachableMachine"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.TeachableMachine" title="정의 주소"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Functions:
 <a class="reference internal" href="#openpibo.vision.TeachableMachine.load" title="openpibo.vision.TeachableMachine.load"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code></a>
@@ -1031,7 +1054,7 @@
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.TeachableMachine.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.TeachableMachine.load" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#TeachableMachine.load"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.TeachableMachine.load" title="정의 주소"></a></dt>
 <dd><p>(내부 함수) Tflite 모델로 불러옵니다. (부동소수점/양자화) 모두 가능</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tm</span><span class="o">.</span><span class="n">load_tflite</span><span class="p">(</span><span class="s1">&#39;model_unquant.tflite&#39;</span><span class="p">,</span> <span class="s1">&#39;labels.txt&#39;</span><span class="p">)</span>
@@ -1049,7 +1072,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="openpibo.vision.TeachableMachine.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openpibo.vision.TeachableMachine.predict" title="정의 주소"></a></dt>
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/openpibo/vision.html#TeachableMachine.predict"><span class="viewcode-link"><span class="pre">[소스]</span></span></a><a class="headerlink" href="#openpibo.vision.TeachableMachine.predict" title="정의 주소"></a></dt>
 <dd><p>(내부 함수) Tflite 모델로 추론합니다.</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cm</span> <span class="o">=</span> <span class="n">Camera</span><span class="p">()</span>
@@ -1081,7 +1104,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023 THE MAKER. All rights reserved. openpibo-python-0.9.2.61.</p>
+    <p>&#169; Copyright 2024 THE MAKER. All rights reserved. openpibo-python-0.9.2.61.dev.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -3,16 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to openpibo's documentation!
+OPENPIBO PACKAGE
 ====================================
 
 .. toctree::
    :maxdepth: 1
    :caption: Notes
 
-   notes/usage
-   notes/structure
-   notes/pibo_device
+   notes/software
+   notes/hardware
 
 .. toctree::
    :maxdepth: 1
