@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>openpibo.motion &mdash; OPENPIBO 0.9.2.70 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mycss.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/_modules/openpibo/motion.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../../genindex.html" />
+    <link rel="search" title="검색" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> OPENPIBO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/hardware.html">하드웨어</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/vision.html">vision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OPENPIBO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">모듈 코드</a> &raquo;</li>
+      <li>openpibo.motion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for openpibo.motion</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">서보 모터를 제어하고, 모션을 생성합니다.</span>
+
+<span class="sd">Class:</span>
+<span class="sd">:obj:`~openpibo.motion.Motion`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">openpibo_models</span>
+<span class="c1">#current_path = os.path.dirname(os.path.abspath(__file__))</span>
+
+<div class="viewcode-block" id="Motion"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion">[문서]</a><span class="k">class</span> <span class="nc">Motion</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_motor`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_motors`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_speed`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_speeds`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_acceleration`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_accelerations`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.get_motion`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_motion_raw`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_motion`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.set_mymotion`</span>
+<span class="sd">:meth:`~openpibo.motion.Motion.stop`</span>
+
+<span class="sd">  파이보의 움직임을 제어합니다.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.motion import Motion</span>
+
+<span class="sd">    motion = Motion()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">서보 모터 정보::</span>
+
+<span class="sd">  *모터 번호당 위치 / 제학 각도</span>
+<span class="sd">    * 0번 : &#39;Right Foot&#39; / ± 25˚</span>
+<span class="sd">    * 1번 : &#39;Right Leg&#39;  / ± 35˚</span>
+<span class="sd">    * 2번 : &#39;Right Arm&#39;  / ± 80˚</span>
+<span class="sd">    * 3번 : &#39;Right Hand&#39; / ± 30˚</span>
+<span class="sd">    * 4번 : &#39;Head Pan&#39;   / ± 50˚</span>
+<span class="sd">    * 5번 : &#39;Head Tilt&#39;  / ± 25˚</span>
+<span class="sd">    * 6번 : &#39;Left Foot&#39;  / ± 25˚</span>
+<span class="sd">    * 7번 : &#39;Left Leg&#39;   / ± 35˚</span>
+<span class="sd">    * 8번 : &#39;Left Arm&#39;   / ± 80˚</span>
+<span class="sd">    * 9번 : &#39;Left Hand&#39;  / ± 30˚</span>
+
+<span class="sd">    **(파이보 기준으로 Right, Left 입니다.)**</span>
+
+<span class="sd">  *모션 데이터베이스: 모션 데이터가 저장되어있는 JSON형태의 데이터입니다.</span>
+<span class="sd">  </span>
+<span class="sd">    * 모션 데이터베이스는 다음 형식을 갖추고 있습니다</span>
+
+<span class="sd">      {</span>
+<span class="sd">        &quot;name&quot;: {</span>
+<span class="sd">          &quot;comment&quot;:&quot;description of this motion&quot;,</span>
+<span class="sd">          &quot;init_def&quot;:0,</span>
+<span class="sd">          &quot;init&quot;:[0,0,-70,-25,0,0,0,0,70,25],</span>
+<span class="sd">          &quot;pos&quot;:[</span>
+<span class="sd">            { &quot;d&quot;: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] , &quot;seq&quot;: 0 }</span>
+<span class="sd">          ]</span>
+<span class="sd">        }</span>
+<span class="sd">      }</span>
+
+<span class="sd">  *모션 프로파일: 내장된 모션 프로파일 ``set_motion`` 메소드로 프로파일 내의 동작을 수행할 수 있습니다.</span>
+
+<span class="sd">    모션 프로파일은 각 인스턴스에 저장되며, 인스턴스 초기화 시 인스턴스 변수 ``profile`` 에 기본 모션 데이터베이스가 저장됩니다.</span>
+
+<span class="sd">    기본 모션 데이터베이스 내 모션 리스트::</span>
+
+<span class="sd">      stop, stop_body, sleep, lookup, left, left_half, right, right_half,</span>
+<span class="sd">      foward1-2, backward1-2, step1-2, hifive, cheer1-3, wave1-6, think1-4,</span>
+<span class="sd">      wake_up1-3, hey1-2, yes_h, no_h, breath1-3, breath_long, head_h,</span>
+<span class="sd">      spin_h, clapping1-2, hankshaking, bow, greeting, hand1-4, foot1-2,</span>
+<span class="sd">      speak1-2, speak_n1-2, speak_q, speak_r1-2, speak_l1-2, welcome,</span>
+<span class="sd">      happy1-3, excite1-2, boring1-2, sad1-3, handup_r, handup_l, look_r,</span>
+<span class="sd">      look_l, dance1-5, motion_test, test1-4</span>
+<span class="sd">      # foward1-2는 forward1, forward2 두 종류가 있음을 의미합니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Motion 클래스 초기화&quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">profile_path</span><span class="o">=</span><span class="n">openpibo_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;motion_db.json&quot;</span><span class="p">)</span>
+    <span class="c1">#self.profile_path=current_path+&quot;/data/models/motion_db.json&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Motion.set_motor"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_motor">[문서]</a>  <span class="k">def</span> <span class="nf">set_motor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    모터 1개를 특정 위치로 이동합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_motor(2, 30)</span>
+
+<span class="sd">    :param int n: 모터 번호</span>
+
+<span class="sd">      0~9의 숫자가 들어갑니다.</span>
+<span class="sd">      해당 번호의 위치는 상단의 ``모터 번호당 위치`` 를 참고해주세요.</span>
+
+<span class="sd">    :param int pos: 모터 각도</span>
+
+<span class="sd">      -80~80의 숫자가 들어갑니다.</span>
+<span class="sd">      자세한 범위는 상단의 ``모터 제한 각도`` 를 참고해주세요.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot; must be integer type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">9</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot; must be 0~9&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s1">&quot; must be integer type&#39;</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;servo write </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pos</span><span class="o">*</span><span class="mi">10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.set_motors"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_motors">[문서]</a>  <span class="k">def</span> <span class="nf">set_motors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">movetime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    전체 모터를 특정 위치로 이동합니다.</span>
+
+<span class="sd">    movetime이 짧을수록 모션을 취하는 속도가 빨라집니다.</span>
+<span class="sd">    만약 ``movetime`` 이 ``None`` 이라면, 속도는 이전 설정값으로 유지됩니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_motors([0, 0, -80, 0, 0, 0, 0, 0, 80, 0])</span>
+
+<span class="sd">    :param list positions: 0-9번 모터 각도 배열</span>
+
+<span class="sd">    :param int movetime: 모터 이동 시간(ms)</span>
+
+<span class="sd">      50ms 단위, 모터가 정해진 위치까지 이동하는 시간</span>
+
+<span class="sd">      (모터 컨트롤러와의 overhead문제로 정밀하지는 않음)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="n">positions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">positions</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">positions</span><span class="si">}</span><span class="s1">) must be 10&#39;</span><span class="p">)</span>
+
+    <span class="n">mpos</span> <span class="o">=</span> <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">))]</span>
+
+    <span class="k">if</span> <span class="n">movetime</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;servo mwrite </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">mpos</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;servo move </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">mpos</span><span class="p">))</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">movetime</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.set_speed"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_speed">[문서]</a>  <span class="k">def</span> <span class="nf">set_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    모터 1개의 속도를 설정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_speed(3, 255)</span>
+
+<span class="sd">    :param int n: 모터 번호</span>
+
+<span class="sd">    :param int speed: 모터 속도</span>
+
+<span class="sd">      0~255 사이 값입니다.</span>
+<span class="sd">      숫자가 클수록 속도가 빨라집니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot; must be integer type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">9</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot; must be 0~9&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">speed</span><span class="si">}</span><span class="s1">&quot; must be integer type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">speed</span><span class="si">}</span><span class="s1">&quot; must be 0~255&#39;</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;servo speed </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">speed</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.set_speeds"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_speeds">[문서]</a>  <span class="k">def</span> <span class="nf">set_speeds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speeds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    전체 모터의 속도를 설정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_speeds([20, 50, 40, 20, 20, 10, 20, 50, 40, 20])</span>
+
+<span class="sd">    :param list speeds: 0-9번 모터 속도 배열</span>
+
+<span class="sd">      배열 안의 각 가속도는 0~255 사이 정수입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">speeds</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">speeds</span><span class="si">}</span><span class="s1">) must be 10&#39;</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;servo speed all </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">speeds</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.set_acceleration"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_acceleration">[문서]</a>  <span class="k">def</span> <span class="nf">set_acceleration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">accel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    모터 1개의 가속도를 설정합니다.</span>
+
+<span class="sd">    가속도를 설정하게 되면, 속도가 0에서 시작하여 설정된 속도까지 점점 빨라집니다.</span>
+<span class="sd">    그리고 점점 느려지다가 종료 지점에서 속도가 0이 됩니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_acceleration(3, 5)</span>
+
+<span class="sd">    :param int n: 모터 번호</span>
+
+<span class="sd">    :param int accel: 모터 속도</span>
+
+<span class="sd">      0~255 사이 값입니다.</span>
+<span class="sd">      숫자가 클수록 가속도가 커집니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot; must be integer type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">9</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot; must be 0~9&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">accel</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">accel</span><span class="si">}</span><span class="s1">&quot; must be integer type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">accel</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">accel</span><span class="si">}</span><span class="s1">&quot; must be 0~255&#39;</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;servo accelerate </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">accel</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.set_accelerations"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_accelerations">[문서]</a>  <span class="k">def</span> <span class="nf">set_accelerations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    전체 모터의 가속도를 설정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_accelerations([5, 5, 5, 5, 10, 10, 5, 5, 5, 5])</span>
+
+<span class="sd">    :param list accels: 0-9번 모터 가속도 배열</span>
+
+<span class="sd">      배열 안의 각 가속도는 0~255 사이 정수입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">accels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">accels</span><span class="si">}</span><span class="s1">) must be 10&#39;</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;servo accelerate all </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">accels</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.get_motion"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.get_motion">[문서]</a>  <span class="k">def</span> <span class="nf">get_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    모션 프로파일을 조회합니다.</span>
+
+<span class="sd">    ``name`` 매개변수가 ``None`` 이면, 해당 모션 프로파일에 저장되어있는 모든 moiton 이름을 출력하고,</span>
+<span class="sd">    ``None`` 이 아니면, 해당 이름의 모션에 대한 데이터를 출력합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.get_motion(&#39;forward1&#39;)</span>
+
+<span class="sd">    :param str name: 동작 이름</span>
+
+<span class="sd">      profile에 저장되어있는 동작의 이름입니다.</span>
+
+<span class="sd">    :param str path: 사용할 모션 파일 경로</span>
+
+<span class="sd">      모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</span>
+
+<span class="sd">    :returns:</span>
+
+<span class="sd">      * ``name == None`` 인 경우::</span>
+
+<span class="sd">          # motion.get_motion()</span>
+<span class="sd">          # motion.get_motion(path=&#39;/home/pi/mymotion.json&#39;)</span>
+
+<span class="sd">          [&#39;stop&#39;, &#39;stop_body&#39;, &#39;sleep&#39;, &#39;lookup&#39;, &#39;left&#39;, &#39;left_half&#39;,</span>
+<span class="sd">          &#39;right&#39;, &#39;right_half&#39;, &#39;forward1&#39;, &#39;forward2&#39;, ...]</span>
+
+<span class="sd">      * ``name != None`` 인 경우::</span>
+
+<span class="sd">          # motion.get_motion(&#39;stop&#39;)</span>
+<span class="sd">          # motion.get_motion(&#39;stop&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
+
+<span class="sd">          {</span>
+<span class="sd">            &#39;comment&#39;: &#39;stop&#39;,</span>
+<span class="sd">            &#39;init_def&#39;: 1,</span>
+<span class="sd">            &#39;init&#39;: [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]</span>
+<span class="sd">          }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+      <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&quot; does not exist&#39;</span><span class="p">)</span></div>
+ 
+<div class="viewcode-block" id="Motion.set_motion_raw"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_motion_raw">[문서]</a>  <span class="k">def</span> <span class="nf">set_motion_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exe</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    모션 프로파일의 동작을 실행합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_motion_raw(</span>
+<span class="sd">        {&#39;init_def&#39;: 1, &#39;init&#39;: [0, 0, -70, -25, 0, 0, 0, 0, 70, 25]},</span>
+<span class="sd">        1</span>
+<span class="sd">      )</span>
+
+<span class="sd">    :param str exe: 특정 동작을 위한 각 모터의 움직임이 기록된 데이터 입니다.</span>
+
+<span class="sd">      다음과 같은 양식을 따릅니다::</span>
+
+<span class="sd">        {</span>
+<span class="sd">          &quot;init_def&quot;: 1</span>
+<span class="sd">          &quot;init&quot;:[0,0,-70,-25,0,0,0,0,70,25],</span>
+<span class="sd">          &quot;pos&quot;:[</span>
+<span class="sd">            {&quot;d&quot;:[999,999,999,999, 30,999,999,999,999,999],&quot;seq&quot;:500},</span>
+<span class="sd">            {&quot;d&quot;:[999,999,999,999,-30,999,999,999,999,999],&quot;seq&quot;:2000},</span>
+<span class="sd">            ...</span>
+<span class="sd">          ]</span>
+<span class="sd">        }</span>
+
+<span class="sd">      * ``init_def`` 는 초기동작의 유무입니다.</span>
+<span class="sd">      * ``init`` 은 동작을 시작하기 전의 준비동작입니다.</span>
+<span class="sd">      * ``pos`` 는 연속된 동작이 담긴 list 입니다.</span>
+<span class="sd">        **seq** 시간(ms)에 **d** 의 동작이 완료됨을 의미합니다.</span>
+
+<span class="sd">    :param int cycle:</span>
+
+<span class="sd">      동작을 몇 번 반복할지 결정합니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">exe</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">exe</span><span class="si">}</span><span class="s1">&quot; is not motion data&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">cycle</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">cycle</span><span class="si">}</span><span class="s1"> must be integer type and positive number&#39;</span><span class="p">)</span>
+
+    <span class="n">seq</span><span class="p">,</span><span class="n">cnt</span><span class="p">,</span><span class="n">cycle_cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stopped</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">exe</span><span class="p">[</span><span class="s2">&quot;init_def&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">set_motors</span><span class="p">(</span><span class="n">exe</span><span class="p">[</span><span class="s2">&quot;init&quot;</span><span class="p">],</span> <span class="mi">1000</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;pos&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exe</span><span class="p">:</span>
+      <span class="k">return</span>
+
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopped</span><span class="p">:</span>
+        <span class="k">break</span>
+
+      <span class="n">d</span><span class="p">,</span> <span class="n">intv</span> <span class="o">=</span> <span class="n">exe</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">][</span><span class="n">cnt</span><span class="p">][</span><span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="n">exe</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">][</span><span class="n">cnt</span><span class="p">][</span><span class="s2">&quot;seq&quot;</span><span class="p">]</span><span class="o">-</span><span class="n">seq</span>
+      <span class="n">seq</span> <span class="o">=</span> <span class="n">exe</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">][</span><span class="n">cnt</span><span class="p">][</span><span class="s2">&quot;seq&quot;</span><span class="p">]</span>
+
+      <span class="bp">self</span><span class="o">.</span><span class="n">set_motors</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">intv</span><span class="p">)</span>
+      <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">intv</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+      <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">exe</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">]):</span>
+        <span class="n">cycle_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cycle</span> <span class="o">&gt;</span> <span class="n">cycle_cnt</span><span class="p">:</span>
+          <span class="n">cnt</span><span class="p">,</span><span class="n">seq</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+          <span class="k">continue</span>
+        <span class="k">break</span></div>
+
+<div class="viewcode-block" id="Motion.set_motion"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_motion">[문서]</a>  <span class="k">def</span> <span class="nf">set_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``path`` 파일에 저장된 모션 프로파일의 모션을 실행합니다.</span>
+<span class="sd">    ``path`` 를 설정하지 않으면, 기본 모션 프로파일이 적용됩니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_motion(&#39;dance1&#39;)</span>
+<span class="sd">      #motion.set_motion(&#39;dance1&#39;, path=&#39;/home/pi/mymotion.json&#39;)</span>
+
+<span class="sd">    :param str name: 동작 이름</span>
+
+<span class="sd">      모션 프로파일에 저장되어있는 동작의 이름입니다.</span>
+
+<span class="sd">    :param int cycle:</span>
+
+<span class="sd">      동작 반복 횟수</span>
+
+<span class="sd">    :param str path:</span>
+
+<span class="sd">      모션 파일 경로입니다. 입력하지 않으면 기본 모션 파일을 사용합니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">path</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+      <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&quot; does not exist&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; does not exist in motion profile&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_motion_raw</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cycle</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.set_mymotion"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.set_mymotion">[문서]</a>  <span class="k">def</span> <span class="nf">set_mymotion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``/home/pi/mymotion.json`` 파일에 저장된 모션 프로파일의 모션을 실행합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      motion.set_mymotion(&#39;test&#39;)</span>
+
+<span class="sd">    :param str name: 동작 이름</span>
+
+<span class="sd">      모션 프로파일에 저장되어있는 동작의 이름입니다.</span>
+
+<span class="sd">    :param int cycle:</span>
+
+<span class="sd">      동작 반복 횟수</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_motion</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cycle</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/home/pi/mymotion.json&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Motion.stop"><a class="viewcode-back" href="../../libraries/motion.html#openpibo.motion.Motion.stop">[문서]</a>  <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    수행 중인 동작을 정지합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      # 동작을 수행 중일 때,</span>
+<span class="sd">      motion.stop()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stopped</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 THE MAKER. All rights reserved. openpibo-python-0.9.2.70.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

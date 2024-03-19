@@ -1,0 +1,42 @@
+/* mycss.css */
+
+/* Adjusting sidebar width */
+.wy-nav-content {
+  max-width: calc(100vw - 300px);
+}
+
+/* Customizing sidebar background color */
+.wy-nav-side {
+  background-color: #f8f8f8;
+  border-right: 1px solid #ccc; 
+}
+
+/* Customizing sidebar text color */
+.wy-nav-side a, .wy-nav-side a:hover {
+  color: #333; /* Dark grey text color */
+}
+
+/* Customizing header background color */
+.wy-header {
+  /* Blue header background color */
+  background-color: #333;
+}
+
+/* Customizing header text color */
+.wy-breadcrumbs a, .wy-side-nav-search input, .wy-side-nav-search button {
+  color: #333; /* White text color */
+}
+
+/* Customizing link color */
+a.reference.external, .rst-content a:not(.headerlink) {
+  color: #007acc;
+}
+.wy-side-nav-search {
+  background-color: #f4d85a; /* Red background color */
+}
+.wy-nav-top {
+  background-color: #f4d85a;
+}
+.wy-nav-content-wrap {
+  background-color: #f8f8f8;
+}
