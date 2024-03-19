@@ -18,7 +18,7 @@ from openpibo import __version__ as VERSION
 # -- Project information -----------------------------------------------------
 
 project = 'OPENPIBO'
-copyright = f'2024 THE MAKER. All rights reserved. openpibo-python-{VERSION}'
+copyright = f'2024 THEMAKER. All rights reserved. openpibo-python-{VERSION}'
 author = 'Circulus'
 
 # The full version, including alpha/beta/rc tags
