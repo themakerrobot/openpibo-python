@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>openpibo.vision &mdash; OPENPIBO 0.9.2.70 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mycss.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/_modules/openpibo/vision.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../../genindex.html" />
+    <link rel="search" title="검색" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> OPENPIBO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/hardware.html">하드웨어</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/vision.html">vision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OPENPIBO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">모듈 코드</a> &raquo;</li>
+      <li>openpibo.vision</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for openpibo.vision</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">`OpenCV` 라이브러리를 활용한 영상처리, 인공지능 비전 기술을 사용합니다.</span>
+
+<span class="sd">Class:</span>
+<span class="sd">:meth:`~openpibo.vision.vision_api`</span>
+<span class="sd">:obj:`~openpibo.vision.Camera`</span>
+<span class="sd">:obj:`~openpibo.vision.Face`</span>
+<span class="sd">:obj:`~openpibo.vision.Detect`</span>
+<span class="sd">:obj:`~openpibo.vision.TeachableMachine`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span><span class="o">,</span><span class="nn">dlib</span><span class="o">,</span><span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">pickle</span><span class="o">,</span><span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span><span class="n">ImageDraw</span><span class="p">,</span><span class="n">ImageFont</span>
+<span class="kn">from</span> <span class="nn">tflite_runtime.interpreter</span> <span class="kn">import</span> <span class="n">Interpreter</span>
+<span class="kn">from</span> <span class="nn">pyzbar</span> <span class="kn">import</span> <span class="n">pyzbar</span>
+<span class="kn">from</span> <span class="nn">.modules.pose.movenet</span> <span class="kn">import</span> <span class="n">Movenet</span>
+<span class="kn">from</span> <span class="nn">.modules.pose.utils</span> <span class="kn">import</span> <span class="n">visualize</span>
+<span class="kn">from</span> <span class="nn">.modules.card.decode_card</span> <span class="kn">import</span> <span class="n">get_card</span>
+
+<span class="kn">import</span> <span class="nn">openpibo_models</span>
+<span class="kn">import</span> <span class="nn">openpibo_face_models</span>
+<span class="kn">import</span> <span class="nn">openpibo_dlib_models</span>
+<span class="kn">import</span> <span class="nn">openpibo_detect_models</span>
+
+<div class="viewcode-block" id="vision_api"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.vision_api">[문서]</a><span class="k">def</span> <span class="nf">vision_api</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{}):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  인공지능 비전 API를 호출합니다.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.vision import vision_api, Camera</span>
+
+<span class="sd">    camera = Camera()</span>
+
+<span class="sd">    res = vision_api(&#39;caption/caption&#39;, camera.read(), {})</span>
+
+<span class="sd">  :param str mode: 호출할 비전 API</span>
+
+<span class="sd">  :param str/numpy.ndarray image: 표시할 이미지 파일 경로 / 데이터(cv2)</span>
+
+<span class="sd">  :returns: ``Json`` 타입 결과의 데이터</span>
+
+<span class="sd">    example::</span>
+<span class="sd">    </span>
+<span class="sd">      { &#39;type&#39;: &#39;caption&#39;, &#39;result&#39;: &#39;ok&#39;, </span>
+<span class="sd">        &#39;data&#39;: {</span>
+<span class="sd">          caption:  &quot;사람에게 로봇을 과시하는 사람&quot;, </span>
+<span class="sd">          caption_en:  &quot;a person showing off a robot to a person&quot;,</span>
+<span class="sd">          raw:  [</span>
+<span class="sd">            &quot;a person showing off a robot to a person&quot;,</span>
+<span class="sd">            &quot;a robot that is sitting on top of a table&quot;,</span>
+<span class="sd">            &quot;a very cute white robot that is sitting in front of a table&quot;</span>
+<span class="sd">          ]</span>
+<span class="sd">        }</span>
+<span class="sd">      }</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://o-vapi.circul.us/</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uploadFile&#39;</span><span class="p">:</span><span class="n">cv2</span><span class="o">.</span><span class="n">imencode</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="n">image</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()},</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://o-vapi.circul.us/</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;uploadFile&#39;</span><span class="p">:</span><span class="nb">open</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)},</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera">[문서]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.imread`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.read`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.imshow_to_ide`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.resize`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.rotate`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.imwrite`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.rectangle`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.circle`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.line`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.putText`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.stylization`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.detailEnhance`</span>
+<span class="sd">:meth:`~openpibo.vision.Camera.pencilSketch`</span>
+
+<span class="sd">  파이보의 카메라를 제어합니다.</span>
+
+<span class="sd">  * 사진 촬영, 읽기, 쓰기 등 카메라 기본 기능을 사용할 수 있습니다.</span>
+<span class="sd">  * 이미지에 도형/글자를 추가할 수 있습니다.</span>
+<span class="sd">  * 이미지를 변환할 수 있습니다.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.vision import Camera</span>
+
+<span class="sd">    camera = Camera()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Camera 클래스를 초기화합니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cap</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_BUFFERSIZE</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># for opencv buffering issue</span>
+
+<div class="viewcode-block" id="Camera.imread"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.imread">[문서]</a>  <span class="k">def</span> <span class="nf">imread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 파일을 읽습니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      camera.imread(&#39;/home/pi/openpibo-files/data/image/clear.png&#39;)</span>
+
+<span class="sd">    :param str filename: 사용할 이미지 파일</span>
+
+<span class="sd">    :returns: ``numpy.ndarray`` 타입 이미지 객체</span>
+
+<span class="sd">      example::</span>
+
+<span class="sd">        array([[[0, 0, 0],</span>
+<span class="sd">                [0, 0, 0],</span>
+<span class="sd">                ...,</span>
+<span class="sd">                [0, 0, 0],</span>
+<span class="sd">                [0, 0, 0]],</span>
+
+<span class="sd">              [[0, 0, 0],</span>
+<span class="sd">                [0, 0, 0],</span>
+<span class="sd">                ...,</span>
+<span class="sd">                [0, 0, 0],</span>
+<span class="sd">                [0, 0, 0]],</span>
+
+<span class="sd">              ...,</span>
+
+<span class="sd">              [[0, 0, 0],</span>
+<span class="sd">                [0, 0, 0],</span>
+<span class="sd">                ...,</span>
+<span class="sd">                [0, 0, 0],</span>
+<span class="sd">                [0, 0, 0]]], dtype=uint8)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.read"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.read">[문서]</a>  <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    카메라를 통해 이미지를 촬영합니다.</span>
+
+<span class="sd">    해상도 변경 시 이미지가 깨질 수 있으므로, 기본 해상도를 권장합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      camera.read()</span>
+
+<span class="sd">    :returns: ``numpy.ndarray`` 타입 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># for opencv buffering issue</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cap</span><span class="o">.</span><span class="n">grab</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cap</span><span class="o">.</span><span class="n">grab</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Camera.imshow_to_ide"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.imshow_to_ide">[문서]</a>  <span class="k">def</span> <span class="nf">imshow_to_ide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 파일을 Web IDE에 출력합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.imshow_to_ide(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param float ratio: 이미지 사이즈 변환 비율 (다수 동시 사용시, 네트워크 부하)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">fx</span><span class="o">=</span><span class="n">ratio</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">ratio</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">)</span>
+    <span class="c1"># curl -X &#39;POST&#39; -so /dev/null &#39;http://0.0.0.0:50000/show&#39; -H &#39;accept: application/json&#39; -H &#39;Content-Type: multipart/form-data&#39; -F &#39;data=@{filename};type=image/png&#39;</span>
+    <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://0.0.0.0:50000/show&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">},</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imencode</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(),</span> <span class="s1">&#39;image/png&#39;</span><span class="p">)})</span></div>
+
+<div class="viewcode-block" id="Camera.resize"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.resize">[문서]</a>  <span class="k">def</span> <span class="nf">resize</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Opencv 이미지의 크기를 변환합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.resize(img, 128, 64)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param int w: 변환될 이미지의 가로 크기입니다. (픽셀 단위)</span>
+
+<span class="sd">    :param int h: 변환될 이미지의 세로 크기입니다. (픽셀 단위)</span>
+
+<span class="sd">    :returns: 크기 변환 후의 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Camera.rotate"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.rotate">[문서]</a>  <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지를 회전시킵니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.rotate(img, 10, 0.9)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param int degree: 회전할 각도</span>
+
+<span class="sd">    :param float ratio: 축소 또는 확대할 비율</span>
+
+<span class="sd">    :returns: 회전한 ``numpy.ndarray`` 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">360</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">degree</span><span class="si">}</span><span class="s1"> must be integer type and -360~360&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">float</span> <span class="ow">or</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">ratio</span><span class="si">}</span><span class="s1"> must be float type and 0~1.0&#39;</span><span class="p">)</span>
+
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">op</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getRotationMatrix2D</span><span class="p">((</span><span class="n">cols</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">rows</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">degree</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span><span class="p">,</span><span class="n">rows</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Camera.imwrite"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.imwrite">[문서]</a>  <span class="k">def</span> <span class="nf">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지를 파일로 저장합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.imwrite(&#39;/home/pi/image.jpg&#39;, img)</span>
+
+<span class="sd">    :param str filename: 저장할 파일 경로</span>
+
+<span class="sd">      확장자는 jpg 또는 png를 사용할 수 있습니다.</span>
+
+<span class="sd">    :param numpy.ndarray img: 저장할 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.rectangle"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.rectangle">[문서]</a>  <span class="k">def</span> <span class="nf">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">tickness</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지에 직사각형을 그립니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.rectangle(img, (10, 10), (300, 200), (255, 255, 255), 1)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param tuple(int, int) p1: 좌측상단 좌표 (x, y)</span>
+
+<span class="sd">    :param tuple(int, int) p2: 우측하단 좌표 (x, y)</span>
+
+<span class="sd">    :param tuple(int, int, int) colors: RGB 값 (r, g, b) or 16진수 값 &#39;#ffffff&#39;</span>
+
+<span class="sd">    :param int tickness: 사각형 모서리의 두께 (픽셀 단위)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">p1</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">p1</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">p2</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">p2</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">) must be 3&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">tickness</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.circle"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.circle">[문서]</a>  <span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">tickness</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지에 직사각형을 그립니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.circle(img, (10, 10), (255, 255, 255), 1)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param tuple(int, int) p: 좌측상단 좌표 (x, y)</span>
+
+<span class="sd">    :param int r: 반지름</span>
+
+<span class="sd">    :param tuple(int, int, int) colors: RGB 값 (r, g, b) or 16진수 값 &#39;#ffffff&#39;</span>
+
+<span class="sd">    :param int tickness: 사각형 모서리의 두께 (픽셀 단위)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">) must be Integer type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">) must be 3&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">tickness</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.line"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.line">[문서]</a>  <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">tickness</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지에 직선을 그립니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.line(img, (10, 10), (300, 200), (255, 255, 255), 1)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param tuple(int, int) p1: 시작 좌표 (x, y)</span>
+
+<span class="sd">    :param tuple(int, int) p2: 끝 좌표 (x, y)</span>
+
+<span class="sd">    :param tuple(int, int, int) colors: RGB 값 (r, g, b) or 16진수 값 &#39;#ffffff&#39;</span>
+
+<span class="sd">    :param int tickness: 선의 두께 (픽셀 단위)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">p1</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">p1</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">p2</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">p2</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">) must be 3&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">tickness</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.putTextPIL"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.putTextPIL">[문서]</a>  <span class="k">def</span> <span class="nf">putTextPIL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지에 문자를 입력합니다. (한/영 가능 - pillow 이용)</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      new_img = camera.putTextPIL(img, &#39;안녕하세요.&#39;, (15, 10), 30, (255, 255, 255))</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param str text: 표시할 문자열</span>
+
+<span class="sd">    :param tuple(int, int) points: 텍스트 블록 좌측상단 좌표 (x, y)</span>
+
+<span class="sd">    :param int size: 표시할 글자의 크기</span>
+
+<span class="sd">    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (b, g, r) or 16진수 값 &#39;#ffffff&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">) must be 3&#39;</span><span class="p">)</span>
+
+    <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">openpibo_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;KDL.ttf&quot;</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>  <span class="c1"># CV to PIL</span>
+    <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">pil</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>  <span class="c1"># putText</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pil</span><span class="p">)</span>  <span class="c1"># PIL to CV</span></div>
+
+<div class="viewcode-block" id="Camera.putText"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.putText">[문서]</a>  <span class="k">def</span> <span class="nf">putText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">tickness</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지에 문자를 입력합니다. (영어만 가능)</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      new_img = camera.putText(img, &#39;hello&#39;, (15, 10), 10, (255, 255, 255), 1)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param str text: 표시할 문자열</span>
+
+<span class="sd">    :param tuple(int, int) points: 텍스트 블록 좌측하단 좌표 (x, y)</span>
+
+<span class="sd">    :param int size: 표시할 글자의 크기</span>
+
+<span class="sd">    :param tuple(int, int, int) colors: 글자 색깔 RGB 값 (r, g, b) or 16진수 값 &#39;#ffffff&#39;</span>
+
+<span class="sd">    :param int tickness: 글자 두께</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s1">) must be 2&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">tuple</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">&quot; must be tuple type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;len(</span><span class="si">{</span><span class="n">colors</span><span class="si">}</span><span class="s1">) must be 3&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">tickness</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.stylization"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.stylization">[문서]</a>  <span class="k">def</span> <span class="nf">stylization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    만화 이미지로 변환합니다. (opencv api) low speed</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.stylization(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)</span>
+
+<span class="sd">    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)</span>
+
+<span class="sd">    :returns: 변환 후의 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="n">sigma_s</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="n">sigma_r</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.detailEnhance"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.detailEnhance">[문서]</a>  <span class="k">def</span> <span class="nf">detailEnhance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    만화 이미지로 변환합니다. (opencv api)</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.stylization(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)</span>
+
+<span class="sd">    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)</span>
+
+<span class="sd">    :returns: 변환 후의 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">detailEnhance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="n">sigma_s</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="n">sigma_r</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.pencilSketch"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.pencilSketch">[문서]</a>  <span class="k">def</span> <span class="nf">pencilSketch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">shade_factor</span><span class="o">=</span><span class="mf">0.018</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    스케치 이미지로 변환합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.sketchize(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)</span>
+
+<span class="sd">    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)</span>
+
+<span class="sd">    :param float shade_factor: 이미지의 밝기 정도 (0-0.1)</span>
+
+<span class="sd">    :returns: 변환 후의 이미지 객체(grayscale), 변환 후의 이미지 객체(bgr)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">pencilSketch</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="n">sigma_s</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="n">sigma_r</span><span class="p">,</span> <span class="n">shade_factor</span><span class="o">=</span><span class="n">shade_factor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.edgePreservingFilter"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Camera.edgePreservingFilter">[문서]</a>  <span class="k">def</span> <span class="nf">edgePreservingFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    흐림 이미지로 변환합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      camera.edgePreservingFilter(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param int flags: 필터 종류 1 (RECURS_FILTER) or 2 (NORMCONV_FILTER)</span>
+
+<span class="sd">    :param float sigma_s: 이미지의 blur 보존 정도 (1-200)</span>
+
+<span class="sd">    :param float sigma_r: 이미지의 Edge 적용 정도 (0-1)</span>
+
+<span class="sd">    :returns: 변환 후의 이미지 객체(grayscale), 변환 후의 이미지 객체(bgr)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">edgePreservingFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">flags</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="n">sigma_s</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="n">sigma_r</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="Face"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face">[문서]</a><span class="k">class</span> <span class="nc">Face</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.vision.Face.detect`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.get_ageGender`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.get_age`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.get_gender`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.init_db`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.train_face`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.delete_face`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.recognize`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.get_db`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.save_db`</span>
+<span class="sd">:meth:`~openpibo.vision.Face.load_db`</span>
+
+<span class="sd">  얼굴과 관련된 다양한 기능을 수행하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</span>
+
+<span class="sd">  * 얼굴을 탐색합니다.</span>
+<span class="sd">  * 얼굴을 학습/저장/삭제합니다.</span>
+<span class="sd">  * 학습된 얼굴을 인식합니다.</span>
+<span class="sd">  * 얼굴로 나이/성별/감정을 추정합니다.</span>
+
+<span class="sd">  :얼굴 데이터베이스: 인스턴스 변수 **facedb** 를 의미하며, 여기에서 얼굴 데이터를 등록하고 불러오고 삭제합니다.</span>
+
+<span class="sd">    얼굴 데이터베이스의 포맷은 이중 list ``[[], []]`` 이며, 첫 번째 list에는 얼굴의 이름이, 두 번째 list에는 학습된 얼굴 데이터가 인코딩되어 들어갑니다.</span>
+
+<span class="sd">    또한 파일로 저장하여 인스턴스가 삭제된 후에도 얼굴 정보를 남겨둘 수 있습니다.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.vision import Face</span>
+
+<span class="sd">    face = Face()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span> <span class="o">=</span> <span class="p">[[],[]]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">age_class</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;(0, 2)&#39;</span><span class="p">,</span><span class="s1">&#39;(4, 6)&#39;</span><span class="p">,</span><span class="s1">&#39;(8, 12)&#39;</span><span class="p">,</span><span class="s1">&#39;(15, 20)&#39;</span><span class="p">,</span><span class="s1">&#39;(25, 32)&#39;</span><span class="p">,</span><span class="s1">&#39;(38, 43)&#39;</span><span class="p">,</span><span class="s1">&#39;(48, 53)&#39;</span><span class="p">,</span><span class="s1">&#39;(60, 100)&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">gender_class</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">agenet</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNetFromCaffe</span><span class="p">(</span>
+                    <span class="n">openpibo_face_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;deploy_age.prototxt&quot;</span><span class="p">),</span>
+                    <span class="n">openpibo_face_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;age_net.caffemodel&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">gendernet</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNetFromCaffe</span><span class="p">(</span>
+                    <span class="n">openpibo_face_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;deploy_gender.prototxt&quot;</span><span class="p">),</span>
+                    <span class="n">openpibo_face_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;gender_net.caffemodel&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+    <span class="c1">#self.face_detector = cv2.CascadeClassifier(openpibo_face_models.filepath(&quot;haarcascade_frontalface_default.xml&quot;))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">face_detector</span> <span class="o">=</span> <span class="n">dlib</span><span class="o">.</span><span class="n">get_frontal_face_detector</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span> <span class="o">=</span> <span class="n">dlib</span><span class="o">.</span><span class="n">shape_predictor</span><span class="p">(</span><span class="n">openpibo_dlib_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;shape_predictor_68_face_landmarks.dat&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">face_encoder</span> <span class="o">=</span> <span class="n">dlib</span><span class="o">.</span><span class="n">face_recognition_model_v1</span><span class="p">(</span><span class="n">openpibo_dlib_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;dlib_face_recognition_resnet_model_v1.dat&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Face.detect_face"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.detect_face">[문서]</a>  <span class="k">def</span> <span class="nf">detect_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴을 탐색합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      face.detect_face(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: 인식된 얼굴들의 (x, y, w, h) 배열 입니다.</span>
+
+<span class="sd">      list 타입으로, 이미지 하나에 얼굴이 여러 개 인식된 경우 인식된 얼굴의 좌표가 모두 입력됩니다.</span>
+
+<span class="sd">      example::</span>
+
+<span class="sd">        [(10, 10, 40, 50), (120, 30, 160, 70), (130, 140, 200, 260)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span> 
+
+    <span class="k">return</span> <span class="p">[(</span><span class="n">d</span><span class="o">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">d</span><span class="o">.</span><span class="n">top</span><span class="p">(),</span> <span class="n">d</span><span class="o">.</span><span class="n">right</span><span class="p">()</span><span class="o">-</span><span class="n">d</span><span class="o">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">d</span><span class="o">.</span><span class="n">bottom</span><span class="p">()</span><span class="o">-</span><span class="n">d</span><span class="o">.</span><span class="n">top</span><span class="p">())</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_detector</span><span class="p">(</span><span class="n">img</span><span class="p">)]</span></div>
+    <span class="c1">#return self.face_detector.detectMultiScale(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 1.1, 5) # [(x,y,w,h), ...]</span>
+
+<div class="viewcode-block" id="Face.landmark_face"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.landmark_face">[문서]</a>  <span class="k">def</span> <span class="nf">landmark_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴의 랜드마크를 탐색합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      face.landmark_face(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: ``{&quot;data&quot;: 인식한 결과, &quot;img&quot;: landmark를 반영한 이미지 }``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_detector</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">rects</span><span class="p">:</span>
+      <span class="c1">#rect = dlib.rectangle(int(d.left()), int(d.top()), int(d.right()), int(d.bottom()))</span>
+      <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+
+      <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">shape</span><span class="o">.</span><span class="n">num_parts</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">num_parts</span><span class="p">):</span>
+        <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">10</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+      <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;img&quot;</span><span class="p">:</span><span class="n">img</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="Face.get_ageGender"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.get_ageGender">[문서]</a>  <span class="k">def</span> <span class="nf">get_ageGender</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴의 나이, 성별을 추정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      items = face.detect_face(img)</span>
+<span class="sd">      item = items[0] # item은 items 중 하나</span>
+<span class="sd">      face.get_ageGender(img, item)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)</span>
+
+<span class="sd">    :returns: ``{&quot;age&quot;: 나이, &quot;gender&quot;: 성별}``</span>
+
+<span class="sd">      * age: 나이의 범위를 tuple() 형태로 출력한다.</span>
+
+<span class="sd">        ex) (15, 20) # 15살에서 20살 정도</span>
+
+<span class="sd">      * gender: ``male`` / ``female``</span>
+
+<span class="sd">    참고: https://github.com/kairess/age_gender_estimation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;item&quot; must be [x,y,w,h]&#39;</span><span class="p">)</span>
+
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="n">face_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">blob</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">blobFromImage</span><span class="p">(</span><span class="n">face_img</span><span class="p">,</span> <span class="n">scalefactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">227</span><span class="p">,</span> <span class="mi">227</span><span class="p">),</span>
+      <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">78.4263377603</span><span class="p">,</span> <span class="mf">87.7689143744</span><span class="p">,</span> <span class="mf">114.895847746</span><span class="p">),</span>
+      <span class="n">swapRB</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># predict gender</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">gendernet</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
+    <span class="n">gender_preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gendernet</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gender_class</span><span class="p">[</span><span class="n">gender_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+
+    <span class="c1"># predict age</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">agenet</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
+    <span class="n">age_preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agenet</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">age_class</span><span class="p">[</span><span class="n">age_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span><span class="n">age</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span><span class="n">gender</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="Face.get_age"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.get_age">[문서]</a>  <span class="k">def</span> <span class="nf">get_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴의 나이를 추정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      items = face.detect_face(img)</span>
+<span class="sd">      item = items[0] # item는 items중 하나</span>
+<span class="sd">      face.get_age(img, item)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)</span>
+
+<span class="sd">    :returns: ``나이 범위`` ``Raw데이터``</span>
+
+<span class="sd">      * age: 나이의 범위를 tuple() 형태로 출력한다.</span>
+
+<span class="sd">        ex) (15, 20) # 15살에서 20살 정도</span>
+
+<span class="sd">    참고: https://github.com/kairess/age_gender_estimation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;item&quot; must be [x,y,w,h]&#39;</span><span class="p">)</span>
+
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="n">face_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">blob</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">blobFromImage</span><span class="p">(</span><span class="n">face_img</span><span class="p">,</span> <span class="n">scalefactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">227</span><span class="p">,</span> <span class="mi">227</span><span class="p">),</span>
+      <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">78.4263377603</span><span class="p">,</span> <span class="mf">87.7689143744</span><span class="p">,</span> <span class="mf">114.895847746</span><span class="p">),</span>
+      <span class="n">swapRB</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># predict age</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">agenet</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
+    <span class="n">age_preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agenet</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">age_class</span><span class="p">[</span><span class="n">age_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">age</span><span class="p">,</span> <span class="n">age_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Face.get_gender"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.get_gender">[문서]</a>  <span class="k">def</span> <span class="nf">get_gender</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴의 성별을 추정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      items = face.detect_face(img)</span>
+<span class="sd">      item = items[0] # item는 items중 하나</span>
+<span class="sd">      face.get_gender(img, item)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)</span>
+
+<span class="sd">    :returns: ``성별`` ``Raw데이터``</span>
+
+<span class="sd">      * gender: ``male`` / ``female``</span>
+
+<span class="sd">    참고: https://github.com/kairess/age_gender_estimation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;item&quot; must be [x,y,w,h]&#39;</span><span class="p">)</span>
+
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="n">face_img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">blob</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">blobFromImage</span><span class="p">(</span><span class="n">face_img</span><span class="p">,</span> <span class="n">scalefactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">227</span><span class="p">,</span> <span class="mi">227</span><span class="p">),</span>
+      <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">78.4263377603</span><span class="p">,</span> <span class="mf">87.7689143744</span><span class="p">,</span> <span class="mf">114.895847746</span><span class="p">),</span>
+      <span class="n">swapRB</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># predict gender</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">gendernet</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
+    <span class="n">gender_preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gendernet</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gender_class</span><span class="p">[</span><span class="n">gender_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">gender</span><span class="p">,</span> <span class="n">gender_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Face.init_db"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.init_db">[문서]</a>  <span class="k">def</span> <span class="nf">init_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴 데이터베이스를 초기화합니다.</span>
+
+<span class="sd">    초기화된 데이터베이스는 빈 이중 list ``[[], []]`` 입니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      face.init_db()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[]]</span></div>
+
+<div class="viewcode-block" id="Face.train_face"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.train_face">[문서]</a>  <span class="k">def</span> <span class="nf">train_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴을 학습하여 얼굴 데이터베이스에 저장합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      items = face.detect_face(img)</span>
+<span class="sd">      item = items[0] # item는 items중 하나</span>
+<span class="sd">      face.train_face(img, item, &#39;honggildong&#39;)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param numpy.ndarray item: 디텍팅한 얼굴의 사각형 좌측상단, 우측하단 포인트 (x1, y1, x2, y2)</span>
+
+<span class="sd">    :param str name: 디텍팅한 얼굴에 붙일 이름</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span> 
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;item&quot; must be [x,y,w,h]&#39;</span><span class="p">)</span>
+
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">dlib</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">))</span>
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+    <span class="n">face_encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_encoder</span><span class="o">.</span><span class="n">compute_face_descriptor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face_encoding</span><span class="p">)</span></div>
+    <span class="c1">#cv2.imwrite(self.data_path+&quot;/{}.jpg&quot;.format(name), img[y+3:y+h-3, x+3:x+w-3]);</span>
+
+<div class="viewcode-block" id="Face.delete_face"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.delete_face">[문서]</a>  <span class="k">def</span> <span class="nf">delete_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    등록된 얼굴을 삭제합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      face.delete_face(&#39;honggildong&#39;)</span>
+
+<span class="sd">    :param str name: 삭제할 얼굴의 이름</span>
+
+<span class="sd">    :returns: ``True`` / ``False``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+      <span class="c1">#os.remove(self.data_path +&quot;/&quot; + name + &quot;.jpg&quot;)</span>
+      <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">item</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="Face.recognize"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.recognize">[문서]</a>  <span class="k">def</span> <span class="nf">recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    등록된 얼굴을 인식합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      items = face.detect_face(img)</span>
+<span class="sd">      item = items[0] # item는 items중 하나</span>
+<span class="sd">      face.recognize(img, item)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param numpy.ndarray item: 얼굴의 좌표 (x, y, w, h)</span>
+
+<span class="sd">    :returns: ``{&quot;name&quot;: 이름, &quot;score&quot;: 오차도}``</span>
+
+<span class="sd">      얼굴이 비슷할수록 오차도가 낮게 측정됩니다.</span>
+
+<span class="sd">      오차도가 0.4 이하일 때 동일인으로 판정합니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span> 
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;item&quot; must be [x,y,w,h]&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Guest&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Guest&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+    <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">)</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">dlib</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">))</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+    <span class="n">face_encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_encoder</span><span class="o">.</span><span class="n">compute_face_descriptor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">face_encoding</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">matches</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">:</span>
+      <span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">matches</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">matches</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="Face.get_db"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.get_db">[문서]</a>  <span class="k">def</span> <span class="nf">get_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    사용 중인 얼굴 데이터베이스를 확인합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      face.get_db()</span>
+
+<span class="sd">    :returns: **facedb** (``list(list, list)`` 타입)</span>
+
+<span class="sd">      example::</span>
+
+<span class="sd">        [</span>
+<span class="sd">          [&#39;honggildong&#39;],</span>
+<span class="sd">          [array([-0.06423206,  0.12474005,  0.0511112 , -0.05676335, -0.07211345,</span>
+<span class="sd">                  -0.03123881, -0.04119622, -0.12800875,  0.11717855, -0.11079554,</span>
+<span class="sd">                   0.22952782, -0.02007426, -0.17457265, -0.13562854, -0.04972655,</span>
+<span class="sd">                   0.15810637, -0.12785575, -0.16479518, -0.07002968, -0.00208595,</span>
+<span class="sd">                   0.169218  ,  0.03144928, -0.01074579,  0.04103286, -0.09245337,</span>
+<span class="sd">                  ...</span>
+<span class="sd">                  -0.00706697,  0.06025593, -0.0049719 ])]</span>
+<span class="sd">        ]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span></div>
+
+<div class="viewcode-block" id="Face.save_db"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.save_db">[문서]</a>  <span class="k">def</span> <span class="nf">save_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴 데이터베이스를 파일로 저장합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      face.save_db(&#39;/home/pi/facedb&#39;)</span>
+
+<span class="sd">    :param str filename: 저장할 얼굴 데이터베이스 파일의 경로입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w+b&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facedb</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Face.load_db"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Face.load_db">[문서]</a>  <span class="k">def</span> <span class="nf">load_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    얼굴 데이터베이스 파일을 불러옵니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      face.load_db(&#39;/home/pi/facedb&#39;)</span>
+
+<span class="sd">    :param str filename: 불러 올 ``facedb`` 파일의 경로입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{filename}</span><span class="s1">&quot; does not exist&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span> <span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">facedb</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="Detect"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect">[문서]</a><span class="k">class</span> <span class="nc">Detect</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.detect_object`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.detect_qr`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.detect_pose`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.analyze_pose`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.classify_image`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.object_tracker_init`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.track_object`</span>
+<span class="sd">:meth:`~openpibo.vision.Detect.detect_marker`</span>
+
+<span class="sd">  인식과 관련된 다양한 기능을 사용할 수 있는 클래스입니다.</span>
+
+<span class="sd">  * 90개 class 안에서의 객체 인식 (MobileNet V2)</span>
+<span class="sd">  * QR/바코드 인식 (pyzbar)</span>
+<span class="sd">  * Pose 인식</span>
+<span class="sd">  * 이미지 분류</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.vision import Detect</span>
+
+<span class="sd">    detect = Detect()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">object_class</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;bicycle&#39;</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">,</span> <span class="s1">&#39;motorcycle&#39;</span><span class="p">,</span> <span class="s1">&#39;airplane&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;bus&#39;</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;truck&#39;</span><span class="p">,</span> <span class="s1">&#39;boat&#39;</span><span class="p">,</span> <span class="s1">&#39;traffic light&#39;</span><span class="p">,</span> <span class="s1">&#39;fire hydrant&#39;</span><span class="p">,</span> 
+                         <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;stop sign&#39;</span><span class="p">,</span> <span class="s1">&#39;parking meter&#39;</span><span class="p">,</span> <span class="s1">&#39;bench&#39;</span><span class="p">,</span> <span class="s1">&#39;bird&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> 
+                         <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;sheep&#39;</span><span class="p">,</span> <span class="s1">&#39;cow&#39;</span><span class="p">,</span> <span class="s1">&#39;elephant&#39;</span><span class="p">,</span> <span class="s1">&#39;bear&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;giraffe&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;backpack&#39;</span><span class="p">,</span> <span class="s1">&#39;umbrella&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;handbag&#39;</span><span class="p">,</span> <span class="s1">&#39;tie&#39;</span><span class="p">,</span> <span class="s1">&#39;suitcase&#39;</span><span class="p">,</span> <span class="s1">&#39;frisbee&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;skis&#39;</span><span class="p">,</span> <span class="s1">&#39;snowboard&#39;</span><span class="p">,</span> <span class="s1">&#39;sports ball&#39;</span><span class="p">,</span> <span class="s1">&#39;kite&#39;</span><span class="p">,</span> <span class="s1">&#39;baseball bat&#39;</span><span class="p">,</span> <span class="s1">&#39;baseball glove&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;skateboard&#39;</span><span class="p">,</span> <span class="s1">&#39;surfboard&#39;</span><span class="p">,</span> <span class="s1">&#39;tennis racket&#39;</span><span class="p">,</span> <span class="s1">&#39;bottle&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;wine glass&#39;</span><span class="p">,</span> <span class="s1">&#39;cup&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;fork&#39;</span><span class="p">,</span> <span class="s1">&#39;knife&#39;</span><span class="p">,</span> <span class="s1">&#39;spoon&#39;</span><span class="p">,</span> <span class="s1">&#39;bowl&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;sandwich&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> 
+                         <span class="s1">&#39;broccoli&#39;</span><span class="p">,</span> <span class="s1">&#39;carrot&#39;</span><span class="p">,</span> <span class="s1">&#39;hot dog&#39;</span><span class="p">,</span> <span class="s1">&#39;pizza&#39;</span><span class="p">,</span> <span class="s1">&#39;donut&#39;</span><span class="p">,</span> <span class="s1">&#39;cake&#39;</span><span class="p">,</span> <span class="s1">&#39;chair&#39;</span><span class="p">,</span> <span class="s1">&#39;couch&#39;</span><span class="p">,</span> 
+                         <span class="s1">&#39;potted plant&#39;</span><span class="p">,</span> <span class="s1">&#39;bed&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;dining table&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;toilet&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;tv&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;laptop&#39;</span><span class="p">,</span> <span class="s1">&#39;mouse&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">,</span> <span class="s1">&#39;keyboard&#39;</span><span class="p">,</span> <span class="s1">&#39;cell phone&#39;</span><span class="p">,</span> <span class="s1">&#39;microwave&#39;</span><span class="p">,</span> <span class="s1">&#39;oven&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;toaster&#39;</span><span class="p">,</span> <span class="s1">&#39;sink&#39;</span><span class="p">,</span> <span class="s1">&#39;refrigerator&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="s1">&#39;clock&#39;</span><span class="p">,</span> <span class="s1">&#39;vase&#39;</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;teddy bear&#39;</span><span class="p">,</span> <span class="s1">&#39;hair drier&#39;</span><span class="p">]</span> 
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">mobilenet</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">readNet</span><span class="p">(</span>
+                        <span class="n">openpibo_detect_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;frozen_inference_graph.pb&quot;</span><span class="p">),</span>
+                        <span class="n">openpibo_detect_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;ssd_mobilenet_v2_coco_2018_03_29.pbtxt&quot;</span><span class="p">)</span>
+                    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pose_detector</span> <span class="o">=</span> <span class="n">Movenet</span><span class="p">(</span><span class="n">openpibo_detect_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;movenet_lightning.tflite&quot;</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">openpibo_detect_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;efficientnet_labels.txt&quot;</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">cls_class_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span> <span class="o">=</span> <span class="n">Interpreter</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="n">openpibo_detect_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;efficientnet_lite3.tflite&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span><span class="o">.</span><span class="n">allocate_tensors</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls_input_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span><span class="o">.</span><span class="n">get_input_details</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls_output_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span><span class="o">.</span><span class="n">get_output_details</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">camera_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+      <span class="p">[</span><span class="mf">1.42068235e+03</span><span class="p">,</span><span class="mf">0.00000000e+00</span><span class="p">,</span><span class="mf">9.49208512e+02</span><span class="p">],</span>
+      <span class="p">[</span><span class="mf">0.00000000e+00</span><span class="p">,</span><span class="mf">1.37416685e+03</span><span class="p">,</span><span class="mf">5.39622051e+02</span><span class="p">],</span>
+      <span class="p">[</span><span class="mf">0.00000000e+00</span><span class="p">,</span><span class="mf">0.00000000e+00</span><span class="p">,</span><span class="mf">1.00000000e+00</span><span class="p">]])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">distortion_coeff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.69926613e-01</span><span class="p">,</span><span class="o">-</span><span class="mf">7.40003491e-01</span><span class="p">,</span><span class="o">-</span><span class="mf">7.45655262e-03</span><span class="p">,</span><span class="o">-</span><span class="mf">1.79442353e-03</span><span class="p">,</span> <span class="mf">2.46650225e+00</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dictionary</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">aruco</span><span class="o">.</span><span class="n">Dictionary_get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">aruco</span><span class="o">.</span><span class="n">DICT_4X4_50</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">aruco</span><span class="o">.</span><span class="n">DetectorParameters_create</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Detect.detect_object"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.detect_object">[문서]</a>  <span class="k">def</span> <span class="nf">detect_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 안의 객체를 인식합니다. (아래 class의 사물 인식 가능)</span>
+
+<span class="sd">    인식 가능한 사물은 다음과 같습니다::</span>
+
+<span class="sd">      &#39;background&#39;, &#39;person&#39;, &#39;bicycle&#39;, &#39;car&#39;, &#39;motorcycle&#39;, &#39;airplane&#39;,</span>
+<span class="sd">      &#39;bus&#39;, &#39;train&#39;, &#39;truck&#39;, &#39;boat&#39;, &#39;traffic light&#39;, &#39;fire hydrant&#39;, </span>
+<span class="sd">      &#39;None&#39;, &#39;stop sign&#39;, &#39;parking meter&#39;, &#39;bench&#39;, &#39;bird&#39;, &#39;cat&#39;, &#39;dog&#39;, </span>
+<span class="sd">      &#39;horse&#39;, &#39;sheep&#39;, &#39;cow&#39;, &#39;elephant&#39;, &#39;bear&#39;, &#39;zebra&#39;, &#39;giraffe&#39;, &#39;None&#39;,</span>
+<span class="sd">      &#39;backpack&#39;, &#39;umbrella&#39;, &#39;None&#39;, &#39;None&#39;, &#39;handbag&#39;, &#39;tie&#39;, &#39;suitcase&#39;, &#39;frisbee&#39;,</span>
+<span class="sd">      &#39;skis&#39;, &#39;snowboard&#39;, &#39;sports ball&#39;, &#39;kite&#39;, &#39;baseball bat&#39;, &#39;baseball glove&#39;,</span>
+<span class="sd">      &#39;skateboard&#39;, &#39;surfboard&#39;, &#39;tennis racket&#39;, &#39;bottle&#39;, &#39;None&#39;, &#39;wine glass&#39;, &#39;cup&#39;,</span>
+<span class="sd">      &#39;fork&#39;, &#39;knife&#39;, &#39;spoon&#39;, &#39;bowl&#39;, &#39;banana&#39;, &#39;apple&#39;, &#39;sandwich&#39;, &#39;orange&#39;, </span>
+<span class="sd">      &#39;broccoli&#39;, &#39;carrot&#39;, &#39;hot dog&#39;, &#39;pizza&#39;, &#39;donut&#39;, &#39;cake&#39;, &#39;chair&#39;, &#39;couch&#39;, </span>
+<span class="sd">      &#39;potted plant&#39;, &#39;bed&#39;, &#39;None&#39;, &#39;dining table&#39;, &#39;None&#39;, &#39;None&#39;, &#39;toilet&#39;, &#39;None&#39;, &#39;tv&#39;,</span>
+<span class="sd">      &#39;laptop&#39;, &#39;mouse&#39;, &#39;remote&#39;, &#39;keyboard&#39;, &#39;cell phone&#39;, &#39;microwave&#39;, &#39;oven&#39;,</span>
+<span class="sd">      &#39;toaster&#39;, &#39;sink&#39;, &#39;refrigerator&#39;, &#39;None&#39;, &#39;book&#39;, &#39;clock&#39;, &#39;vase&#39;, &#39;scissors&#39;,</span>
+<span class="sd">      &#39;teddy bear&#39;, &#39;hair drier&#39; </span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      detect.detect_object(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: ``{&quot;name&quot;:이름, &quot;score&quot;:정확도, &quot;position&quot;:사물좌표(startX, startY, endX, endY)}``</span>
+
+<span class="sd">      * score는 0~100 사이의 float 값 입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">class_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">boxes_nms</span> <span class="o">=</span> <span class="p">[]</span>    
+    <span class="n">img_h</span><span class="p">,</span> <span class="n">img_w</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mobilenet</span><span class="o">.</span><span class="n">setInput</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">blobFromImage</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">),</span> <span class="n">swapRB</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobilenet</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">detection</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]:</span>
+      <span class="k">if</span> <span class="n">detection</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">.5</span><span class="p">:</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">detection</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">img_w</span><span class="p">))</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">detection</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">img_h</span><span class="p">))</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">img_w</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">detection</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="n">img_w</span><span class="p">))</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">img_h</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">detection</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">*</span> <span class="n">img_h</span><span class="p">))</span>
+        <span class="n">class_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">detection</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">detection</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">boxes_nms</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="o">-</span><span class="n">x1</span><span class="p">,</span> <span class="n">y2</span><span class="o">-</span><span class="n">y1</span><span class="p">))</span> <span class="c1"># NMSBoxes box: x,y,w,h</span>
+        <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">))</span>
+
+    <span class="n">idxs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dnn</span><span class="o">.</span><span class="n">NMSBoxes</span><span class="p">(</span><span class="n">boxes_nms</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxs</span><span class="o">.</span><span class="n">flatten</span><span class="p">():</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">object_class</span><span class="p">[</span><span class="n">class_ids</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">),</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span><span class="n">boxes</span><span class="p">[</span><span class="n">i</span><span class="p">]})</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="Detect.detect_qr"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.detect_qr">[문서]</a>  <span class="k">def</span> <span class="nf">detect_qr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 안의 QR코드 및 바코드를 인식합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      detect.detect_qr(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: ``{&quot;data&quot;: 내용, &quot;type&quot;: 바코드 / QR코드, &quot;position&quot;:(startX,startY,endX,endY)}``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">barcodes</span> <span class="o">=</span> <span class="n">pyzbar</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">barcodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">barcodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rect</span>
+      <span class="n">_type</span> <span class="o">=</span> <span class="n">barcodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span>
+      <span class="n">_data</span> <span class="o">=</span> <span class="n">barcodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+      <span class="n">res</span> <span class="o">=</span> <span class="n">get_card</span><span class="p">(</span><span class="n">_data</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_type</span><span class="p">,</span> <span class="n">_data</span> <span class="o">=</span> <span class="s2">&quot;CARD&quot;</span><span class="p">,</span> <span class="n">res</span>
+      <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span><span class="n">_data</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="n">_type</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">:(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">)}</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="Detect.detect_pose"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.detect_pose">[문서]</a>  <span class="k">def</span> <span class="nf">detect_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 안의 Pose를 인식합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      detect.detect_pose(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: ``{&quot;data&quot;: 인식한 결과, &quot;img&quot;: Pose를 반영한 이미지 }``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">list_persons</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pose_detector</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">img</span><span class="p">)]</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">visualize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">list_persons</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span><span class="n">list_persons</span><span class="p">,</span> <span class="s2">&quot;img&quot;</span><span class="p">:</span><span class="n">img</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="Detect.analyze_pose"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.analyze_pose">[문서]</a>  <span class="k">def</span> <span class="nf">analyze_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    detect_pose 함수의 결과 값을 분석합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      result = detect.detect_pose(img)</span>
+<span class="sd">      detect.analyze_pose(result)</span>
+
+<span class="sd">    :param dict data: 이미지 객체</span>
+
+<span class="sd">    :returns: ``인식한 포즈 리스트 [&#39;left_hand_up&#39;, &#39;right_hand_up&#39;, &#39;clap&#39;]``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p1</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">p2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">p2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">NOSE</span><span class="p">,</span> <span class="n">LEFT_EYE</span><span class="p">,</span> <span class="n">RIGHT_EYE</span><span class="p">,</span> <span class="n">LEFT_EAR</span><span class="p">,</span> <span class="n">RIGHT_EAR</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span>
+    <span class="n">LEFT_SHOULDER</span><span class="p">,</span> <span class="n">RIGHT_SHOULDER</span><span class="p">,</span> <span class="n">LEFT_ELBOW</span><span class="p">,</span> <span class="n">RIGHT_ELBOW</span><span class="p">,</span> <span class="n">LEFT_WRIST</span><span class="p">,</span> <span class="n">RIGHT_WRIST</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span>
+    <span class="n">LEFT_HIP</span><span class="p">,</span> <span class="n">RIGHT_HIP</span><span class="p">,</span> <span class="n">LEFT_KNEE</span><span class="p">,</span> <span class="n">RIGHT_KNEE</span><span class="p">,</span> <span class="n">LEFT_ANKLE</span><span class="p">,</span> <span class="n">RIGHT_ANKLE</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keypoints</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">LEFT_WRIST</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">LEFT_ELBOW</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+      <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;left_hand_up&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">RIGHT_WRIST</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">RIGHT_ELBOW</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+      <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;right_hand_up&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">LEFT_WRIST</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">RIGHT_WRIST</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="mi">75</span><span class="p">:</span>
+      <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;clap&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Detect.classify_image"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.classify_image">[문서]</a>  <span class="k">def</span> <span class="nf">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지를 분류합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      detect.classify_image(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :param int k: 가져올 결과 항목 개수</span>
+
+<span class="sd">    :returns: ``top_k 리스트 [{&quot;score&quot;:정확도, &quot;name&quot;:이름}, ...]``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># feed data to input tensor and run the interpreter</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span><span class="o">.</span><span class="n">set_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cls_input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">input_data</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+
+    <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_interpreter</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cls_output_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;index&#39;</span><span class="p">])</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+    <span class="n">top_k</span> <span class="o">=</span> <span class="n">preds</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="n">k</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">preds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">255.0</span><span class="p">)),</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">cls_class_names</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_k</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Detect.object_tracker_init"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.object_tracker_init">[문서]</a>  <span class="k">def</span> <span class="nf">object_tracker_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 안의 사물 트래커를 설정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      detect.object_tracker_init(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="n">tracker</span> <span class="o">=</span> <span class="n">dlib</span><span class="o">.</span><span class="n">correlation_tracker</span><span class="p">()</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">start_track</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">),</span> <span class="n">dlib</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tracker</span></div>
+
+<div class="viewcode-block" id="Detect.track_object"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.track_object">[문서]</a>  <span class="k">def</span> <span class="nf">track_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 안의 사물 트래커를 설정합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      tracker = detect.object_tracker_init(img, (10,10,100,100))</span>
+<span class="sd">      tracker, position = detect.track_object(tracker, img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: ``{&quot;tracker&quot;: 업데이트된 tracker, &quot;position&quot;: 업데이트된 사물 위치 }``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">tracker</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+
+    <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">left</span><span class="p">())</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">top</span><span class="p">())</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">right</span><span class="p">())</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">bottom</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;tracker&#39;</span><span class="p">:</span><span class="n">tracker</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">:(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)}</span></div>
+
+<div class="viewcode-block" id="Detect.detect_marker"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.Detect.detect_marker">[문서]</a>  <span class="k">def</span> <span class="nf">detect_marker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">marker_length</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    이미지 안의 마커를 인식합니다. # cv2.aruco.DICT_4X4_50</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      img = camera.read()</span>
+<span class="sd">      result = detect.detect_marker(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: ``[{&quot;id&quot;: 마커번호, &quot;center&quot;:  }, ...]``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;&quot;img&quot; must be image data from opencv&#39;</span><span class="p">)</span>
+
+    <span class="n">marker_length</span> <span class="o">/=</span> <span class="mi">250</span>
+    <span class="n">corners</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">aruco</span><span class="o">.</span><span class="n">detectMarkers</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">corners</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">aruco</span><span class="o">.</span><span class="n">drawDetectedMarkers</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+      <span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+      <span class="k">for</span> <span class="p">(</span><span class="n">corner</span><span class="p">,</span> <span class="n">markerID</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">corners</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">aruco</span><span class="o">.</span><span class="n">estimatePoseSingleMarkers</span><span class="p">(</span><span class="n">corner</span><span class="p">,</span> <span class="n">marker_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">camera_matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distortion_coeff</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">topLeft</span><span class="p">,</span> <span class="n">topRight</span><span class="p">,</span> <span class="n">bottomRight</span><span class="p">,</span> <span class="n">bottomLeft</span><span class="p">)</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="n">topRight</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">topRight</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">topRight</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">topLeft</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">topLeft</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">topLeft</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">bottomRight</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bottomRight</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bottomRight</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">bottomLeft</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bottomLeft</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bottomLeft</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="n">cX</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">topLeft</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">bottomRight</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">cY</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">topLeft</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bottomRight</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">tvec</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#[cm]</span>
+
+        <span class="c1"># cv2.line(img, topLeft, topRight, (255, 0, 0), 4)</span>
+        <span class="c1"># cv2.line(img, topRight, bottomRight, (255, 0, 0), 4)</span>
+        <span class="c1"># cv2.line(img, bottomRight, bottomLeft, (255, 0, 0), 4)</span>
+        <span class="c1"># cv2.line(img, bottomLeft, topLeft, (255, 0, 0), 4)</span>
+        <span class="c1"># cv2.circle(img, (cX, cY), 4, (0, 0, 255), -1)</span>
+        <span class="c1"># cv2.putText(img, str(markerID), (topLeft[0], topLeft[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="n">markerID</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">cX</span><span class="p">,</span> <span class="n">cY</span><span class="p">),</span> <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">topLeft</span><span class="p">,</span> <span class="n">topRight</span><span class="p">,</span> <span class="n">bottomRight</span><span class="p">,</span> <span class="n">bottomLeft</span><span class="p">],</span> <span class="s2">&quot;distance&quot;</span><span class="p">:</span><span class="n">distance</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;img&quot;</span><span class="p">:</span><span class="n">img</span><span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="TeachableMachine"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.TeachableMachine">[문서]</a><span class="k">class</span> <span class="nc">TeachableMachine</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.vision.TeachableMachine.load`</span>
+<span class="sd">:meth:`~openpibo.vision.TeachableMachine.predict`</span>
+
+<span class="sd">  파이보의 카메라 Teachable Machine 기능을 사용합니다.</span>
+
+<span class="sd">  * ``이미지 프로젝트`` 의 ``표준 이미지 모델`` 을 사용합니다.</span>
+<span class="sd">  * ``Teachable Machine`` 에서 학습한 모델을 적용하여 추론할 수 있습니다.</span>
+<span class="sd">  * 학습한 모델은 ``Tensorflow Lite`` 형태로 다운로드 해주세요.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.vision import TeachableMachine</span>
+
+<span class="sd">    tm = TeachableMachine()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TeachableMachine.load"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.TeachableMachine.load">[문서]</a>  <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_path</span><span class="p">,</span> <span class="n">label_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (내부 함수) Tflite 모델로 불러옵니다. (부동소수점/양자화) 모두 가능</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      tm.load_tflite(&#39;model_unquant.tflite&#39;, &#39;labels.txt&#39;)</span>
+
+<span class="sd">    :param str model_path: Teachable Machine의 모델파일</span>
+
+<span class="sd">    :param str label_path: Teachable Machine의 라벨파일</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">label_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+      <span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span>
+
+    <span class="c1"># Load TFLite model and allocate tensors</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span> <span class="o">=</span> <span class="n">Interpreter</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">allocate_tensors</span><span class="p">()</span>
+
+    <span class="c1"># Get input and output tensors.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">input_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">get_input_details</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">get_output_details</span><span class="p">()</span>
+
+    <span class="c1"># check the type of the input tensor</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">floating_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;dtype&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">class_names</span></div>
+
+<div class="viewcode-block" id="TeachableMachine.predict"><a class="viewcode-back" href="../../libraries/vision.html#openpibo.vision.TeachableMachine.predict">[문서]</a>  <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (내부 함수) Tflite 모델로 추론합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      cm = Camera()</span>
+<span class="sd">      img = cm.read()</span>
+<span class="sd">      tm.predict(img)</span>
+
+<span class="sd">    :param numpy.ndarray img: 이미지 객체</span>
+
+<span class="sd">    :returns: 가장 높은 확률을 가진 클래스 명, 결과(raw 데이터)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+      <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+      <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+      <span class="c1"># Add a batch dimension</span>
+      <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">floating_model</span><span class="p">:</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span> <span class="o">-</span> <span class="mf">127.5</span><span class="p">)</span> <span class="o">/</span> <span class="mf">127.5</span>
+
+      <span class="c1"># feed data to input tensor and run the interpreter</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">set_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">input_data</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+
+      <span class="c1"># Obtain results and map them to the classes</span>
+      <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpreter</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;index&#39;</span><span class="p">])</span>
+      <span class="n">preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">preds</span><span class="p">)],</span> <span class="n">preds</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Teachable Machine Model did not load properly.&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 THE MAKER. All rights reserved. openpibo-python-0.9.2.70.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

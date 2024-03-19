@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>openpibo.speech &mdash; OPENPIBO 0.9.2.70 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mycss.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/_modules/openpibo/speech.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../../genindex.html" />
+    <link rel="search" title="검색" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> OPENPIBO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/hardware.html">하드웨어</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/vision.html">vision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OPENPIBO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">모듈 코드</a> &raquo;</li>
+      <li>openpibo.speech</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for openpibo.speech</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">번역, 형태소 분석, 자연어 인식 및 합성, 챗봇 등 다양한 자연어 처리를 합니다.</span>
+
+<span class="sd">Class:</span>
+<span class="sd">:obj:`~openpibo.speech.Speech`</span>
+<span class="sd">:obj:`~openpibo.speech.Dialog`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="c1">#import io</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">konlpy.tag</span> <span class="kn">import</span> <span class="n">Mecab</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">napi_host</span><span class="p">,</span> <span class="n">sapi_host</span>
+<span class="kn">from</span> <span class="nn">.modules.speech.mtranslate</span> <span class="kn">import</span> <span class="n">translate</span>
+<span class="kn">import</span> <span class="nn">openpibo_models</span>
+<span class="c1">#current_path = os.path.dirname(os.path.realpath(__file__))</span>
+
+<div class="viewcode-block" id="speech_api"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.speech_api">[문서]</a><span class="k">def</span> <span class="nf">speech_api</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{},</span> <span class="n">json_data</span><span class="o">=</span><span class="p">{}):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  인공지능 보이스 API를 호출합니다.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.speech import speech_api</span>
+
+<span class="sd">    res = speech_api(...)</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">napi_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">napi_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Speech"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Speech">[문서]</a><span class="k">class</span> <span class="nc">Speech</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.speech.Speech.tts`</span>
+<span class="sd">:meth:`~openpibo.speech.Speech.stt`</span>
+
+<span class="sd">  * TTS (Text to Speech)</span>
+<span class="sd">  * STT (Speech to Text)</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.speech import Speech</span>
+
+<span class="sd">    speech = Speech()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">SAPI_HOST</span> <span class="o">=</span> <span class="n">sapi_host</span>
+
+<div class="viewcode-block" id="Speech.tts"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Speech.tts">[문서]</a>  <span class="k">def</span> <span class="nf">tts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;tts.mp3&quot;</span><span class="p">,</span> <span class="n">voice</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;ko&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TTS(Text to Speech)</span>
+
+<span class="sd">    Text(문자)를 Speech(말)로 변환하여 파일로 저장합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      speech.tts(&#39;안녕하세요! 만나서 반가워요!&#39;, &#39;main&#39;, &#39;ko&#39;, &#39;/home/pi/tts.mp3&#39;)</span>
+
+<span class="sd">    :param str string: 변환할 문장구</span>
+
+<span class="sd">    :param str voice: 목소리 타입(espeak | gtts | main | boy | girl | man1 | woman1)</span>
+
+<span class="sd">    :param str lang: 사용할 언어(ko | en)</span>
+
+<span class="sd">    :param str filename: 변환된 음성파일의 경로 (mp3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s1">&quot; must be str type&#39;</span><span class="p">)</span>
+
+    <span class="c1">#if type(voice) is not str or voice not in (&#39;espeak&#39;, &#39;main&#39;, &#39;boy&#39;, &#39;girl&#39;, &#39;man1&#39;, &#39;woman1&#39;):</span>
+    <span class="c1">#  raise Exception(f&#39;&quot;{voice}&quot; must be (espeak|main|boy|girl|man1|woman1)&#39;)</span>
+
+    <span class="c1">#if type(lang) is not str or lang not in (&#39;en&#39;, &#39;ko&#39;):</span>
+    <span class="c1">#  raise Exception(f&#39;&quot;{lang}&quot; must be (en|ko)&#39;)</span>
+
+    <span class="k">if</span> <span class="n">voice</span> <span class="o">==</span> <span class="s2">&quot;espeak&quot;</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;espeak &quot;</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s1">&quot; -w </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+      <span class="k">return</span>
+    <span class="k">elif</span> <span class="n">voice</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;gtts&quot;</span><span class="p">,</span> <span class="s2">&quot;e_gtts&quot;</span><span class="p">]:</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;client&quot;</span><span class="p">:</span><span class="s2">&quot;tw-ob&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;q&quot;</span><span class="p">:</span><span class="n">string</span><span class="p">,</span>
+        <span class="s2">&quot;tl&quot;</span><span class="p">:</span><span class="n">lang</span>
+      <span class="p">}</span>
+      <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://translate.google.com/translate_tts&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="n">string</span><span class="p">,</span>
+        <span class="s2">&quot;hash&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;voice&quot;</span><span class="p">:</span><span class="n">voice</span><span class="p">,</span> <span class="c1"># [&#39;main&#39;, &#39;boy&#39;, &#39;girl&#39;, &#39;man1&#39;, &#39;woman1&#39;]</span>
+        <span class="s2">&quot;lang&quot;</span><span class="p">:</span><span class="n">lang</span><span class="p">,</span> <span class="c1"># [&#39;ko&#39;, &#39;en&#39;]</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;mp3&quot;</span>
+      <span class="p">}</span>
+      <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SAPI_HOST</span> <span class="o">+</span> <span class="s1">&#39;/tts&#39;</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;response error: </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Speech.stt"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Speech.stt">[문서]</a>  <span class="k">def</span> <span class="nf">stt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;stream.wav&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    STT(Speech to Text)</span>
+
+<span class="sd">    목소리를 녹음한 후 파일로 저장하고, 그 파일의 Speech(말)를 Text(문자)로 변환합니다.</span>
+
+<span class="sd">    녹음 파일은 ``timeout`` 초 동안 녹음되며, ``filename`` 의 경로에 저장됩니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      speech.stt(&#39;/home/pi/stt.wav&#39;, 5)</span>
+
+<span class="sd">    :param str filename: 녹음한 파일이 저장 될 경로. ``wav`` 확장자를 사용합니다.</span>
+
+<span class="sd">    :param int timeout: 녹음 시간(s)</span>
+
+<span class="sd">    :returns: 인식된 문자열</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s1"> -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">;rm stream.raw&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s1"> -t wav -q stream.raw;sox stream.raw -q -c 1 -b 16 </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">;rm stream.raw&#39;</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SAPI_HOST</span> <span class="o">+</span> <span class="s1">&#39;/stt&#39;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;file&#39;</span><span class="p">:</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)})</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;response error: </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;result error: </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Dialog"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog">[문서]</a><span class="k">class</span> <span class="nc">Dialog</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.load`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.reset`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.mecab_pos`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.mecab_morphs`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.mecab_nouns`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.ngram`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.diff_ngram`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.get_dialog`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.translate`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.get_dialog_dl`</span>
+<span class="sd">:meth:`~openpibo.speech.Dialog.nlp_dl`</span>
+
+<span class="sd">  파이보에서 대화와 관련된 자연어처리 기능을 하는 클래스입니다. 다음 기능을 수행할 수 있습니다.</span>
+
+<span class="sd">  * 형태소 및 명사 분석</span>
+<span class="sd">  * 챗봇 기능</span>
+<span class="sd">  * 한역 번역 / 대화 (Deep Learning) </span>
+<span class="sd">  * 자연어 분석 기능 (Deep Learning)</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.speech import Dialog</span>
+
+<span class="sd">    dialog = Dialog()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dialog_db</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mecab</span> <span class="o">=</span> <span class="n">Mecab</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">NAPI_HOST</span> <span class="o">=</span> <span class="n">napi_host</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">openpibo_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;dialog.csv&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Dialog.load"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.load">[문서]</a>  <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    대화 데이터를 로드합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      dialog.load(&#39;/home/pi/dialog.csv&#39;)</span>
+
+<span class="sd">    :param str string: 대화 데이터 파일 경로(csv)</span>
+
+<span class="sd">    대화 데이터 파일 형식::</span>
+
+<span class="sd">      대화1,답변1</span>
+<span class="sd">      대화2,답변2</span>
+<span class="sd">      ...</span>
+<span class="sd">      대화n,답변n</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">dialog_path</span> <span class="o">=</span> <span class="n">filepath</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialog_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">dialog_db</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="Dialog.reset"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.reset">[문서]</a>  <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    대화 데이터를 초기화합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      dialog.reset()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">openpibo_models</span><span class="o">.</span><span class="n">filepath</span><span class="p">(</span><span class="s2">&quot;dialog.csv&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Dialog.mecab_pos"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.mecab_pos">[문서]</a>  <span class="k">def</span> <span class="nf">mecab_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    형태소를 품사와 함께 추출합니다.</span>
+
+<span class="sd">    exmaple::</span>
+
+<span class="sd">      dialog.mecab_pos(&#39;아버지가 방에 들어가셨다.&#39;)</span>
+<span class="sd">      # [(&#39;아버지&#39;, &#39;NNG&#39;), (&#39;가&#39;, &#39;JKS&#39;), (&#39;방&#39;, &#39;NNG&#39;), (&#39;에&#39;, &#39;JKB&#39;), (&#39;들어가&#39;, &#39;VV&#39;), (&#39;셨&#39;, &#39;EP+EP&#39;), (&#39;다&#39;, &#39;EF&#39;), (&#39;.&#39;, &#39;SF&#39;)]</span>
+
+<span class="sd">    :param str string: 분석할 문장 (한글)</span>
+
+<span class="sd">    :returns: 형태소 분석 결과</span>
+
+<span class="sd">      ``list(형태소, 품사)`` 형태로 출력됩니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mecab</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dialog.mecab_morphs"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.mecab_morphs">[문서]</a>  <span class="k">def</span> <span class="nf">mecab_morphs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    형태소를 추출합니다.</span>
+
+<span class="sd">    exmaple::</span>
+
+<span class="sd">      dialog.mecab_morphs(&#39;아버지가 방에 들어가셨다.&#39;)</span>
+<span class="sd">      # [&#39;아버지&#39;, &#39;가&#39;, &#39;방&#39;, &#39;에&#39;, &#39;들어가&#39;, &#39;셨&#39;, &#39;다&#39;, &#39;.&#39;]</span>
+
+<span class="sd">    :param str string: 분석할 문장 (한글)</span>
+
+<span class="sd">    :returns: 형태소 분석 결과</span>
+
+<span class="sd">      ``list`` 타입 입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mecab</span><span class="o">.</span><span class="n">morphs</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dialog.mecab_nouns"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.mecab_nouns">[문서]</a>  <span class="k">def</span> <span class="nf">mecab_nouns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    명사를 추출합니다.</span>
+
+<span class="sd">    exmaple::</span>
+
+<span class="sd">      dialog.mecab_nouns(&#39;아버지가 방에 들어가셨다.&#39;)</span>
+<span class="sd">      # [&#39;아버지&#39;, &#39;방&#39;]</span>
+
+<span class="sd">    :param str string: 분석할 문장 (한글)</span>
+
+<span class="sd">    :returns: 문장에서 추출한 명사 목록</span>
+
+<span class="sd">      ``list`` 타입 입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mecab</span><span class="o">.</span><span class="n">nouns</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dialog.ngram"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.ngram">[문서]</a>  <span class="k">def</span> <span class="nf">ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N-gram 값을 구합니다.</span>
+
+<span class="sd">    exmaple::</span>
+
+<span class="sd">      dialog.ngram(&#39;아버지가 방에 들어가셨다.&#39;)</span>
+<span class="sd">      # [&#39;아버지가&#39;, &#39;방에&#39;, &#39;들어가셨다.&#39;]</span>
+
+<span class="sd">    :param str string: 분석할 문장</span>
+<span class="sd">    </span>
+<span class="sd">    :param int n: N-gram에 사용할 n 값 default:2</span>
+
+<span class="sd">    :returns: 문장에서 추출한 N-gram 값</span>
+
+<span class="sd">      ``list`` 타입 입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="o">-</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="Dialog.diff_ngram"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.diff_ngram">[문서]</a>  <span class="k">def</span> <span class="nf">diff_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string_a</span><span class="p">,</span> <span class="n">string_b</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N-gram 방식으로 두 문장을 비교하여 유사도를 구합니다.</span>
+
+<span class="sd">    exmaple::</span>
+
+<span class="sd">      dialog.diff_ngram(&#39;아버지가 방에 들어가셨다.&#39; &#39;어머니가 방에 들어가셨다.&#39;)</span>
+<span class="sd">      # 0.6923076923076923</span>
+
+<span class="sd">    :param str string: 비교할 문장A</span>
+<span class="sd">    </span>
+<span class="sd">    :param str string: 비교할 문장B</span>
+<span class="sd">    </span>
+<span class="sd">    :param int n: N-gram에 사용할 n 값 default:2</span>
+
+<span class="sd">    :returns: N-gram 방식으로 비교한 유사도</span>
+
+<span class="sd">      ``float`` 타입 입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string_a</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">string_b</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram</span><span class="p">(</span><span class="n">string_a</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram</span><span class="p">(</span><span class="n">string_b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+          <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">cnt</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dialog.get_dialog"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.get_dialog">[문서]</a>  <span class="k">def</span> <span class="nf">get_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    일상대화에 대한 답을 추출합니다.</span>
+
+<span class="sd">    저장된 데이터로부터 사용자의 질문과 가장 유사한 질문을 선택해 그에 대한 답을 출력합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      dialog.get_dialog(&#39;나랑 같이 놀자&#39;)</span>
+
+<span class="sd">    :param str string: 질문하는 문장</span>
+<span class="sd">    </span>
+<span class="sd">    :param int n: N-gram에 사용할 n 값 default:2</span>
+
+<span class="sd">    :returns: 답변하는 문장 (한글)</span>
+
+<span class="sd">      ``string`` 타입 입니다.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_acc</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">max_ans</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dialog_db</span><span class="p">:</span>
+      <span class="n">acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diff_ngram</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">acc</span> <span class="o">==</span> <span class="n">max_acc</span><span class="p">:</span>
+        <span class="n">max_ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">acc</span> <span class="o">&gt;</span> <span class="n">max_acc</span><span class="p">:</span>
+        <span class="n">max_acc</span> <span class="o">=</span> <span class="n">acc</span>
+        <span class="n">max_ans</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">max_ans</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Dialog.translate"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.translate">[문서]</a>  <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    문장을 번역합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      dialog.translate(&#39;안녕하세요! 만나서 정말 반가워요!&#39;)</span>
+<span class="sd">      # &quot;Hi! Nice to meet you!&quot;</span>
+
+<span class="sd">    :param str string: 번역할 문장</span>
+
+<span class="sd">    :param str target: 번역될 언어(ko, en, ja, fr ...)</span>
+
+<span class="sd">    :returns: 번역 된 문장</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s1">&quot; must be str type&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">translate</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dialog.get_dialog_dl"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.get_dialog_dl">[문서]</a>  <span class="k">def</span> <span class="nf">get_dialog_dl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    일상대화에 대한 답을 추출합니다.(Deep Learning)</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      dialog.get_dialog_ml(&#39;나랑 같이 놀자&#39;)</span>
+
+<span class="sd">    :param str string: 질문하는 문장 (한글)</span>
+
+<span class="sd">    :returns: 답변하는 문장 (한글)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NAPI_HOST</span> <span class="o">+</span> <span class="s1">&#39;/dialog&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span><span class="n">string</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;response error: </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;result error: </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">ans</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">]:</span>
+      <span class="n">ans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">])</span>
+      <span class="n">score</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ans</span><span class="p">[</span><span class="n">score</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">score</span><span class="p">))]</span></div>
+
+<div class="viewcode-block" id="Dialog.nlp_dl"><a class="viewcode-back" href="../../libraries/speech.html#openpibo.speech.Dialog.nlp_dl">[문서]</a>  <span class="k">def</span> <span class="nf">nlp_dl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    문장을 분석합니다.(Deep Learning)</span>
+
+<span class="sd">    문장을 지정한 모드로 분석합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      dialog.nlp_ml(&#39;안녕하세요. 오늘 매우 즐거워요&#39;, &#39;ner&#39;)</span>
+
+<span class="sd">    :param str string: 분석할 문장</span>
+
+<span class="sd">    :param str mode: 분석 모드 `` (summary|vector|sentiment|emotion|ner|wellness|hate) ``</span>
+
+<span class="sd">    :returns: 분석 결과</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#if type(mode) is not str or mode not in (&#39;summary&#39;, &#39;vector&#39;, &#39;sentiment&#39;, &#39;emotion&#39;, &#39;ner&#39;, &#39;wellness&#39;, &#39;hate&#39;):</span>
+    <span class="c1">#  raise Exception(f&#39;&quot;{mode}&quot; must be (summary|vector|sentiment|emotion|ner|wellness|hate)&#39;)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NAPI_HOST</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">mode</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span><span class="n">string</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;response error: </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;result error: </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 THE MAKER. All rights reserved. openpibo-python-0.9.2.70.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>openpibo.audio &mdash; OPENPIBO 0.9.2.70 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mycss.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/_modules/openpibo/audio.html" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../../genindex.html" />
+    <link rel="search" title="검색" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> OPENPIBO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notes/hardware.html">하드웨어</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/vision.html">vision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OPENPIBO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">모듈 코드</a> &raquo;</li>
+      <li>openpibo.audio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for openpibo.audio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">mp3, wav 오디오 파일을 재생, 정지하고 마이크로 소리를 녹음합니다.</span>
+
+<span class="sd">Class:</span>
+<span class="sd">:obj:`~openpibo.audio.Audio`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="n">HIGH</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">LOW</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Audio"><a class="viewcode-back" href="../../libraries/audio.html#openpibo.audio.Audio">[문서]</a><span class="k">class</span> <span class="nc">Audio</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions:</span>
+<span class="sd">:meth:`~openpibo.audio.Audio.play`</span>
+<span class="sd">:meth:`~openpibo.audio.Audio.stop`</span>
+<span class="sd">:meth:`~openpibo.audio.Audio.mute`</span>
+<span class="sd">:meth:`~openpibo.audio.Audio.record`</span>
+
+<span class="sd">  mp3, wav 오디오 파일을 재생 및 정지합니다.</span>
+
+<span class="sd">  example::</span>
+
+<span class="sd">    from openpibo.audio import Audio</span>
+
+<span class="sd">    audio = Audio()</span>
+<span class="sd">    # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c1"># volume: 0 ~ 100</span>
+  <span class="c1"># filename: mp3/wav</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;gpio mode 7 out;gpio write 7 </span><span class="si">{</span><span class="n">HIGH</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Audio.play"><a class="viewcode-back" href="../../libraries/audio.html#openpibo.audio.Audio.play">[문서]</a>  <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">volume</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">volume2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    mp3 또는 wav 파일을 재생합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      audio.play(&#39;/home/pi/openpibo-files/audio/test.mp3&#39;, 80, True)</span>
+
+<span class="sd">    :param str filename: 재생할 파일의 경로를 지정합니다.</span>
+
+<span class="sd">      mp3와 wav 형식을 지원합니다.</span>
+
+<span class="sd">    :param int volume: 음량을 설정합니다. (0~100)</span>
+
+<span class="sd">    :param bool background: 오디오 파일을 백그라운드에서 실행할지 여부를 결정합니다.</span>
+
+<span class="sd">      백그라운드에서 오디오가 재생되면, 오디오 재생되는 도중에 다른 명령어를 사용할 수 있습니다.</span>
+
+<span class="sd">      * ``True``: 백그라운드에서 재생합니다. (default)</span>
+<span class="sd">      * ``False``: 백그라운드에서 재생하지 않습니다.</span>
+
+<span class="sd">    :param float volume2: 개별 음량을 조절합니다. (비율)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">play_thread</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&quot; does not exist&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;wav&#39;</span><span class="p">]:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&quot; must be (mp3|wav)&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="p">(</span><span class="n">volume</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">volume</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">volume</span><span class="si">}</span><span class="s1">&quot; is Number(0~100)&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">background</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">background</span><span class="si">}</span><span class="s1">&quot; is not bool&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">volume2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">float</span> <span class="ow">or</span> <span class="p">(</span><span class="n">volume2</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">volume2</span> <span class="o">&gt;</span> <span class="mf">3.0</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">volume2</span><span class="si">}</span><span class="s1">&quot; is float(0.0~1.5)&#39;</span><span class="p">)</span>
+
+    <span class="n">volume</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">volume</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">50</span> <span class="c1"># 실제 50 - 100%로 설정, 0-50%는 소리가 너무 작음</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;amixer -q -c Headphones sset Headphone </span><span class="si">{</span><span class="n">volume</span><span class="si">}</span><span class="s1">%;&#39;</span>
+    <span class="n">cmd</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;play -q -V1 -v </span><span class="si">{</span><span class="n">volume2</span><span class="si">}</span><span class="s1"> &quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+
+    <span class="k">if</span> <span class="n">background</span><span class="p">:</span>
+      <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">play_thread</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">cmd</span><span class="p">,),</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Audio.stop"><a class="viewcode-back" href="../../libraries/audio.html#openpibo.audio.Audio.stop">[문서]</a>  <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;백그라운드에서 재생중인 오디오를 정지합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      audio.stop()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;sudo pkill play&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Audio.mute"><a class="viewcode-back" href="../../libraries/audio.html#openpibo.audio.Audio.mute">[문서]</a>  <span class="k">def</span> <span class="nf">mute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;파이보를 무음모드로 만듭니다.</span>
+
+<span class="sd">    인스턴스(pibo_audio)를 생성하면, 기본적으로 무음모드는 해제되어있습니다.</span>
+
+<span class="sd">    무음모드에서는 ``play`` 메소드를 사용해도 소리가 출력되지 않습니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      audio.mute(True)</span>
+
+<span class="sd">    :param bool value:</span>
+
+<span class="sd">      * ``True``: 무음모드 설정.</span>
+<span class="sd">      * ``False``: 무음모드 해제.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; is not a bool&#39;</span><span class="p">)</span>
+
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">LOW</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="n">HIGH</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;gpio write 7 </span><span class="si">{</span><span class="n">opt</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Audio.record"><a class="viewcode-back" href="../../libraries/audio.html#openpibo.audio.Audio.record">[문서]</a>  <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    마이크로 소리를 녹음합니다.</span>
+
+<span class="sd">    example::</span>
+
+<span class="sd">      audio.record(&#39;/home/pi/test.wav&#39;, 5)</span>
+
+<span class="sd">    :param str filename: 녹음한 파일이 저장 될 경로. ``wav`` 확장자를 사용합니다.</span>
+
+<span class="sd">    :param int timeout: 녹음 시간(s)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s1"> -t wav -q -vv -V streo stream.raw;sox stream.raw -c 1 -b 16 </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">;rm stream.raw&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;arecord -D dmic_sv -c2 -r 16000 -f S32_LE -d </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s1"> -t wav -q stream.raw;sox stream.raw -q -c 1 -b 16 </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">;rm stream.raw&#39;</span><span class="p">)</span></div></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">time</span>
+  
+  <span class="n">audio</span> <span class="o">=</span> <span class="n">Audio</span><span class="p">()</span>
+  <span class="n">audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&quot;/home/pi/openpibo-files/audio/system/opening.mp3&quot;</span><span class="p">)</span>
+  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+  <span class="n">audio</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 THE MAKER. All rights reserved. openpibo-python-0.9.2.70.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
