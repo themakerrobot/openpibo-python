@@ -1,8 +1,7 @@
 # 하드웨어
 
 파이보의 부품에 관한 세부적인 설명을 다룹니다.
-
-![PIBO_Device](images/pibo_device.png)
+![](images/pibo_device.png)
 
 - Atmega328p
 

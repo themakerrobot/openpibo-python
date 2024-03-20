@@ -10,12 +10,19 @@ OPENPIBO PACKAGE
    :maxdepth: 1
    :caption: Notes
 
+   notes/piboMaker
    notes/software
    notes/hardware
 
 .. toctree::
    :maxdepth: 1
-   :caption: Libraries
+   :caption: Block
+
+   block/guide
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Python
 
    libraries/audio
    libraries/collect
