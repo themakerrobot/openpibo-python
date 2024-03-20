@@ -18,7 +18,7 @@ OPENPIBO PACKAGE
    :maxdepth: 1
    :caption: Block
 
-   block/guide
+   blocks/guide
 
 .. toctree::
    :maxdepth: 1
