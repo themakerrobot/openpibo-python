@@ -1,6 +1,6 @@
 # 소프트웨어
 
-교육용 파이보와 openpibo-python 패키지에 대한 가이드를 제공합니다.
+교육용 파이보와 **openpibo-python** 패키지에 대한 가이드를 제공합니다.
 [Github](https://github.com/themakerrobot)
 
 ## python package 구성
@@ -59,3 +59,4 @@ pibo_audio.mute(True)
 ```
 
 좌측의 LIBRARIES 탭을 참고하시기 바랍니다.
+
