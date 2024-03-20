@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>블록코딩 &mdash; OPENPIBO 0.9.2.70 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mycss.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/blocks/guide.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../genindex.html" />
+    <link rel="search" title="검색" href="../search.html" />
+    <link rel="next" title="audio" href="../libraries/audio.html" />
+    <link rel="prev" title="하드웨어" href="../notes/hardware.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> OPENPIBO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notes/piboMaker.html">파이보 메이커</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notes/hardware.html">하드웨어</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Block</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">블록코딩</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">블록 구성</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">파이보 전용 블록</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">소리</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">수집</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">장치</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">동작</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">화면</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">음성</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">시각</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">도구</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/vision.html">vision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OPENPIBO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>블록코딩</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/blocks/guide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>블록코딩<a class="headerlink" href="#id1" title="제목 주소"></a></h1>
+<p>파이보메이커는 Blockly 기반의 플랫폼으로 기본 블록 외에도 파이보를 쉽게 이용할 수 있도록
+<strong>openpibo-python</strong> 패키지와 연계된 블록 코딩을 지원합니다.</p>
+<section id="id2">
+<h2>블록 구성<a class="headerlink" href="#id2" title="제목 주소"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Blockly 기본 블록
+├── 논리 : if-else 등 조건 관련 기능
+├── 반복 : for / while 등 반복 관련 기능
+├── 수학 : 숫자 / 연산 / 랜덤 관련 기능
+├── 문자 : 문자 / 입력 / 출력 등 관련 기능
+├── 목록 : list 관련 기능
+├── 색상 : 색상을 쉽게 선택할 수 있는 기능
+├── 변수 : 변수 정의/삭제/이름변경 기능
+└── 함수 : 함수 정의 / 호출 기능
+
+파이보 전용 블록
+├── 소리 : 음악 재생/정지, 녹음 관련 기능
+├── 수집 : 위키피디아/날씨/뉴스 관련 기능
+├── 장치 : LED / 센서 등 관련 기능
+├── 동작 : 모터 제어/모션 생성 기능
+├── 화면 : OLED 화면 표시 관련 기능
+├── 음성 : 음성 합성/ 번역 / 대화 등 자연어 관련 기능
+├── 시각 : 이미지 촬영/편집/가공 및 인공지능 관련 기능
+└── 도구 : 기본 블록에 포함되지 않은 유용한 기능
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>파이보 전용 블록<a class="headerlink" href="#id3" title="제목 주소"></a></h2>
+<section id="id4">
+<h3>소리<a class="headerlink" href="#id4" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">음악</span> <span class="n">재생하기</span> <span class="p">(</span><span class="n">파일</span> <span class="n">선택</span><span class="p">)</span>
+<span class="n">음악</span> <span class="n">재생하기</span> <span class="p">(</span><span class="n">파일</span> <span class="n">직접</span> <span class="n">입력</span><span class="p">)</span>
+<span class="n">재생</span> <span class="n">중인</span> <span class="n">오디오</span> <span class="n">정지하기</span>
+<span class="n">녹음</span> <span class="n">및</span> <span class="n">파일</span> <span class="n">저장하기</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>수집<a class="headerlink" href="#id5" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(인터넷!) 위키피디아에서 키워드 검색
+(인터넷!) 특정 지역 날씨 종합 예보 가져오기
+(인터넷!) 특정 지역 날씨 정보 검색하기
+(인터넷!) 키워드 별 뉴스 검색하기
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>장치<a class="headerlink" href="#id6" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">눈</span> <span class="n">LED</span> <span class="n">켜기</span>
+<span class="n">눈</span> <span class="n">LED</span> <span class="n">켜기</span> <span class="p">(</span><span class="n">색상</span> <span class="n">변수</span> <span class="n">이용</span><span class="p">)</span>
+<span class="n">눈</span> <span class="n">LED</span> <span class="n">서서히</span> <span class="n">켜기</span> <span class="p">(</span><span class="n">색상</span> <span class="n">변수</span> <span class="n">이용</span><span class="p">)</span>
+<span class="n">눈</span> <span class="n">LED</span> <span class="n">끄기</span>
+<span class="n">아답터</span> <span class="n">체크하기</span>
+<span class="n">배터리</span> <span class="n">체크하기</span>
+<span class="n">시스템</span> <span class="n">메시지</span> <span class="n">체크하기</span>
+<span class="n">사람</span> <span class="n">체크하기</span>
+<span class="n">터치</span> <span class="n">체크하기</span>
+<span class="n">버튼</span> <span class="n">체크하기</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>동작<a class="headerlink" href="#id7" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">모션</span> <span class="n">목록</span> <span class="n">가져오기</span><span class="p">(</span><span class="n">내장된</span> <span class="n">모션</span><span class="p">)</span>
+<span class="n">내</span> <span class="n">모션</span> <span class="n">목록</span> <span class="n">가져오기</span><span class="p">(</span><span class="n">사용자</span> <span class="n">정의</span> <span class="n">모션</span><span class="p">)</span>
+<span class="n">모션</span> <span class="n">지정한</span> <span class="n">횟수</span> <span class="n">만큼</span> <span class="n">실행하기</span> <span class="p">(</span><span class="n">모션</span> <span class="n">선택</span><span class="p">)</span>
+<span class="n">모션</span> <span class="n">지정한</span> <span class="n">횟수</span> <span class="n">만큼</span> <span class="n">실행하기</span> <span class="p">(</span><span class="n">모션</span> <span class="n">이름</span> <span class="n">직접</span> <span class="n">입력</span><span class="p">)</span>
+<span class="n">사용자</span> <span class="n">정의</span> <span class="n">모션</span> <span class="n">지정한</span> <span class="n">횟수만큼</span> <span class="n">실행하기</span>
+<span class="n">모션</span> <span class="n">초기화하기</span>
+<span class="n">모터를</span> <span class="n">특정</span> <span class="n">각도로</span> <span class="n">이동하기</span>
+<span class="n">모터의</span> <span class="n">속도를</span> <span class="n">설정하기</span>
+<span class="n">모터의</span> <span class="n">가속도를</span> <span class="n">설정하기</span>
+<span class="n">전체</span> <span class="n">모터</span> <span class="n">이동하기</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>화면<a class="headerlink" href="#id8" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OLED</span> <span class="n">글자</span> <span class="n">사이즈</span> <span class="n">설정하기</span>
+<span class="n">OLED</span> <span class="n">텍스트</span> <span class="n">저장하기</span>
+<span class="n">OLED</span> <span class="n">이미지</span> <span class="n">저장하기</span><span class="p">(</span><span class="n">파일</span> <span class="n">선택</span><span class="p">)</span>
+<span class="n">OLED</span> <span class="n">이미지</span> <span class="n">저장하기</span><span class="p">(</span><span class="n">파일</span> <span class="n">이름</span> <span class="n">직접</span> <span class="n">입력</span><span class="p">)</span>
+<span class="n">OLED</span> <span class="n">이미지</span> <span class="n">변수</span> <span class="n">저장하기</span>
+<span class="n">OLED</span> <span class="n">네모</span> <span class="n">저장하기</span>
+<span class="n">OLED</span> <span class="n">원</span> <span class="n">저장하기</span>
+<span class="n">OLED</span> <span class="n">선</span> <span class="n">저장하기</span>
+<span class="n">OLED</span> <span class="n">반전하기</span>
+<span class="n">OLED</span> <span class="n">표시하기</span>
+<span class="n">OLED</span> <span class="n">지우기</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>음성<a class="headerlink" href="#id9" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(인터넷!) 녹음하고 음성인식하기
+(인터넷!) 문장을 음성 파일로 변환하고 저장합니다.
+(인터넷!) 문장을 음성 파일로 변환하고 저장합니다. (다국어 가능)
+(인터넷!) 문장 번역하기
+대답하기
+대화 파일 설정하기 (csv 형식의 대화 파일)
+대화 파일 초기화하기 (csv 형식의 대화 파일)
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>시각<a class="headerlink" href="#id10" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>촬영하기
+이미지 파일 불러오기(파일 선택)
+이미지 파일 불러오기(파일 이름 입력)
+이미지 데이터를 파일로 저장하기
+이미지 변수를 IDE 이미지 뷰어 표시하기
+이미지에 네모를 표시하기
+이미지에 원을 표시하기
+이미지에 직선을 표시하기
+이미지에 문자를 표시하기
+이미지의 스타일을 변환하기
+이미지에서 얼굴을 찾기
+이미지에서 얼굴 랜드마크를 찾기
+이미지에서 찾은 얼굴의 나이를 분석하기
+이미지에서 찾은 얼굴의 성별을 분석하기
+이미지에서 사물 찾기(80개 사물)
+이미지에서 QR 코드 찾기
+이미지에서 포즈 찾기
+포즈 데이터로 지정된 포즈를 분석하기
+이미지를 분류하기
+이미지 트래커 설정하기
+이미지 트래킹하기
+이미지 마커 인식하기
+티처블머신 모델 설정하기
+설정된 티처블머신 모델로 이미지를 분류하기
+(인터넷!) 인공지능 비전 분석하기(파일 선택)
+(인터넷!) 인공지능 비전 분석하기(이미지 변수)
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>도구<a class="headerlink" href="#id11" title="제목 주소"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">일정시간</span> <span class="n">지연시키기</span>
+<span class="n">시간</span> <span class="n">값</span> <span class="n">알아오기</span>
+<span class="n">현재</span> <span class="n">시간</span> <span class="n">확인하기</span>
+<span class="n">항목이</span> <span class="n">리스트에</span> <span class="n">포함되는지</span> <span class="n">확인하기</span>
+<span class="n">딕셔너리의</span> <span class="n">해당</span> <span class="n">키</span> <span class="n">값</span> <span class="n">가져오기</span>
+<span class="n">딕셔너리의</span> <span class="n">해당</span> <span class="n">키</span> <span class="n">값</span> <span class="n">추가하기</span>
+<span class="n">빈</span> <span class="n">딕셔너리를</span> <span class="n">생성하기</span>
+<span class="n">파일</span> <span class="n">또는</span> <span class="n">폴더가</span> <span class="n">존재하는지</span> <span class="n">확인하기</span>
+<span class="n">변수의</span> <span class="n">타입을</span> <span class="n">문자형으로</span> <span class="n">바꾸기</span>
+<span class="n">변수의</span> <span class="n">타입을</span> <span class="n">정수형</span> <span class="n">또는</span> <span class="n">실수형으로</span> <span class="n">바꾸기</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../notes/hardware.html" class="btn btn-neutral float-left" title="하드웨어" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../libraries/audio.html" class="btn btn-neutral float-right" title="audio" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 THEMAKER. All rights reserved. openpibo-python-0.9.2.70.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

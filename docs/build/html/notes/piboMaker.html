@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ko" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>파이보 메이커 &mdash; OPENPIBO 0.9.2.70 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mycss.css" type="text/css" />
+    <link rel="canonical" href="https://themakerrobot.github.io/openpibo-python/notes/piboMaker.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="색인" href="../genindex.html" />
+    <link rel="search" title="검색" href="../search.html" />
+    <link rel="next" title="소프트웨어" href="software.html" />
+    <link rel="prev" title="OPENPIBO PACKAGE" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> OPENPIBO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">파이보 메이커</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tools">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ide">IDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">소프트웨어</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">하드웨어</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Block</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../block/guide.html">블록코딩</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/audio.html">audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/collect.html">collect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/device.html">device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/motion.html">motion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/oled.html">oled</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/speech.html">speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/vision.html">vision</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OPENPIBO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>파이보 메이커</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notes/piboMaker.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>파이보 메이커<a class="headerlink" href="#id1" title="제목 주소"></a></h1>
+<p>파이보 메이커는 로봇의 개별 기능을 체험하고 제어할 수 있는 <strong>Tools</strong>, Python, Block코딩 개발환경인 <strong>IDE</strong>를 제공합니다.</p>
+<section id="tools">
+<h2>Tools<a class="headerlink" href="#tools" title="제목 주소"></a></h2>
+<p><strong>Tools</strong> 섹션에서는 로봇을 구성하는 모터, 센서, 카메라, 마이크 등의 하드웨어와 소프트웨어를 제어할 수 있는 도구를 제공합니다.</p>
+<p>로봇의 기능을 독립적으로 테스트하고 제어함으로써 로봇의 작동 방식과 동작을 이해할 수 있습니다.</p>
+<p>예를 들어, 로봇의 움직임을 시뮬레이션하거나 실제 모터를 동작시켜 볼 수 있고, 로봇이 주변 환경을 감지하는 능력을 시험하고 데이터를 확인할 수 있습니다.
+이러한 도구들을 통해 로봇의 개별 기능을 체험하고 제어함으로써 로봇의 작동 원리를 이해할 수 있습니다.</p>
+<p><img alt="" src="../_images/tools1.png" /></p>
+<p><img alt="" src="../_images/tools2.png" /></p>
+<p><img alt="" src="../_images/tools3.png" /></p>
+</section>
+<section id="ide">
+<h2>IDE<a class="headerlink" href="#ide" title="제목 주소"></a></h2>
+<p><strong>IDE</strong> 는 개발 환경으로 Python과 Block 코딩을 지원하고, 이미지/오디오 player, 탐색기, 로그 뷰어 등을 제공합니다.</p>
+<p>Python은 강력한 프로그래밍 언어로 다양한 기능과 라이브러리를 활용하여 로봇의 인공지능 기능을 개발할 수 있습니다.</p>
+<p>Block 코딩은 시각적인 블록을 조합하여 프로그램을 작성하는 방식으로, 프로그래밍 경험이 없는 사람들도 쉽게 로봇의 기능을 구현하고 활용할 수 있습니다.</p>
+<p><img alt="" src="../_images/ide1.png" /></p>
+<p><img alt="" src="../_images/ide2.png" /></p>
+<p><img alt="" src="../_images/ide3.png" /></p>
+<p><img alt="" src="../_images/ide4.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="OPENPIBO PACKAGE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="software.html" class="btn btn-neutral float-right" title="소프트웨어" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 THEMAKER. All rights reserved. openpibo-python-0.9.2.70.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
