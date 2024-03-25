@@ -460,7 +460,7 @@ Functions:
     if type(img) is not np.ndarray:
       raise Exception('"img" must be image data from opencv.')
 
-    self.image = Image.fromarray(img).resize((self.width, self.height))
+    self.image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).resize((self.width, self.height))
 
   def draw_rectangle(self, points, fill=None):
     """
@@ -715,7 +715,7 @@ Functions:
     if type(img) is not np.ndarray:
       raise Exception('"img" must be image data from opencv.')
 
-    self.image = Image.fromarray(img).resize((self.width, self.height))
+    self.image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).resize((self.width, self.height))
 
   def draw_rectangle(self, points, fill=None):
     """

@@ -78,6 +78,7 @@ Functions:
 :meth:`~openpibo.vision.Camera.stylization`
 :meth:`~openpibo.vision.Camera.detailEnhance`
 :meth:`~openpibo.vision.Camera.pencilSketch`
+:meth:`~openpibo.vision.Camera.flip`
 
   파이보의 카메라를 제어합니다.
 
@@ -562,6 +563,27 @@ Functions:
       raise Exception('"img" must be image data from opencv')
 
     return cv2.edgePreservingFilter(img, flags=flags, sigma_s=sigma_s, sigma_r=sigma_r)
+
+  def flip(self, img, flags=1):
+    """
+    상하/좌우 대칭 이미지로 변환합니다
+
+    example::
+
+      img = camera.read()
+      camera.flip(img, 1)
+
+    :param numpy.ndarray img: 이미지 객체
+
+    :param int flags: 0: 상하 대칭, 1: 좌우 대칭, -1: 상하/좌우 대칭
+
+    :returns: 변환 후, 이미지 객체
+    """
+
+    if not type(img) is np.ndarray:
+      raise Exception('"img" must be image data from opencv')
+
+    return cv2.flip(img, flags)
 
 class Face:
   """
