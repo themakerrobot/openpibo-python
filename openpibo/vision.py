@@ -94,13 +94,18 @@ Functions:
     # 아래의 모든 예제 이전에 위 코드를 먼저 사용합니다.
   """
 
-  def __init__(self, cam=0):
+  def __init__(self, cam=0, width=None, height=None):
     """
     Camera 클래스를 초기화합니다.
     """
 
     os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
     self.cap = cv2.VideoCapture(cam)
+
+    if width != None:
+      self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    if height != None:
+      self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # for opencv buffering issue
 
   def imread(self, filename):

@@ -576,8 +576,7 @@ Functions:
     self.font_path = openpibo_models.filepath("KDL.ttf") # KoPub Dotum Light
     self.font_size = 10
 
-    #cs_pin = digitalio.DigitalInOut(board.D8)
-    cs_pin = digitalio.DigitalInOut(board.D27)
+    cs_pin = digitalio.DigitalslInOut(board.D8)
     dc_pin = digitalio.DigitalInOut(board.D23)
     reset_pin = digitalio.DigitalInOut(board.D24)
 
