@@ -4,7 +4,7 @@
 **openpibo-python** 패키지와 연계된 블록 코딩을 지원합니다.
 
 ## 블록 구성
-![](images/blocks.jpg)
+![](images/blocks.png)
 
 ## 파이보 전용 블록
 
