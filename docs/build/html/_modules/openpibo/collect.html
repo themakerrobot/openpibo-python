@@ -336,15 +336,40 @@
 <span class="sd">            검색할 내용은 다음과 같습니다::</span>
 
 <span class="sd">                &#39;forecast&#39;, &#39;today&#39;, &#39;tomorrow&#39;, &#39;after_tomorrow&#39;</span>
+<span class="sd">            </span>
+<span class="sd">        :param str search_item: 검색할 내용 (default: weather)</span>
 
-<span class="sd">        :returns: 종합예보 혹은 오늘/내일/모레의 날씨, 최저기온, 최고기온 리스트를 반환합니다.</span>
+<span class="sd">            검색할 내용은 다음과 같습니다::</span>
 
+<span class="sd">                &#39;weather&#39;, &#39;minimum_temp&#39;, &#39;highst_temp&#39; </span>
+<span class="sd">                search_type이 forecast일 경우, search_item은 무시합니다.</span>
+
+<span class="sd">        :returns: 파라미터에 따라, 종합예보 혹은 오늘/내일/모레의 날씨, 최저기온, 최고기온을 반환합니다.</span>
 <span class="sd">            example::</span>
 
-<span class="sd">                &#39;내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼&#39; # forecast</span>
-<span class="sd">                or</span>
-<span class="sd">                [&#39;전국 대체로 흐림&#39;, 15.3, 27.6]</span>
-<span class="sd">                # [weather, minimum_temp, highst_temp]  in search_type(today|tomorrow|after_tomorrow)</span>
+<span class="sd">                {</span>
+<span class="sd">                    &#39;forecast&#39;: &#39;내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼&#39;</span>
+<span class="sd">                    &#39;today&#39;:</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;weather&#39;: &#39;전국 대체로 흐림&#39;,</span>
+<span class="sd">                        &#39;minimum_temp&#39;: &#39;15.3 ~ 21.6&#39;,</span>
+<span class="sd">                        &#39;highst_temp&#39;: &#39;23.1 ~ 27.6&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                    &#39;tomorrow&#39;:</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;weather&#39;: &#39;전국 대체로 흐림&#39;,</span>
+<span class="sd">                        &#39;minimum_temp&#39;: &#39;15.3 ~ 21.6&#39;, </span>
+<span class="sd">                        &#39;highst_temp&#39;: &#39;23.1 ~ 27.6&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                    &#39;after_tomorrow&#39;:</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;weather&#39;: &#39;전국 대체로 흐림&#39;,</span>
+<span class="sd">                        &#39;minimum_temp&#39;: &#39;15.3 ~ 21.6&#39;,</span>
+<span class="sd">                        &#39;highst_temp&#39;: &#39;23.1 ~ 27.6&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                }</span>
+<span class="sd">                or None</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">search_region</span><span class="p">)</span>
