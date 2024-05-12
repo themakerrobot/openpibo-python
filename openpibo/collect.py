@@ -248,15 +248,40 @@ Functions:
             검색할 내용은 다음과 같습니다::
 
                 'forecast', 'today', 'tomorrow', 'after_tomorrow'
+            
+        :param str search_item: 검색할 내용 (default: weather)
 
-        :returns: 종합예보 혹은 오늘/내일/모레의 날씨, 최저기온, 최고기온 리스트를 반환합니다.
+            검색할 내용은 다음과 같습니다::
 
+                'weather', 'minimum_temp', 'highst_temp' 
+                search_type이 forecast일 경우, search_item은 무시합니다.
+
+        :returns: 파라미터에 따라, 종합예보 혹은 오늘/내일/모레의 날씨, 최저기온, 최고기온을 반환합니다.
             example::
 
-                '내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼' # forecast
-                or
-                ['전국 대체로 흐림', 15.3, 27.6]
-                # [weather, minimum_temp, highst_temp]  in search_type(today|tomorrow|after_tomorrow)
+                {
+                    'forecast': '내일 경기남부 가끔 비, 내일까지 바람 약간 강, 낮과 밤의 기온차 큼'
+                    'today':
+                    {
+                        'weather': '전국 대체로 흐림',
+                        'minimum_temp': '15.3 ~ 21.6',
+                        'highst_temp': '23.1 ~ 27.6'
+                    }
+                    'tomorrow':
+                    {
+                        'weather': '전국 대체로 흐림',
+                        'minimum_temp': '15.3 ~ 21.6', 
+                        'highst_temp': '23.1 ~ 27.6'
+                    }
+                    'after_tomorrow':
+                    {
+                        'weather': '전국 대체로 흐림',
+                        'minimum_temp': '15.3 ~ 21.6',
+                        'highst_temp': '23.1 ~ 27.6'
+                    }
+                }
+                or None
+
         """
 
         res = self.search(search_region)
