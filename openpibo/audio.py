@@ -77,6 +77,7 @@ Functions:
 
     volume = int(volume/2) + 50 # 실제 50 - 100%로 설정, 0-50%는 소리가 너무 작음
     cmd = f'amixer -q -c Headphones sset Headphone {volume}%;'
+    #cmd = f'amixer -q -c MAX98357A sset Headphone {volume}%;'
     cmd += f'play -q -V1 -v {volume2} "{filename}"'
 
     if background:
