@@ -1074,7 +1074,7 @@ Functions:
     이미지 안의 객체를 인식합니다. (아래 class의 사물 인식 가능)
 
     인식 가능한 사물은 다음과 같습니다::
-    {
+
       0: 'background', 1:'person',2:'bicycle',3:'car',4:'motorcycle',5:'airplane',6:'bus',7:'train',8:'truck',9:'boat',10:'traffic light',
       11:'fire hydrant',12:'street sign',13:'stop sign',14:'parking meter',15:'bench',16:'bird',17:'cat',18:'dog',19:'horse',20:'sheep',
       21:'cow',22:'elephant',23:'bear',24:'zebra',25:'giraffe',26:'hat',27:'backpack',28:'umbrella',29:'shoe',30:'eye glasses',
@@ -1085,7 +1085,7 @@ Functions:
       71:'door',72:'tv',73:'laptop',74:'mouse',75:'remote',76:'keyboard',77:'cell phone',78:'microwave',79:'oven',80:'toaster',
       81:'sink',82:'refrigerator',83:'blender',84:'book',85:'clock',86:'vase',87:'scissors',88:'teddy bear',89:'hair drier',90:'toothbrush',
       91:'hair brush'
-    }
+
     example::
 
       img = camera.read()
