@@ -18,6 +18,7 @@ from pyzbar import pyzbar
 from .modules.pose.movenet import Movenet
 from .modules.pose.utils import visualize
 from .modules.card.decode_card import get_card
+from picamera2 import Picamera2
 
 import openpibo_models
 import openpibo_face_models
@@ -99,14 +100,22 @@ Functions:
     Camera 클래스를 초기화합니다.
     """
 
-    os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
-    self.cap = cv2.VideoCapture(cam)
+    os.environ['LIBCAMERA_LOG_LEVELS'] = '2'
+    cap = Picamera2()
+    config = cap.create_still_configuration(
+            main={'size': (640, 480)}, buffer_count=2
+            )
+    cap.configure(config)
+    cap.start()
+    self.cap = cap
+    #os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
+    #self.cap = cv2.VideoCapture(cam)
 
-    if width != None:
-      self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-    if height != None:
-      self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-    self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # for opencv buffering issue
+    #if width != None:
+    #  self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    #if height != None:
+    #  self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+    #self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # for opencv buffering issue
 
   def imread(self, filename):
     """
@@ -158,10 +167,14 @@ Functions:
     :returns: ``numpy.ndarray`` 타입 이미지 객체
     """
 
+    image = self.cap.capture_array()
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    return cv2.flip(image, -1)
+
     # for opencv buffering issue
-    self.cap.grab()
-    self.cap.grab()
-    return self.cap.read()[1]
+    #self.cap.grab()
+    #self.cap.grab()
+    #return self.cap.read()[1]
 
   def imshow_to_ide(self, img, ratio=0.25):
     """
@@ -1038,17 +1051,20 @@ Functions:
   """
 
   def __init__(self):
-    self.object_class = {0: 'background', 1:'person',2:'bicycle',3:'car',4:'motorcycle',5:'airplane',6:'bus',7:'train',8:'truck',9:'boat',10:'traffic light',
-                    11:'fire hydrant',12:'street sign',13:'stop sign',14:'parking meter',15:'bench',16:'bird',17:'cat',18:'dog',19:'horse',20:'sheep',
-                    21:'cow',22:'elephant',23:'bear',24:'zebra',25:'giraffe',26:'hat',27:'backpack',28:'umbrella',29:'shoe',30:'eye glasses',
-                    31:'handbag',32:'tie',33:'suitcase',34:'frisbee',35:'skis',36:'snowboard',37:'sports ball',38:'kite',39:'baseball bat',40:'baseball glove',
-                    41:'skateboard',42:'surfboard',43:'tennis racket',44:'bottle',45:'plate',46:'wine glass',47:'cup',48:'fork',49:'knife',50:'spoon',
-                    51:'bowl',52:'banana',53:'apple',54:'sandwich',55:'orange',56:'broccoli',57:'carrot',58:'hot dog',59:'pizza',60:'donut',
-                    61:'cake',62:'chair',63:'couch',64:'potted plant',65:'bed',66:'mirror',67:'dining table',68:'window',69:'desk',70:'toilet',
-                    71:'door',72:'tv',73:'laptop',74:'mouse',75:'remote',76:'keyboard',77:'cell phone',78:'microwave',79:'oven',80:'toaster',
-                    81:'sink',82:'refrigerator',83:'blender',84:'book',85:'clock',86:'vase',87:'scissors',88:'teddy bear',89:'hair drier',90:'toothbrush',
-                    91:'hair brush'}
-    
+    self.object_class = ['background', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
+                         'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant',
+                         'None', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
+                         'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'None',
+                         'backpack', 'umbrella', 'None', 'None', 'handbag', 'tie', 'suitcase', 'frisbee',
+                         'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove',
+                         'skateboard', 'surfboard', 'tennis racket', 'bottle', 'None', 'wine glass', 'cup',
+                         'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange',
+                         'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
+                         'potted plant', 'bed', 'None', 'dining table', 'None', 'None', 'toilet', 'None', 'tv',
+                         'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
+                         'toaster', 'sink', 'refrigerator', 'None', 'book', 'clock', 'vase', 'scissors',
+                         'teddy bear', 'hair drier'] 
+
     self.mobilenet = cv2.dnn.readNet(
                         openpibo_detect_models.filepath("frozen_inference_graph.pb"),
                         openpibo_detect_models.filepath("ssd_mobilenet_v2_coco_2018_03_29.pbtxt")
@@ -1066,8 +1082,9 @@ Functions:
       [0.00000000e+00,1.37416685e+03,5.39622051e+02],
       [0.00000000e+00,0.00000000e+00,1.00000000e+00]])
     self.distortion_coeff = np.array([1.69926613e-01,-7.40003491e-01,-7.45655262e-03,-1.79442353e-03, 2.46650225e+00])
-    self.dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
-    self.parameters = cv2.aruco.DetectorParameters_create()
+    #self.dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
+    self.dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+    self.parameters = cv2.aruco.DetectorParameters()
 
   def detect_object(self, img):
     """
@@ -1075,16 +1092,19 @@ Functions:
 
     인식 가능한 사물은 다음과 같습니다::
 
-      0: 'background', 1:'person',2:'bicycle',3:'car',4:'motorcycle',5:'airplane',6:'bus',7:'train',8:'truck',9:'boat',10:'traffic light',
-      11:'fire hydrant',12:'street sign',13:'stop sign',14:'parking meter',15:'bench',16:'bird',17:'cat',18:'dog',19:'horse',20:'sheep',
-      21:'cow',22:'elephant',23:'bear',24:'zebra',25:'giraffe',26:'hat',27:'backpack',28:'umbrella',29:'shoe',30:'eye glasses',
-      31:'handbag',32:'tie',33:'suitcase',34:'frisbee',35:'skis',36:'snowboard',37:'sports ball',38:'kite',39:'baseball bat',40:'baseball glove',
-      41:'skateboard',42:'surfboard',43:'tennis racket',44:'bottle',45:'plate',46:'wine glass',47:'cup',48:'fork',49:'knife',50:'spoon',
-      51:'bowl',52:'banana',53:'apple',54:'sandwich',55:'orange',56:'broccoli',57:'carrot',58:'hot dog',59:'pizza',60:'donut',
-      61:'cake',62:'chair',63:'couch',64:'potted plant',65:'bed',66:'mirror',67:'dining table',68:'window',69:'desk',70:'toilet',
-      71:'door',72:'tv',73:'laptop',74:'mouse',75:'remote',76:'keyboard',77:'cell phone',78:'microwave',79:'oven',80:'toaster',
-      81:'sink',82:'refrigerator',83:'blender',84:'book',85:'clock',86:'vase',87:'scissors',88:'teddy bear',89:'hair drier',90:'toothbrush',
-      91:'hair brush'
+      'background', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
+      'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 
+      'None', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
+      'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'None',
+      'backpack', 'umbrella', 'None', 'None', 'handbag', 'tie', 'suitcase', 'frisbee',
+      'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove',
+      'skateboard', 'surfboard', 'tennis racket', 'bottle', 'None', 'wine glass', 'cup',
+      'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 
+      'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
+      'potted plant', 'bed', 'None', 'dining table', 'None', 'None', 'toilet', 'None', 'tv',
+      'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven',
+      'toaster', 'sink', 'refrigerator', 'None', 'book', 'clock', 'vase', 'scissors',
+      'teddy bear', 'hair drier' 
 
     example::
 
@@ -1203,9 +1223,9 @@ Functions:
     res = []
     data = data['data'][0].keypoints
 
-    if data[LEFT_WRIST].coordinate.y < data[LEFT_SHOULDER].coordinate.y:
+    if data[LEFT_WRIST].coordinate.y < data[LEFT_ELBOW].coordinate.y:
       res.append("left_hand_up")
-    if data[RIGHT_WRIST].coordinate.y < data[RIGHT_SHOULDER].coordinate.y:
+    if data[RIGHT_WRIST].coordinate.y < data[RIGHT_ELBOW].coordinate.y:
       res.append("right_hand_up")
     if distance(data[LEFT_WRIST].coordinate, data[RIGHT_WRIST].coordinate) <  75:
       res.append("clap")

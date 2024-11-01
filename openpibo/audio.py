@@ -76,8 +76,8 @@ Functions:
       raise Exception(f'"{volume2}" is float(0.0~1.5)')
 
     volume = int(volume/2) + 50 # 실제 50 - 100%로 설정, 0-50%는 소리가 너무 작음
-    cmd = f'amixer -q -c Headphones sset Headphone {volume}%;'
-    #cmd = f'amixer -q -c MAX98357A sset Headphone {volume}%;'
+    #cmd = f'amixer -q -c Headphones sset Headphone {volume}%;'
+    cmd = f'amixer -q -c Headphones sset PCM {volume}%;'
     cmd += f'play -q -V1 -v {volume2} "{filename}"'
 
     if background:

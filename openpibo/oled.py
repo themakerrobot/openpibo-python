@@ -581,7 +581,7 @@ Functions:
     reset_pin = digitalio.DigitalInOut(board.D24)
 
     spi = busio.SPI(11,10,9)
-    self.oled = ili9341.ILI9341(spi, rotation=0, rst=reset_pin, cs=cs_pin, dc=dc_pin, baudrate=36000000)
+    self.oled = ili9341.ILI9341(spi, rotation=180, rst=reset_pin, cs=cs_pin, dc=dc_pin, baudrate=36000000)
     self.font = ImageFont.truetype(self.font_path, self.font_size)
     self.image = Image.new("RGB", (self.width, self.height), (0,0,0))
     self.oled.fill(0)

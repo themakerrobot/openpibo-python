@@ -11,7 +11,7 @@ import random
 #import io
 import json
 import os
-from konlpy.tag import Mecab
+#from konlpy.tag import Mecab
 import requests
 from . import napi_host, sapi_host
 from .modules.speech.mtranslate import translate
@@ -148,9 +148,6 @@ class Dialog:
 Functions:
 :meth:`~openpibo.speech.Dialog.load`
 :meth:`~openpibo.speech.Dialog.reset`
-:meth:`~openpibo.speech.Dialog.mecab_pos`
-:meth:`~openpibo.speech.Dialog.mecab_morphs`
-:meth:`~openpibo.speech.Dialog.mecab_nouns`
 :meth:`~openpibo.speech.Dialog.ngram`
 :meth:`~openpibo.speech.Dialog.diff_ngram`
 :meth:`~openpibo.speech.Dialog.get_dialog`
@@ -175,7 +172,7 @@ Functions:
 
   def __init__(self):
     self.dialog_db = []
-    self.mecab = Mecab()
+    #self.mecab = Mecab()
     self.NAPI_HOST = napi_host
     self.load(openpibo_models.filepath("dialog.csv"))
 
@@ -212,63 +209,6 @@ Functions:
     """
 
     self.load(openpibo_models.filepath("dialog.csv"))
-
-
-  def mecab_pos(self, string):
-    """
-    형태소를 품사와 함께 추출합니다.
-
-    exmaple::
-
-      dialog.mecab_pos('아버지가 방에 들어가셨다.')
-      # [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어가', 'VV'), ('셨', 'EP+EP'), ('다', 'EF'), ('.', 'SF')]
-
-    :param str string: 분석할 문장 (한글)
-
-    :returns: 형태소 분석 결과
-
-      ``list(형태소, 품사)`` 형태로 출력됩니다.
-    """
-
-    return self.mecab.pos(string)
-
-  def mecab_morphs(self, string):
-
-    """
-    형태소를 추출합니다.
-
-    exmaple::
-
-      dialog.mecab_morphs('아버지가 방에 들어가셨다.')
-      # ['아버지', '가', '방', '에', '들어가', '셨', '다', '.']
-
-    :param str string: 분석할 문장 (한글)
-
-    :returns: 형태소 분석 결과
-
-      ``list`` 타입 입니다.
-    """
-
-    return self.mecab.morphs(string)
-
-  def mecab_nouns(self, string):
-
-    """
-    명사를 추출합니다.
-
-    exmaple::
-
-      dialog.mecab_nouns('아버지가 방에 들어가셨다.')
-      # ['아버지', '방']
-
-    :param str string: 분석할 문장 (한글)
-
-    :returns: 문장에서 추출한 명사 목록
-
-      ``list`` 타입 입니다.
-    """
-
-    return self.mecab.nouns(string)
 
   def ngram(self, string, n=2):
 
