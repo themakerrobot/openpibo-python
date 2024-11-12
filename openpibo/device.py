@@ -186,7 +186,7 @@ Functions:
     "SYSTEM"                :"40",
   }
    
-  def __init__(self, api_mode=True, port=80):
+  def __init__(self, api_mode=True, port=8080):
     """
     Device 클래스를 초기화합니다.
     """

@@ -19,7 +19,7 @@ from .modules.pose.movenet import Movenet
 from .modules.pose.utils import visualize
 from .modules.card.decode_card import get_card
 from picamera2 import Picamera2
-
+from libcamera import Transform
 import openpibo_models
 import openpibo_face_models
 import openpibo_dlib_models
@@ -100,22 +100,22 @@ Functions:
     Camera 클래스를 초기화합니다.
     """
 
-    os.environ['LIBCAMERA_LOG_LEVELS'] = '2'
+    cv2.setUseOptimized(True)
+    cv2.setNumThreads(cv2.getNumberOfCPUs())
+    os.environ['LIBCAMERA_LOG_LEVELS'] = '1'
     cap = Picamera2()
     config = cap.create_still_configuration(
-            main={'size': (640, 480)}, buffer_count=2
+              main={
+                'size': (640, 480), 
+                'format': 'RGB888'
+              },
+              transform=Transform(hflip=True, vflip=True),
+              buffer_count=2
             )
     cap.configure(config)
+    cap.set_controls({'AwbEnable': True, 'AwbMode': 0})
     cap.start()
     self.cap = cap
-    #os.system('v4l2-ctl -c vertical_flip=1,horizontal_flip=1,white_balance_auto_preset=3')
-    #self.cap = cv2.VideoCapture(cam)
-
-    #if width != None:
-    #  self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-    #if height != None:
-    #  self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-    #self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # for opencv buffering issue
 
   def imread(self, filename):
     """
@@ -167,14 +167,7 @@ Functions:
     :returns: ``numpy.ndarray`` 타입 이미지 객체
     """
 
-    image = self.cap.capture_array()
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    return cv2.flip(image, -1)
-
-    # for opencv buffering issue
-    #self.cap.grab()
-    #self.cap.grab()
-    #return self.cap.read()[1]
+    return self.cap.capture_array()
 
   def imshow_to_ide(self, img, ratio=0.25):
     """
